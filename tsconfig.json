@@ -1,26 +1,67 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
+    // * 기본 옵션
+    // 'es3', 'es5', 'es2015', 'es2016', 'es2017','es2018', 'esnext' 가능
+    "target": "ESNext",
+    // 컴파일 시 사용할 라이브러리 지정
+    "lib": ["dom", "dom.iterable", "esnext"],
+
+    // * 모듈 설정 관련 옵션
+    // ts 모듈 지정
     "module": "esnext",
+    // 모듈 해석 방식 지정
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
+
+    // * jsx 관련 옵션
+    // jsx 문법 사용 시 사용할 jsx 변환 방식 설정
+    "jsx": "react-jsx",
+
+    // * 엄격한 타입 체크 옵션
+    // 엄격한 타입 체크 옵션 활성화 (ex. any 타입이나 타입 체크 문제 있는 경우 에러 발생)
+    "strict": true,
+    // any타입 금지
+    "noImplicitAny": true,
+    // null과 undefined에 대해 엄격한 타입 체크를 활성화
+    "strictNullChecks": true,
+    // 함수파라미터 타입체크 강하게
+    "strictFunctionTypes": true,
+    // class constructor 작성시 타입체크 강하게
+    "strictPropertyInitialization": true,
+    // this의 타입을 명시적으로 작성하도록 강제
+    "noImplicitThis": true,
+
+    // * 타입 선언 관련 옵션
+    // 컴파일시 .d.ts 파일도 자동으로 함께생성 (현재쓰는 모든 타입이 정의된 파일)
+    "declaration": true,
+    // .d.ts 파일(타입 선언 파일) 체크 건너 뜀
+    "skipLibCheck": true,
+
+    // * 모듈 상호작용 관련 옵션
+    // js 모듈과 ts 모듈 상호작용 향상 (js 라이브러리 상호작용 용이하게 함)
+    "esModuleInterop": true,
+    // default import 구문이 없는 모듈에 대해 ts가 이를 생성할 수 있도록 허용
+    "allowSyntheticDefaultImports": true,
+
+    // * 파일명 관련 경고 옵션
+    // 파일 이름의 대소문자를 강제로 일관성있게 사용하도록 함
+    "forceConsistentCasingInFileNames": true,
+    // swtich문에서 case 블록에 break 없으면 경고 표시
+    "noFallthroughCasesInSwitch": true,
+
+    // * 기타 옵션
+    // js 파일들 ts에서 import해서 쓸 수 있는지
+    "allowJs": true,
+    // 일반 js 파일에서도 에러체크 여부
+    "checkJs": true,
+    // 컴파일시 주석제거
+    "removeComments": true,
+    // 실제 컴파일 결과 파일 만들지 않고 타입 체크만 진행
     "noEmit": true,
-    "jsx": "react-jsx"
+    // ts가 json 파일 import할 수 있도록 함
+    "resolveJsonModule": true,
+    // 각 파일을 개별적인 모듈로 처리
+    "isolatedModules": true
   },
-  "include": [
-    "src"
-  ]
+  // * src 내부 파일 컴파일 대상으로 지정
+  "include": ["src"]
 }
