@@ -1,12 +1,15 @@
 const theme = {
+  // ${({ theme }) => theme.color.keyname};
   color: {
     white: '#FFFFFF',
+    black: '#000000',
     orange: '#FFA877',
     red: '#FF4D00',
     yellow: '#FFE818',
     blue: '#6CDCFF',
   },
 
+  // ${({ theme }) => theme.green.keyname};
   green: {
     light: '#F6FFBF',
     basic: '#E3FF3A',
@@ -15,6 +18,7 @@ const theme = {
     neon: '#77FFA5',
   },
 
+  // ${({ theme }) => theme.gray.keyname};
   gray: {
     OS: '#171717',
     TO: '#212121',
@@ -25,6 +29,7 @@ const theme = {
     DE: '#DEDEDE',
   },
 
+  // ${({ theme }) => theme.rank.keyname};
   rank: {
     ir: '#A3A3A3',
     br: '#E09E1D',
