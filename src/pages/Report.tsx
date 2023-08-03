@@ -40,7 +40,50 @@ const Report = () => {
           <ItemTitle>
             {'욕 카테고리'} <span>{'중복 체크 3개 가능'}</span>
           </ItemTitle>
+          <ReportCauseContainer>
+            <ReportItemWrap>
+              <ReportCause>
+                <InputCheckbox type={'checkbox'} id={'family'} />
+                <label htmlFor={'family'}>{'패드립'}</label>
+              </ReportCause>
+
+              <ReportCause>
+                <InputCheckbox type={'checkbox'} id={'disgust'} />
+                <label htmlFor={'disgust'}>{'혐오성 발언'}</label>
+              </ReportCause>
+
+              <ReportCause>
+                <InputCheckbox type={'checkbox'} id={'swearWord'} />
+                <label htmlFor={'swearWord'}>{'쌍욕'}</label>
+              </ReportCause>
+            </ReportItemWrap>
+
+            <ReportItemWrap>
+              <ReportCause>
+                <InputCheckbox type={'checkbox'} id={'personalAttack'} />
+                <label htmlFor={'personalAttack'}>{'인신공격'}</label>
+              </ReportCause>
+
+              <ReportCause>
+                <InputCheckbox type={'checkbox'} id={'sexualHarassment'} />
+                <label htmlFor={'sexualHarassment'}>{'성희롱'}</label>
+              </ReportCause>
+
+              <ReportCause>
+                <InputCheckbox type={'checkbox'} id={'etc'} />
+                <label htmlFor={'etc'}>{'기타'}</label>
+              </ReportCause>
+            </ReportItemWrap>
+          </ReportCauseContainer>
         </CategoryWrap>
+
+        <ReportBody>
+          <ItemTitle>{'신고내용'}</ItemTitle>
+          <ReportBodyInput
+            placeholder={`욕설을 들은 당시의 상황이나, 자세한 내용을 설명해주세요. ${'\n'}신고 내용을 허위로 작성하지 말아 주세요.`}
+          />
+        </ReportBody>
+        <ReportPostBtn>{'등록'}</ReportPostBtn>
       </ReportContainer>
     </>
   )
@@ -173,6 +216,97 @@ const FileButton = styled.label`
 
 const CategoryWrap = styled.div`
   margin-top: 40px;
+`
+
+const ReportCauseContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+`
+
+const ReportItemWrap = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+`
+
+const ReportCause = styled.div`
+  width: 115px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
+const InputCheckbox = styled.input`
+  width: 14px;
+  height: 14px;
+  position: absolute;
+
+  & + label {
+    position: relative;
+    padding-left: 25px;
+    color: ${({ theme }) => theme.color.white};
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 2px;
+      background: ${({ theme }) => theme.color.white};
+      transition: all 0.3s;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: -1px;
+      width: 10px;
+      height: 10px;
+      transition: all 0.3s;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  &:checked + label::before {
+    border: none;
+    background-color: ${({ theme }) => theme.green.basic};
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+`
+
+const ReportBody = styled.div`
+  margin-top: 47px;
+`
+
+const ReportBodyInput = styled.textarea`
+  width: 1280px;
+  height: 142px;
+  outline: none;
+  padding: 17px 19px;
+  border-radius: 10px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
+const ReportPostBtn = styled.button`
+  display: block;
+  width: 182px;
+  height: 57px;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.green.basic};
+  color: black;
+  font-size: 25px;
+  font-weight: 700;
+  margin: 47px auto 0 auto;
 `
 
 export default Report
