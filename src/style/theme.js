@@ -14,7 +14,7 @@ const theme = {
     light: '#F6FFBF',
     basic: '#E3FF3A',
     dark: '#94AC00',
-    lime: '#E3FF3A',
+    lime: '#D2F400',
     neon: '#77FFA5',
   },
 
@@ -39,7 +39,7 @@ const theme = {
     di: '#3BDAA1',
     ma: '#B7BEFF',
     gr: '#F2A5FF',
-    ch: 'linear-gradient(130deg, #85FFF8, #B6EC9C, #e9D73C)',
+    ch: 'linear-gradient(130deg, #85FFF8, #B6EC9C, #E9D73C)',
   },
 }
 
