@@ -74,6 +74,8 @@ module.exports = {
         labelAttributes: ['htmlFor'],
       },
     ],
+    // ts에서는 interface 사용하므로 propTypes 미사용 시 defaultProps 선언 규칙 해제
+    'react/require-default-props': 'off',
   },
   settings: {
     'import/resolver': {

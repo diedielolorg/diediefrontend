@@ -36,9 +36,10 @@ const theme = {
     si: '#D8D8D8',
     go: '#FFE99C',
     pl: '#C0FFC3',
-    di: '#3BDAA1',
-    ma: '#B7BEFF',
-    gr: '#F2A5FF',
+    em: '#3BDAA1',
+    di: '#B7BEFF',
+    ma: '#F2A5FF',
+    gr: '#FF8585',
     ch: 'linear-gradient(130deg, #85FFF8, #B6EC9C, #E9D73C)',
   },
 }

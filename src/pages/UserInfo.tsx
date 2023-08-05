@@ -1,5 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components'
+import { Button, Badge, Image } from '../components/common'
 import { temporaryImg, reportImg } from '../assets'
 
 const UserInfo = () => {
@@ -8,15 +9,19 @@ const UserInfo = () => {
       <InfoSection>
         <div>
           <UserInfoDiv>
-            <img src={temporaryImg} alt={''} />
+            <Image width={100} height={100} borderRadius={5} src={temporaryImg} />
             <div>
               <h2>{'TOP 12'}</h2>
               <h1>{'방배동둠피스트'}</h1>
             </div>
           </UserInfoDiv>
           <UserBtnDiv>
-            <button type={'button'}>{'인게임 정보 보기'}</button>
-            <button type={'button'}>{'신고하기'}</button>
+            <Button size={'l'} color={'light'}>
+              {'인게임 정보 보기'}
+            </Button>
+            <Button size={'l'} color={'basic'}>
+              {'신고하기'}
+            </Button>
           </UserBtnDiv>
         </div>
         <UserRecordDiv>
@@ -59,12 +64,12 @@ const UserInfo = () => {
               <span>
                 <strong>{'욕 카테고리'}</strong>
               </span>
-              <BadgeSpan category={'쌍욕'}>{'쌍욕'}</BadgeSpan>
-              <BadgeSpan category={'혐오성 발언'}>{'혐오성 발언'}</BadgeSpan>
-              <BadgeSpan category={'인신공격'}>{'인신공격'}</BadgeSpan>
-              <BadgeSpan category={'성희롱'}>{'성희롱'}</BadgeSpan>
-              <BadgeSpan category={'기타'}>{'기타'}</BadgeSpan>
-              <BadgeSpan category={'패드립'}>{'패드립'}</BadgeSpan>
+              <Badge category={'fWord'} />
+              <Badge category={'aversion'} />
+              <Badge category={'adHominem'} />
+              <Badge category={'sHarassment'} />
+              <Badge category={'immorality'} />
+              <Badge category={'etc'} />
             </div>
             <div>
               <span>
@@ -81,9 +86,9 @@ const UserInfo = () => {
                 <strong>{'스크린샷'}</strong>
               </span>
               <ReportImgDiv>
-                <img src={reportImg} alt={''} />
-                <img src={reportImg} alt={''} />
-                <img src={reportImg} alt={''} />
+                <Image width={400} height={285} borderRadius={5} src={reportImg} />
+                <Image width={400} height={285} borderRadius={5} src={reportImg} />
+                <Image width={400} height={285} borderRadius={5} src={reportImg} />
               </ReportImgDiv>
             </div>
           </ReportInfoDiv>
@@ -150,11 +155,6 @@ const ReportSection = styled.section`
 const UserInfoDiv = styled.div`
   display: flex;
   align-items: center;
-  img {
-    width: 100px;
-    height: 100px;
-    border-radius: 5px;
-  }
   div {
     width: 100%;
     padding: 0 25px;
@@ -168,19 +168,6 @@ const UserBtnDiv = styled.div`
   margin-top: 30px;
   display: flex;
   gap: 15px;
-  button {
-    width: 185px;
-    height: 50px;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: 700;
-  }
-  button:nth-child(1) {
-    background: ${({ theme }) => theme.green.light};
-  }
-  button:nth-child(2) {
-    background: ${({ theme }) => theme.green.basic};
-  }
 `
 
 const UserRecordDiv = styled.div`
@@ -260,36 +247,9 @@ const MoreBtn = styled.button`
   background: transparent;
 `
 
-const BadgeSpan = styled.span<{ category: string }>`
-  margin-right: 8px;
-  padding: 1px 4px;
-  font-weight: 700;
-  border-radius: 3px;
-  color: red;
-  /* // TODO 현재 AE 컬러가 우선적용되고 있는데 이후 컴포넌트 분리하면 color 적용 확인해볼것 */
-  border: 1px solid
-    ${({ category, theme }) =>
-      category === '쌍욕'
-        ? theme.color.orange
-        : category === '혐오성 발언'
-        ? theme.color.blue
-        : category === '인신공격'
-        ? theme.color.yellow
-        : category === '성희롱'
-        ? theme.green.neon
-        : category === '기타'
-        ? theme.gray.DE
-        : theme.green.basic};
-`
-
 const ReportImgDiv = styled.div`
   display: flex;
   gap: 15px;
-  img {
-    width: 400px;
-    height: 285px;
-    object-fit: cover;
-  }
 `
 
 const PaginationDiv = styled.div`
