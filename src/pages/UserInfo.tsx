@@ -1,5 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components'
+import { Button } from '../components/common'
 import { temporaryImg, reportImg } from '../assets'
 
 const UserInfo = () => {
@@ -15,8 +16,12 @@ const UserInfo = () => {
             </div>
           </UserInfoDiv>
           <UserBtnDiv>
-            <button type={'button'}>{'인게임 정보 보기'}</button>
-            <button type={'button'}>{'신고하기'}</button>
+            <Button size={'l'} color={'light'}>
+              {'인게임 정보 보기'}
+            </Button>
+            <Button size={'l'} color={'basic'}>
+              {'신고하기'}
+            </Button>
           </UserBtnDiv>
         </div>
         <UserRecordDiv>
@@ -168,19 +173,6 @@ const UserBtnDiv = styled.div`
   margin-top: 30px;
   display: flex;
   gap: 15px;
-  button {
-    width: 185px;
-    height: 50px;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: 700;
-  }
-  button:nth-child(1) {
-    background: ${({ theme }) => theme.green.light};
-  }
-  button:nth-child(2) {
-    background: ${({ theme }) => theme.green.basic};
-  }
 `
 
 const UserRecordDiv = styled.div`
