@@ -1,5 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components'
+import { BtnProps } from '../../interfaces/CommonTypes'
 
 // ! [props]
 // * children : 버튼 명
@@ -7,14 +8,7 @@ import { styled } from 'styled-components'
 // * color : 버튼 색상
 // * onClick : onClick 이벤트
 
-interface BtnType {
-  children?: string
-  size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'
-  color?: 'light' | 'basic' | 'gray'
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-}
-
-const Button = ({ children, size, color, onClick }: BtnType) => {
+const Button = ({ children, size, color, onClick }: BtnProps) => {
   return (
     <CommonBtn type={'button'} size={size} color={color} onClick={onClick}>
       {children}
@@ -22,32 +16,34 @@ const Button = ({ children, size, color, onClick }: BtnType) => {
   )
 }
 
-const sizeHandler = ({ size }: BtnType) => {
-  switch (size) {
-    case 'xs':
-      return 'width: 60px; height: 45px;'
-    case 's':
-      return 'width: 90px; height: 45px;'
-    case 'm':
-      return 'width: 125px; height: 45px;'
-    case 'l':
-      return 'width: 185px; height: 50px;'
-    case 'xl':
-      return 'width: 200px; height: 55px;'
-    case 'xxl':
-      return 'width: 330px; height: 55px;'
-    default:
-      return ''
-  }
-}
-
 export default Button
 
-const CommonBtn = styled.button<BtnType>`
-  ${(props) => sizeHandler(props)};
-  border-radius: ${({ size }) => (size === 'xs' || size === 's' ? '5px' : '10px')};
-  font-size: ${({ size }) => (size === 'xs' || size === 's' ? '15px' : '20px')};
+const CommonBtn = styled.button<BtnProps>`
   font-weight: 700;
   background: ${({ color, theme }) =>
     color === 'light' ? theme.green.light : color === 'basic' ? theme.green.basic : theme.gray.DE};
+  ${({ size }) => {
+    switch (size) {
+      case 'xs':
+        return 'width: 60px; height: 45px; border-radius: 5px; font-size: 15px;'
+        break
+      case 's':
+        return 'width: 90px; height: 45px; border-radius: 5px; font-size: 15px;'
+        break
+      case 'm':
+        return 'width: 125px; height: 45px; border-radius: 10px; font-size: 20px;'
+        break
+      case 'l':
+        return 'width: 185px; height: 50px; border-radius: 10px; font-size: 20px;'
+        break
+      case 'xl':
+        return 'width: 200px; height: 55px; border-radius: 10px; font-size: 20px;'
+        break
+      case 'xxl':
+        return 'width: 330px; height: 55px; border-radius: 10px; font-size: 20px;'
+        break
+      default:
+        return ''
+    }
+  }}
 `

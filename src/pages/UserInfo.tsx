@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components'
-import { Button } from '../components/common'
+import { Button, Badge } from '../components/common'
 import { temporaryImg, reportImg } from '../assets'
 
 const UserInfo = () => {
@@ -64,12 +64,12 @@ const UserInfo = () => {
               <span>
                 <strong>{'욕 카테고리'}</strong>
               </span>
-              <BadgeSpan category={'쌍욕'}>{'쌍욕'}</BadgeSpan>
-              <BadgeSpan category={'혐오성 발언'}>{'혐오성 발언'}</BadgeSpan>
-              <BadgeSpan category={'인신공격'}>{'인신공격'}</BadgeSpan>
-              <BadgeSpan category={'성희롱'}>{'성희롱'}</BadgeSpan>
-              <BadgeSpan category={'기타'}>{'기타'}</BadgeSpan>
-              <BadgeSpan category={'패드립'}>{'패드립'}</BadgeSpan>
+              <Badge category={'fWord'} />
+              <Badge category={'aversion'} />
+              <Badge category={'adHominem'} />
+              <Badge category={'sHarassment'} />
+              <Badge category={'immorality'} />
+              <Badge category={'etc'} />
             </div>
             <div>
               <span>
@@ -250,28 +250,6 @@ const MoreBtn = styled.button`
   font-size: 20px;
   font-weight: 600;
   background: transparent;
-`
-
-const BadgeSpan = styled.span<{ category: string }>`
-  margin-right: 8px;
-  padding: 1px 4px;
-  font-weight: 700;
-  border-radius: 3px;
-  color: red;
-  /* // TODO 현재 AE 컬러가 우선적용되고 있는데 이후 컴포넌트 분리하면 color 적용 확인해볼것 */
-  border: 1px solid
-    ${({ category, theme }) =>
-      category === '쌍욕'
-        ? theme.color.orange
-        : category === '혐오성 발언'
-        ? theme.color.blue
-        : category === '인신공격'
-        ? theme.color.yellow
-        : category === '성희롱'
-        ? theme.green.neon
-        : category === '기타'
-        ? theme.gray.DE
-        : theme.green.basic};
 `
 
 const ReportImgDiv = styled.div`
