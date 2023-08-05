@@ -4,12 +4,14 @@ import { BadgeProps } from '../../interfaces/CommonTypes'
 
 const Badge = ({ category }: BadgeProps) => {
   let swearWord = ''
+
   if (category === 'fWord') swearWord = '쌍욕'
   else if (category === 'aversion') swearWord = '혐오성 발언'
   else if (category === 'adHominem') swearWord = '인신공격'
   else if (category === 'sHarassment') swearWord = '성희롱'
   else if (category === 'immorality') swearWord = '패드립'
   else swearWord = '기타'
+
   return <CommonBadge category={category}>{swearWord}</CommonBadge>
 }
 

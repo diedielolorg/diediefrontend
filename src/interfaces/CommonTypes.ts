@@ -20,3 +20,9 @@ export interface ImgProps {
   src?: string
   alt?: string
 }
+
+// Tier.jsx
+export interface TierProps {
+  tier?: string
+  rank?: string
+}
