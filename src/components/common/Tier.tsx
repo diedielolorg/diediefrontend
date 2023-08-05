@@ -3,18 +3,7 @@ import { styled } from 'styled-components'
 import { TierProps } from '../../interfaces/CommonTypes'
 
 const Tier = ({ tier, rank }: TierProps) => {
-  let userTier = ''
-
-  if (tier === 'IRON') userTier += 'I'
-  else if (tier === 'BRONZE') userTier += 'B'
-  else if (tier === 'SILVER') userTier += 'S'
-  else if (tier === 'GOLD') userTier += 'G'
-  else if (tier === 'PLATINUM') userTier += 'P'
-  else if (tier === 'EMERALD') userTier += 'E'
-  else if (tier === 'DIAMOND') userTier += 'D'
-  else if (tier === 'MASTER') userTier += 'M'
-  else if (tier === 'GRANDMASTER') userTier += 'GM'
-  else if (tier === 'CHALLENGER') userTier += 'C'
+  let userTier = tier === 'GRANDMASTER' ? 'GM' : tier?.slice(0, 1)
 
   if (rank === 'I') userTier += '1'
   else if (rank === 'II') userTier += '2'
@@ -31,8 +20,8 @@ const Tier = ({ tier, rank }: TierProps) => {
 export default Tier
 
 const CommonTier = styled.button<TierProps>`
-  width: 28px;
-  height: 28px;
+  width: 35px;
+  height: 35px;
   font-size: 13px;
   font-weight: 700;
   border-radius: 3px;
