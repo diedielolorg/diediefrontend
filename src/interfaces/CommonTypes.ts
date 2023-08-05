@@ -11,3 +11,12 @@ export interface BadgeProps {
   children?: string
   category?: string
 }
+
+// Image.tsx
+export interface ImgProps {
+  width?: number
+  height?: number
+  borderRadius?: number
+  src?: string
+  alt?: string
+}

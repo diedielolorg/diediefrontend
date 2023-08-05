@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components'
-import { Button, Badge } from '../components/common'
+import { Button, Badge, Image } from '../components/common'
 import { temporaryImg, reportImg } from '../assets'
 
 const UserInfo = () => {
@@ -9,7 +9,7 @@ const UserInfo = () => {
       <InfoSection>
         <div>
           <UserInfoDiv>
-            <img src={temporaryImg} alt={''} />
+            <Image width={100} height={100} borderRadius={5} src={temporaryImg} />
             <div>
               <h2>{'TOP 12'}</h2>
               <h1>{'방배동둠피스트'}</h1>
@@ -86,9 +86,9 @@ const UserInfo = () => {
                 <strong>{'스크린샷'}</strong>
               </span>
               <ReportImgDiv>
-                <img src={reportImg} alt={''} />
-                <img src={reportImg} alt={''} />
-                <img src={reportImg} alt={''} />
+                <Image width={400} height={285} borderRadius={5} src={reportImg} />
+                <Image width={400} height={285} borderRadius={5} src={reportImg} />
+                <Image width={400} height={285} borderRadius={5} src={reportImg} />
               </ReportImgDiv>
             </div>
           </ReportInfoDiv>
@@ -155,11 +155,6 @@ const ReportSection = styled.section`
 const UserInfoDiv = styled.div`
   display: flex;
   align-items: center;
-  img {
-    width: 100px;
-    height: 100px;
-    border-radius: 5px;
-  }
   div {
     width: 100%;
     padding: 0 25px;
@@ -255,11 +250,6 @@ const MoreBtn = styled.button`
 const ReportImgDiv = styled.div`
   display: flex;
   gap: 15px;
-  img {
-    width: 400px;
-    height: 285px;
-    object-fit: cover;
-  }
 `
 
 const PaginationDiv = styled.div`
