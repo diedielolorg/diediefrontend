@@ -15,7 +15,8 @@ const Layout = () => {
 
 const BackgroundColor = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100%; // 배율 줄였을 때는 고려 X
+  min-height: 1100px; // 데스크탑, 태블릿 둘 다 최소높이 1100px
   background-color: ${({ theme }) => theme.gray.TO};
 `
 
