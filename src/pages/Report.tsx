@@ -4,88 +4,85 @@ import ScreenShotImg from '../assets/ScreenShot.svg'
 const Report = () => {
   // const [selectedCause, setSelectedCause] = useState<string | null>(null)
   return (
-    <>
-      <Box>{'임시 헤더'}</Box>
-      <ReportContainer>
-        <ReportTitleWrap>
-          <p>{'신고하려는 소환사'}</p>
-          <h2>{'방배동 둠피스트'}</h2>
-        </ReportTitleWrap>
+    <ReportContainer>
+      <ReportTitleWrap>
+        <p>{'신고하려는 소환사'}</p>
+        <h2>{'방배동 둠피스트'}</h2>
+      </ReportTitleWrap>
 
-        <ReportDateWrap>
-          <ItemTitle>{'욕한 날짜'}</ItemTitle>
-          <input type={'text'} placeholder={'yyyy. mm. dd.의 형식으로 적어주세요.'} />
-        </ReportDateWrap>
+      <ReportDateWrap>
+        <ItemTitle>{'욕한 날짜'}</ItemTitle>
+        <input type={'text'} placeholder={'yyyy. mm. dd.의 형식으로 적어주세요.'} />
+      </ReportDateWrap>
 
-        <ScreenShotWrap method={'post'} encType={'multipart/form-data'} onSubmit={(e) => e.preventDefault()}>
-          <ItemTitle>{'스크린샷'}</ItemTitle>
-          <FileContainer>
-            <ImgWrap>
-              <img src={ScreenShotImg} alt={'추가한 이미지'} />
-            </ImgWrap>
-            <FileWrap>
-              <div>
-                <p>{'장 당10MB 이하의 jpg, jpeg, png 파일을 업로드 해주세요. (최대 3장)'}</p>
-                <span>{'스크린샷에서 개인정보가 드러나지 않게 주의해주세요.'}</span>
-              </div>
-              <div>
-                <FileButton htmlFor={'file'}>{'파일 선택'}</FileButton>
-                <FileInput type={'file'} id={'file'} />
-              </div>
-            </FileWrap>
-          </FileContainer>
-        </ScreenShotWrap>
+      <ScreenShotWrap method={'post'} encType={'multipart/form-data'} onSubmit={(e) => e.preventDefault()}>
+        <ItemTitle>{'스크린샷'}</ItemTitle>
+        <FileContainer>
+          <ImgWrap>
+            <img src={ScreenShotImg} alt={'추가한 이미지'} />
+          </ImgWrap>
+          <FileWrap>
+            <div>
+              <p>{'장 당10MB 이하의 jpg, jpeg, png 파일을 업로드 해주세요. (최대 3장)'}</p>
+              <span>{'스크린샷에서 개인정보가 드러나지 않게 주의해주세요.'}</span>
+            </div>
+            <div>
+              <FileButton htmlFor={'file'}>{'파일 선택'}</FileButton>
+              <FileInput type={'file'} id={'file'} />
+            </div>
+          </FileWrap>
+        </FileContainer>
+      </ScreenShotWrap>
 
-        <CategoryWrap>
-          <ItemTitle>
-            {'욕 카테고리'} <span>{'중복 체크 3개 가능'}</span>
-          </ItemTitle>
-          <ReportCauseContainer>
-            <ReportItemWrap>
-              <ReportCause>
-                <InputCheckbox type={'checkbox'} id={'family'} />
-                <label htmlFor={'family'}>{'패드립'}</label>
-              </ReportCause>
+      <CategoryWrap>
+        <ItemTitle>
+          {'욕 카테고리'} <span>{'중복 체크 3개 가능'}</span>
+        </ItemTitle>
+        <ReportCauseContainer>
+          <ReportItemWrap>
+            <ReportCause>
+              <InputCheckbox type={'checkbox'} id={'family'} />
+              <label htmlFor={'family'}>{'패드립'}</label>
+            </ReportCause>
 
-              <ReportCause>
-                <InputCheckbox type={'checkbox'} id={'disgust'} />
-                <label htmlFor={'disgust'}>{'혐오성 발언'}</label>
-              </ReportCause>
+            <ReportCause>
+              <InputCheckbox type={'checkbox'} id={'disgust'} />
+              <label htmlFor={'disgust'}>{'혐오성 발언'}</label>
+            </ReportCause>
 
-              <ReportCause>
-                <InputCheckbox type={'checkbox'} id={'swearWord'} />
-                <label htmlFor={'swearWord'}>{'쌍욕'}</label>
-              </ReportCause>
-            </ReportItemWrap>
+            <ReportCause>
+              <InputCheckbox type={'checkbox'} id={'swearWord'} />
+              <label htmlFor={'swearWord'}>{'쌍욕'}</label>
+            </ReportCause>
+          </ReportItemWrap>
 
-            <ReportItemWrap>
-              <ReportCause>
-                <InputCheckbox type={'checkbox'} id={'personalAttack'} />
-                <label htmlFor={'personalAttack'}>{'인신공격'}</label>
-              </ReportCause>
+          <ReportItemWrap>
+            <ReportCause>
+              <InputCheckbox type={'checkbox'} id={'personalAttack'} />
+              <label htmlFor={'personalAttack'}>{'인신공격'}</label>
+            </ReportCause>
 
-              <ReportCause>
-                <InputCheckbox type={'checkbox'} id={'sexualHarassment'} />
-                <label htmlFor={'sexualHarassment'}>{'성희롱'}</label>
-              </ReportCause>
+            <ReportCause>
+              <InputCheckbox type={'checkbox'} id={'sexualHarassment'} />
+              <label htmlFor={'sexualHarassment'}>{'성희롱'}</label>
+            </ReportCause>
 
-              <ReportCause>
-                <InputCheckbox type={'checkbox'} id={'etc'} />
-                <label htmlFor={'etc'}>{'기타'}</label>
-              </ReportCause>
-            </ReportItemWrap>
-          </ReportCauseContainer>
-        </CategoryWrap>
+            <ReportCause>
+              <InputCheckbox type={'checkbox'} id={'etc'} />
+              <label htmlFor={'etc'}>{'기타'}</label>
+            </ReportCause>
+          </ReportItemWrap>
+        </ReportCauseContainer>
+      </CategoryWrap>
 
-        <ReportBody>
-          <ItemTitle>{'신고내용'}</ItemTitle>
-          <ReportBodyInput
-            placeholder={`욕설을 들은 당시의 상황이나, 자세한 내용을 설명해주세요. ${'\n'}신고 내용을 허위로 작성하지 말아 주세요.`}
-          />
-        </ReportBody>
-        <ReportPostBtn>{'등록'}</ReportPostBtn>
-      </ReportContainer>
-    </>
+      <ReportBody>
+        <ItemTitle>{'신고내용'}</ItemTitle>
+        <ReportBodyInput
+          placeholder={`욕설을 들은 당시의 상황이나, 자세한 내용을 설명해주세요. ${'\n'}신고 내용을 허위로 작성하지 말아 주세요.`}
+        />
+      </ReportBody>
+      <ReportPostBtn>{'등록'}</ReportPostBtn>
+    </ReportContainer>
   )
 }
 
