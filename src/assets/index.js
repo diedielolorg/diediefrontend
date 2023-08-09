@@ -1,5 +1,7 @@
 import ScreenShot from './ScreenShot.svg'
-import temporaryImg from './temporaryImg.svg'
 import reportImg from './reportImg.svg'
+import errorImg from './errorImg.svg'
+import arrowDown from './arrowDown.svg'
+import arrowUp from './arrowUp.svg'
 
-export { ScreenShot, temporaryImg, reportImg }
+export { ScreenShot, reportImg, errorImg, arrowDown, arrowUp }
