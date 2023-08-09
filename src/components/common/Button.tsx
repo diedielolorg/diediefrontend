@@ -8,9 +8,9 @@ import { BtnProps } from '../../interfaces/CommonTypes'
 // * color : 버튼 색상
 // * onClick : onClick 이벤트
 
-const Button = ({ children, size, color, onClick }: BtnProps) => {
+const Button = ({ children, size, color, onclick }: BtnProps) => {
   return (
-    <CommonBtn type={'button'} size={size} color={color} onClick={onClick}>
+    <CommonBtn type={'button'} size={size} color={color} onClick={onclick}>
       {children}
     </CommonBtn>
   )
