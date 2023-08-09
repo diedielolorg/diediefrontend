@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled } from 'styled-components'
 import { Button, Badge, Image } from '../components/common'
-import { temporaryImg, reportImg } from '../assets'
+import { reportImg, arrowUp } from '../assets'
 
 const UserInfo = () => {
   return (
@@ -9,7 +9,7 @@ const UserInfo = () => {
       <InfoSection>
         <div>
           <UserInfoDiv>
-            <Image width={100} height={100} borderRadius={5} src={temporaryImg} />
+            <Image width={100} height={100} borderRadius={5} src={''} />
             <div>
               <h2>{'TOP 12'}</h2>
               <h1>{'방배동둠피스트'}</h1>
@@ -58,8 +58,10 @@ const UserInfo = () => {
         </ReportCountDiv>
         <div>
           <ReportInfoDiv>
-            {/* // TODO 더보기 옆 아이콘 img vs icon */}
-            <MoreBtn>{'더보기'}</MoreBtn>
+            <MoreBtn>
+              {'더보기'}
+              <Image width={15} height={8} src={arrowUp} />
+            </MoreBtn>
             <div>
               <span>
                 <strong>{'욕 카테고리'}</strong>
@@ -239,12 +241,17 @@ const ReportInfoDiv = styled.div`
 `
 
 const MoreBtn = styled.button`
+  display: flex;
+  align-items: center;
   position: absolute;
   right: 35px;
   color: ${({ theme }) => theme.green.basic};
   font-size: 20px;
   font-weight: 600;
   background: transparent;
+  img {
+    margin-left: 5px;
+  }
 `
 
 const ReportImgDiv = styled.div`

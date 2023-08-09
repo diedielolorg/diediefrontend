@@ -21,7 +21,7 @@ export interface ImgProps {
   alt?: string
 }
 
-// Tier.jsx
+// Tier.tsx
 export interface TierProps {
   tier?: string
   rank?: string
