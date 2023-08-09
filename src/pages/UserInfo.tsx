@@ -1,24 +1,30 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled } from 'styled-components'
-import { Button, Badge, Image } from '../components/common'
+import { Portal, Button, Badge, Image } from '../components/common'
 import { reportImg, arrowUp } from '../assets'
 
 const UserInfo = () => {
+  const [toggleIngame, setToggleIngame] = useState(false)
+
+  const toggleIngameHandler = () => setToggleIngame(!toggleIngame)
+
   return (
     <WrapDiv>
       <InfoSection>
         <div>
           <UserInfoDiv>
-            <Image width={100} height={100} borderRadius={5} src={''} />
+            <Image width={100} height={100} border={5} />
             <div>
               <h2>{'TOP 12'}</h2>
               <h1>{'방배동둠피스트'}</h1>
             </div>
           </UserInfoDiv>
           <UserBtnDiv>
-            <Button size={'l'} color={'light'}>
+            <Button size={'l'} color={'light'} onclick={toggleIngameHandler}>
               {'인게임 정보 보기'}
             </Button>
+            {/* // TODO API 호출 UserInfo.tsx or Portal.tsx */}
+            {toggleIngame && <Portal type={'Ingame'} onclick={toggleIngameHandler} />}
             <Button size={'l'} color={'basic'}>
               {'신고하기'}
             </Button>
@@ -88,9 +94,9 @@ const UserInfo = () => {
                 <strong>{'스크린샷'}</strong>
               </span>
               <ReportImgDiv>
-                <Image width={400} height={285} borderRadius={5} src={reportImg} />
-                <Image width={400} height={285} borderRadius={5} src={reportImg} />
-                <Image width={400} height={285} borderRadius={5} src={reportImg} />
+                <Image width={400} height={285} border={5} src={reportImg} />
+                <Image width={400} height={285} border={5} src={reportImg} />
+                <Image width={400} height={285} border={5} src={reportImg} />
               </ReportImgDiv>
             </div>
           </ReportInfoDiv>
