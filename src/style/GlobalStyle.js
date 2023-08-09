@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, styled } from 'styled-components'
 
-const GlobalStyle = createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
   @font-face {
       font-family: 'SUIT-Regular';
       font-weight: normal;
@@ -28,4 +28,15 @@ const GlobalStyle = createGlobalStyle`
   textarea { resize: none; }
 `
 
-export default GlobalStyle
+export const ModalBackgroundDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+`

@@ -1,9 +1,15 @@
+// Potal.tsx
+export interface PotalProps {
+  type?: string
+  onclick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+}
+
 // Button.tsx
 export interface BtnProps {
   children?: string
   size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'
   color?: 'light' | 'basic' | 'gray'
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onclick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 // Badge.tsx
@@ -16,7 +22,7 @@ export interface BadgeProps {
 export interface ImgProps {
   width?: number
   height?: number
-  borderRadius?: number
+  border?: number
   src?: string
   alt?: string
 }
