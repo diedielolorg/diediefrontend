@@ -28,6 +28,7 @@ export const GlobalStyle = createGlobalStyle`
   textarea { resize: none; }
 `
 
+// * Modal Background
 export const ModalBackgroundDiv = styled.div`
   width: 100%;
   height: 100%;
@@ -39,4 +40,31 @@ export const ModalBackgroundDiv = styled.div`
   left: 0;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
+`
+
+// * NoMatch, Error Page
+export const WrapDiv = styled.div`
+  padding-top: 155px;
+  display: flex;
+  section {
+    width: 50%;
+  }
+  p {
+    color: ${({ theme }) => theme.color.white};
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 50px;
+  }
+`
+
+export const ContentSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 52px;
+`
+
+export const IllustSection = styled.section`
+  img {
+    margin-top: 200px;
+  }
 `
