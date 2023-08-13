@@ -21,7 +21,13 @@ export default Button
 const CommonBtn = styled.button<BtnProps>`
   font-weight: 700;
   background: ${({ color, theme }) =>
-    color === 'light' ? theme.green.light : color === 'basic' ? theme.green.basic : theme.gray.DE};
+    color === 'light'
+      ? theme.green.light
+      : color === 'lime'
+      ? theme.green.lime
+      : color === 'basic'
+      ? theme.green.basic
+      : theme.gray.DE};
   ${({ size }) => {
     switch (size) {
       case 'xs':
@@ -46,4 +52,8 @@ const CommonBtn = styled.button<BtnProps>`
         return ''
     }
   }}
+  transition: filter 0.2s ease;
+  &:hover {
+    filter: brightness(0.8);
+  }
 `
