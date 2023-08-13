@@ -1,8 +1,6 @@
 import { ThemeProvider } from 'styled-components'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer } from 'react-toastify'
 import { RecoilRoot } from 'recoil'
 import { GlobalStyle, theme } from './style'
 import App from './App'
@@ -21,7 +19,6 @@ root.render(
   <QueryClientProvider client={queryClient}>
     <RecoilRoot>
       <ThemeProvider theme={theme}>
-        <ToastContainer position={'top-center'} autoClose={1500} limit={1} />
         <GlobalStyle />
         <App />
       </ThemeProvider>
