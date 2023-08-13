@@ -10,7 +10,22 @@ export const GlobalStyle = createGlobalStyle`
 
   * { margin: 0; padding: 0; border: 0; font-family: 'SUIT-Regular'; }
   *, *:before, *:after { box-sizing: border-box; }
-  html { overflow-y: scroll; }
+  html { 
+    overflow-y: auto;
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 125px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background-color: ${({ theme }) => theme.gray.SF};
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: ${({ theme }) => theme.gray.TO};
+    }
+  }
   body { min-width: 320px; }
   ol, ul, li { list-style: none; }
   a { text-decoration: none; color: inherit; }
