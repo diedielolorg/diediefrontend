@@ -29,7 +29,7 @@ const SignUp = () => {
 
   return (
     <CSS.BackgroundMain>
-      <CSS.OverRaySection>
+      <CSS.OverRaySection size={'login'}>
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
           <CSS.UserLabel>{'닉네임'}</CSS.UserLabel>

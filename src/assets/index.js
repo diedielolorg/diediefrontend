@@ -8,5 +8,18 @@ import errorPageIcon from './errorPageIcon.svg'
 import errorName from './errorName.svg'
 import illust from './illust.svg'
 import blackLogo from './blackLogo.svg'
+import kakaoBtn from './kakaoBtn.svg'
 
-export { ScreenShot, reportImg, errorImg, arrowDown, arrowUp, logo, errorPageIcon, errorName, illust, blackLogo }
+export {
+  ScreenShot,
+  reportImg,
+  errorImg,
+  arrowDown,
+  arrowUp,
+  logo,
+  errorPageIcon,
+  errorName,
+  illust,
+  blackLogo,
+  kakaoBtn,
+}
