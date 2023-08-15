@@ -1,8 +1,22 @@
+import { useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import ScreenShotImg from '../assets/ScreenShot.svg'
 
 const Report = () => {
-  // const [selectedCause, setSelectedCause] = useState<string | null>(null)
+  const [date, setDate] = useState<number>(0)
+  const [dateInputnumberValue, setDateInputnumberValue] = useState(false)
+  const DateInput = useRef<HTMLInputElement>(null)
+
+  const onChangeDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value
+    const numberValue = /^\d+$/
+    if (numberValue.test(inputValue) || inputValue === '') {
+      setDate(parseInt(inputValue, 10))
+    } else {
+      setDateInputnumberValue(true)
+    }
+  }
+
   return (
     <ReportContainer>
       <ReportTitleWrap>
@@ -12,7 +26,12 @@ const Report = () => {
 
       <ReportDateWrap>
         <ItemTitle>{'욕한 날짜'}</ItemTitle>
-        <input type={'text'} placeholder={'yyyy. mm. dd.의 형식으로 적어주세요.'} />
+        <input
+          type={'text'}
+          placeholder={'yyyy. mm. dd.의 형식으로 적어주세요.'}
+          ref={DateInput}
+          onChange={(e) => onChangeDateInput(e)}
+        />
       </ReportDateWrap>
 
       <ScreenShotWrap method={'post'} encType={'multipart/form-data'} onSubmit={(e) => e.preventDefault()}>
@@ -86,11 +105,6 @@ const Report = () => {
   )
 }
 
-const Box = styled.div`
-  width: 100%;
-  height: 88px;
-`
-
 const ReportContainer = styled.div``
 
 const ReportTitleWrap = styled.div`
@@ -105,6 +119,7 @@ const ReportTitleWrap = styled.div`
   justify-content: center;
   align-items: center;
   gap: 14px;
+  margin-top: 29px;
 
   p {
     font-size: 20px;

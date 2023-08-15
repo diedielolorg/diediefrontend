@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { WrapDiv, ContentSection, IllustSection } from '../../style/GlobalStyle'
 import { Image, Button } from '../../components/common'
-import { errorPageIcon, logo, illust } from '../../assets'
+import { errorPageIcon, errorName, illust } from '../../assets'
 
 const NoMatch = () => {
   const navigate = useNavigate()
@@ -11,11 +11,11 @@ const NoMatch = () => {
     <WrapDiv>
       <ContentSection>
         <Image width={175} height={105} src={errorPageIcon} />
-        <Image width={350} height={65} src={logo} />
+        <Image width={470} height={65} src={errorName} />
         <p>
-          {'주소와 일치하는 페이지가 없습니다.'}
+          {'일치하는 요청을 찾지 못했어요.'}
           <br />
-          {'입력하신 주소가 정확한지 다시 확인해주세요.'}
+          {'요청하신 페이지가 사라졌거나, 잘못된 경로예요.'}
         </p>
         <Button size={'xxl'} color={'basic'} onclick={() => navigate('/')}>
           {'메인화면으로 돌아가기'}

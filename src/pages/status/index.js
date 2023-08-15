@@ -1,3 +1,4 @@
 import NoMatch from './NoMatch'
+import ErrorPage from './ErrorPage'
 
-export { NoMatch }
+export { NoMatch, ErrorPage }
