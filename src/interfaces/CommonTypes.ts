@@ -8,7 +8,7 @@ export interface PotalProps {
 export interface BtnProps {
   children?: string
   size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'
-  color?: 'light' | 'basic' | 'gray'
+  color?: 'light' | 'lime' | 'basic' | 'gray'
   onclick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
