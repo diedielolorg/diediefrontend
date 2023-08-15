@@ -4,16 +4,15 @@ import ScreenShotImg from '../assets/ScreenShot.svg'
 
 const Report = () => {
   const [date, setDate] = useState<number>(0)
-  const [dateInputnumberValue, setDateInputnumberValue] = useState(false)
+
   const DateInput = useRef<HTMLInputElement>(null)
 
   const onChangeDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value
-    const numberValue = /^\d+$/
-    if (numberValue.test(inputValue) || inputValue === '') {
-      setDate(parseInt(inputValue, 10))
-    } else {
-      setDateInputnumberValue(true)
+    const onlyNumbers = /^[0-9]+$/
+
+    if (onlyNumbers.test(inputValue) || inputValue === '') {
+      // setDate(inputValue)
     }
   }
 
