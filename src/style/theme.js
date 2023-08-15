@@ -13,6 +13,7 @@ const theme = {
   green: {
     light: '#F6FFBF',
     basic: '#E3FF3A',
+    name: '#B5CC2A',
     dark: '#94AC00',
     lime: '#D2F400',
     neon: '#77FFA5',
