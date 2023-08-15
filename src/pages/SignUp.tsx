@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { styled } from 'styled-components'
 import * as CSS from '../components/loginRelevant/LoginRelevantSt'
 import { Button, Image } from '../components/common'
-import blackLogo from '../assets/blackLogo.svg'
+import { blackLogo } from '../assets'
 
 const SignUp = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('')
