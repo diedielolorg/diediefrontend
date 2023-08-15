@@ -50,6 +50,7 @@ export const UserInfoInput = styled.input`
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.gray.DE};
   padding-left: 14px;
+  outline: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.gray.AE};
