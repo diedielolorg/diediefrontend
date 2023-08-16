@@ -19,6 +19,14 @@ const EditInfo = () => {
           </Button>
         </CSS.ConfirmBoxDiv>
         <CSS.HelpMessageDiv>{nickNameDuplication}</CSS.HelpMessageDiv>
+        <CSS.UserLabel>{'비밀번호'}</CSS.UserLabel>
+        <CSS.ConfirmBoxDiv>
+          <CSS.UserInfoInput size={564} placeholder={'닉네임 변경을 위해 비밀번호를 입력해주세요.'} />
+        </CSS.ConfirmBoxDiv>
+        <CSS.HelpMessageDiv>{nickNameDuplication}</CSS.HelpMessageDiv>
+        <Button size={'xxxl'} color={'lime'} onclick={nickNameConfirm}>
+          {'저장하기'}
+        </Button>
       </CSS.OverRaySection>
     </CSS.BackgroundMain>
   )
