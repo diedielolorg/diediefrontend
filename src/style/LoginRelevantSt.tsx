@@ -15,6 +15,14 @@ export const OverRaySection = styled.section<{ size?: 'login' }>`
 
   border-radius: 20px;
   background: ${({ theme }) => theme.color.white};
+
+  h1 {
+    color: ${({ theme }) => theme.color.black};
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 32px;
+    margin-bottom: 22px;
+  }
 `
 
 export const UserInfoBoxDiv = styled.div`
@@ -70,4 +78,9 @@ export const HelpMessageDiv = styled.div`
 
   margin-top: 8px;
   margin-bottom: 15px;
+`
+export const ConfirmBoxDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `

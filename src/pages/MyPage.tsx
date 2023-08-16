@@ -8,7 +8,7 @@ import { Image } from '../components/common'
 const MyPage = () => {
   const navigate = useNavigate()
   const movoToEditMyInfoBtnHandler = () => {
-    navigate('/')
+    navigate('/editinfo')
   }
   return (
     <CSS.BackgroundMain>

@@ -33,22 +33,22 @@ const SignUp = () => {
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
           <CSS.UserLabel>{'닉네임'}</CSS.UserLabel>
-          <ConfirmBoxDiv>
+          <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput size={408} placeholder={'2자 이상 20자 이하의 닉네임을 입력해주세요.'} />
             <Button size={'s'} color={'lime'} onclick={nickNameConfirm}>
               {'중복확인'}
             </Button>
-          </ConfirmBoxDiv>
+          </CSS.ConfirmBoxDiv>
           <CSS.HelpMessageDiv>{nickNameDuplication}</CSS.HelpMessageDiv>
           <CSS.UserLabel>{'이메일'}</CSS.UserLabel>
-          <ConfirmBoxDiv>
+          <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput size={167} />
             <p>{'@'}</p>
             <CSS.UserInfoInput size={238} />
             <Button size={'xs'} color={'lime'} onclick={emailAuthenticationBtnHandler}>
               {'인증'}
             </Button>
-          </ConfirmBoxDiv>
+          </CSS.ConfirmBoxDiv>
           <CSS.HelpMessageDiv>{emailHelpMsg}</CSS.HelpMessageDiv>
           {certified && (
             <>
@@ -56,7 +56,7 @@ const SignUp = () => {
                 {'인증번호'}
                 <p>{'작성하신 이메일로 인증번호를 전송했어요.'}</p>
               </CSS.UserLabel>
-              <ConfirmBoxDiv>
+              <CSS.ConfirmBoxDiv>
                 <CSS.UserInfoInput size={316} />
                 <Button size={'s'} onclick={nickNameConfirm}>
                   {'재전송'}
@@ -64,7 +64,7 @@ const SignUp = () => {
                 <Button size={'s'} color={'lime'} onclick={certifiedBtnHandler}>
                   {'인증'}
                 </Button>
-              </ConfirmBoxDiv>
+              </CSS.ConfirmBoxDiv>
               <CSS.HelpMessageDiv>{discrepancy}</CSS.HelpMessageDiv>
             </>
           )}
@@ -87,11 +87,6 @@ const SignUp = () => {
 
 export default SignUp
 
-const ConfirmBoxDiv = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-`
 const SignUpBtnDiv = styled.div`
   display: flex;
   justify-content: center;
