@@ -9,6 +9,8 @@ import errorName from './errorName.svg'
 import illust from './illust.svg'
 import blackLogo from './blackLogo.svg'
 import kakaoBtn from './kakaoBtn.svg'
+import zoomIn from './zoomIn.svg'
+import zoomOut from './zoomOut.svg'
 
 export {
   ScreenShot,
@@ -22,4 +24,6 @@ export {
   illust,
   blackLogo,
   kakaoBtn,
+  zoomIn,
+  zoomOut,
 }
