@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 import { Portal, Button, Image, ReportList } from '../components/common'
 import { reportImg, errorImg, errorPageIcon } from '../assets'
 
@@ -47,6 +48,7 @@ const UserInfo = () => {
     },
   ])
 
+  const navigate = useNavigate()
   const toggleIngameHandler = () => setToggleIngame(!toggleIngame)
 
   return (
@@ -66,7 +68,7 @@ const UserInfo = () => {
             </Button>
             {/* // TODO API 호출 UserInfo.tsx or Portal.tsx */}
             {toggleIngame && <Portal type={'Ingame'} onclick={toggleIngameHandler} />}
-            <Button size={'l'} color={'basic'}>
+            <Button size={'l'} color={'basic'} onclick={() => navigate('/report')}>
               {'신고하기'}
             </Button>
           </UserBtnDiv>
