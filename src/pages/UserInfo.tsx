@@ -1,10 +1,51 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
-import { Portal, Button, Badge, Image } from '../components/common'
-import { reportImg, arrowUp } from '../assets'
+import { Portal, Button, Image, ReportList } from '../components/common'
+import { reportImg, errorImg, errorPageIcon } from '../assets'
 
 const UserInfo = () => {
   const [toggleIngame, setToggleIngame] = useState(false)
+  // ! report 임시 data
+  const [reportList, setReportList] = useState([
+    {
+      reportId: 1,
+      cussWord: ['fWord'],
+      reportDate: '2023-07-27',
+      reportPayload:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+      reportCapture: [reportImg, errorImg, errorPageIcon],
+    },
+    {
+      reportId: 2,
+      cussWord: ['aversion'],
+      reportDate: '2023-07-27',
+      reportPayload:
+        '공무원의 신분과 정치적 중립성은 법률이 정하는 바에 의하여 보장된다. 국가는 건전한 소비행위를 계도하고 생산품의 품질향상을 촉구하기 위한 소비자보호운동을 법률이 정하는 바에 의하여 보장한다.',
+      reportCapture: [reportImg],
+    },
+    {
+      reportId: 3,
+      cussWord: ['fWord', 'adHominem'],
+      reportDate: '2023-07-28',
+      reportPayload: '나한테 욕을 했다. 어떻게 그럴 수 있지?',
+      reportCapture: [reportImg, errorImg],
+    },
+    {
+      reportId: 4,
+      cussWord: ['sHarassment'],
+      reportDate: '2023-07-29',
+      reportPayload: '나한테 욕을 했다. 마음이 아팠다.',
+      reportCapture: [reportImg],
+    },
+    {
+      reportId: 5,
+      cussWord: ['immorality', 'etc'],
+      reportDate: '2023-07-30',
+      reportPayload:
+        '헌법재판소에서 법률의 위헌결정, 탄핵의 결정, 정당해산의 결정 또는 헌법소원에 관한 인용결정을 할 때에는 재판관 6인 이상의 찬성이 있어야 한다. 제1항의 탄핵소추는 국회재적의원 3분의 1 이상의 발의가 있어야 하며, 그 의결은 국회재적의원 과반수의 찬성이 있어야 한다. 다만, 대통령에 대한 탄핵소추는 국회재적의원 과반수의 발의와 국회재적의원 3분의 2 이상의 찬성이 있어야 한다.',
+      reportCapture: [reportImg, errorImg],
+    },
+  ])
 
   const toggleIngameHandler = () => setToggleIngame(!toggleIngame)
 
@@ -13,7 +54,7 @@ const UserInfo = () => {
       <InfoSection>
         <div>
           <UserInfoDiv>
-            <Image width={100} height={100} border={5} />
+            <Image width={100} height={100} $border={5} />
             <div>
               <h2>{'TOP 12'}</h2>
               <h1>{'방배동둠피스트'}</h1>
@@ -60,48 +101,9 @@ const UserInfo = () => {
       <ReportSection>
         <ReportCountDiv>
           <h2>{'등록된 신고'}</h2>
-          <p>{'총 25개'}</p>
+          <p>{`총 ${reportList.length}개`}</p>
         </ReportCountDiv>
-        <div>
-          <ReportInfoDiv>
-            <MoreBtn>
-              {'더보기'}
-              <Image width={15} height={8} src={arrowUp} />
-            </MoreBtn>
-            <div>
-              <span>
-                <strong>{'욕 카테고리'}</strong>
-              </span>
-              <Badge category={'fWord'} />
-              <Badge category={'aversion'} />
-              <Badge category={'adHominem'} />
-              <Badge category={'sHarassment'} />
-              <Badge category={'immorality'} />
-              <Badge category={'etc'} />
-            </div>
-            <div>
-              <span>
-                <strong>{'욕한 날짜'}</strong>
-              </span>
-              <span>{'2023. 07. 27'}</span>
-            </div>
-            <div>
-              <span>
-                <strong>{'신고 내용'}</strong>
-              </span>
-              <p>{'나한테 욕을 했다.'}</p>
-              <span>
-                <strong>{'스크린샷'}</strong>
-              </span>
-              <ReportImgDiv>
-                <Image width={400} height={285} border={5} src={reportImg} />
-                <Image width={400} height={285} border={5} src={reportImg} />
-                <Image width={400} height={285} border={5} src={reportImg} />
-              </ReportImgDiv>
-            </div>
-          </ReportInfoDiv>
-          <PaginationDiv>{/* 페이지네이션 */}</PaginationDiv>
-        </div>
+        <ReportList reportlist={reportList} />
       </ReportSection>
     </WrapDiv>
   )
@@ -111,6 +113,7 @@ export default UserInfo
 
 const WrapDiv = styled.div`
   padding-top: 75px;
+  padding-bottom: 110px;
   p,
   span,
   h1,
@@ -136,10 +139,8 @@ const WrapDiv = styled.div`
 
 const InfoSection = styled.section`
   display: flex;
-  & > div {
-    width: 50%;
-  }
   & > div:nth-child(1) {
+    width: 50%;
     border-right: 1px solid ${({ theme }) => theme.gray.SF};
   }
 `
@@ -207,64 +208,10 @@ const RegionDiv = styled.div`
 const ReportCountDiv = styled.div`
   p {
     width: 100px;
-    margin-top: 30px;
-    margin-bottom: 16px;
-    padding: 15px 25px;
+    margin: 30px 0;
+    padding: 15px 0;
+    text-align: center;
     background: ${({ theme }) => theme.gray.TF};
     border-radius: 10px;
   }
-`
-
-const ReportInfoDiv = styled.div`
-  padding: 25px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.black};
-  span {
-    color: ${({ theme }) => theme.gray.AE};
-  }
-  p {
-    height: 50px;
-    padding: 15px 20px;
-    border-radius: 10px;
-    background: ${({ theme }) => theme.gray.TT};
-    color: ${({ theme }) => theme.color.white};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  div > span:nth-child(1) {
-    margin-right: 12px;
-  }
-  & > div:nth-child(4) {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-`
-
-const MoreBtn = styled.button`
-  display: flex;
-  align-items: center;
-  position: absolute;
-  right: 35px;
-  color: ${({ theme }) => theme.green.basic};
-  font-size: 20px;
-  font-weight: 600;
-  background: transparent;
-  img {
-    margin-left: 5px;
-  }
-`
-
-const ReportImgDiv = styled.div`
-  display: flex;
-  gap: 15px;
-`
-
-const PaginationDiv = styled.div`
-  //
 `

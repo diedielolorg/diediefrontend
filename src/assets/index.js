@@ -11,6 +11,8 @@ import blackLogo from './blackLogo.svg'
 import kakaoBtn from './kakaoBtn.svg'
 import nextonIcon from './nextonIcon.svg'
 import rankingArrow from './rankingArrow.svg'
+import zoomIn from './zoomIn.svg'
+import zoomOut from './zoomOut.svg'
 
 export {
   ScreenShot,
@@ -25,5 +27,7 @@ export {
   blackLogo,
   kakaoBtn,
   nextonIcon,
-  rankingArrow
+  rankingArrow,
+  zoomIn,
+  zoomOut,
 }
