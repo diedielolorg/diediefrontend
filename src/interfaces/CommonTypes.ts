@@ -32,8 +32,8 @@ export interface ImgProps {
 
 // Tier.tsx
 export interface TierProps {
-  tier?: string
-  rank?: string
+  $tier?: string
+  $rank?: string
 }
 
 // ReportList.tsx
