@@ -5,8 +5,6 @@ import { ModalBackgroundDiv } from '../../style/GlobalStyle'
 import { zoomOut } from '../../assets'
 
 const ZoomImg = ({ onclick, src }: PotalProps) => {
-  console.log(onclick)
-
   return (
     <ModalBackgroundDiv>
       <ZoomInImg src={src} alt={src} />
