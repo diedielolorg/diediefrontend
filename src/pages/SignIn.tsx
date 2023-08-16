@@ -1,10 +1,15 @@
 import React from 'react'
 import { styled } from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 import * as CSS from '../style/LoginRelevantSt'
 import { Button, Image } from '../components/common'
 import { blackLogo, kakaoBtn } from '../assets'
 
 const SignIn = () => {
+  const navigate = useNavigate()
+  const moveToSignUpBtnHandler = () => {
+    navigate('/signup')
+  }
   return (
     <CSS.BackgroundMain>
       <CSS.OverRaySection>
@@ -22,9 +27,9 @@ const SignIn = () => {
             {'로그인'}
           </Button>
           <TextDiv>
-            <p>{'회원가입'}</p>
-            <p>{'|'}</p>
-            <p>{'비밀번호 찾기'}</p>
+            <button type={'button'} onClick={moveToSignUpBtnHandler}>
+              {'회원가입'}
+            </button>
           </TextDiv>
           <TextDiv>
             <p>{'--------------------'}</p>
@@ -51,6 +56,15 @@ const TextDiv = styled.div`
   line-height: 16px;
   font-size: 16px;
   color: ${({ theme }) => theme.gray.AE};
+
+  button {
+    background-color: transparent;
+    color: ${({ theme }) => theme.gray.AE};
+    font-weight: 500;
+    line-height: 16px;
+    font-size: 16px;
+    text-align: center;
+  }
 `
 
 const LoginBtnBoxDiv = styled.div`
