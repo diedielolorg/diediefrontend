@@ -8,7 +8,7 @@ const Tier = ({ tier, rank }: TierProps) => {
   if (rank === 'I') userTier += '1'
   else if (rank === 'II') userTier += '2'
   else if (rank === 'III') userTier += '3'
-  else userTier += '4'
+  else if (rank === 'Ⅳ') userTier += '4'
 
   return (
     <CommonTier type={'button'} tier={tier}>
