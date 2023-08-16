@@ -27,7 +27,9 @@ const CommonBtn = styled.button<BtnProps>`
       ? theme.green.lime
       : color === 'basic'
       ? theme.green.basic
-      : theme.gray.DE};
+      : color === 'gray'
+      ? theme.gray.DE
+      : 'transparent'};
   ${({ size }) => {
     switch (size) {
       case 'xs':
