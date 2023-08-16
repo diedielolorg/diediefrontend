@@ -9,6 +9,7 @@ import errorName from './errorName.svg'
 import illust from './illust.svg'
 import blackLogo from './blackLogo.svg'
 import kakaoBtn from './kakaoBtn.svg'
+import nextonIcon from './nextonIcon.svg'
 
 export {
   ScreenShot,
@@ -22,4 +23,5 @@ export {
   illust,
   blackLogo,
   kakaoBtn,
+  nextonIcon,
 }
