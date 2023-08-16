@@ -1,6 +1,6 @@
 import React from 'react'
 import { styled } from 'styled-components'
-import * as CSS from '../components/loginRelevant/LoginRelevantSt'
+import * as CSS from '../style/LoginRelevantSt'
 import { Button, Image } from '../components/common'
 import { blackLogo, kakaoBtn } from '../assets'
 
