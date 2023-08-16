@@ -49,7 +49,7 @@ const CommonBtn = styled.button<BtnProps>`
         return 'width: 330px; height: 55px; border-radius: 10px; font-size: 20px;'
         break
       case 'xxxl':
-        return 'width: 500px; height: 55px; border-radius: 10px; font-size: 20px;'
+        return 'width: 660px; height: 55px; border-radius: 10px; font-size: 20px;'
         break
       default:
         return ''
