@@ -71,3 +71,8 @@ export const HelpMessageDiv = styled.div`
   margin-top: 8px;
   margin-bottom: 15px;
 `
+export const ConfirmBoxDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`

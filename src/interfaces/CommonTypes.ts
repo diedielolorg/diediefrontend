@@ -10,7 +10,7 @@ export interface PotalProps {
 // Button.tsx
 export interface BtnProps {
   children?: string
-  size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl'
+  size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl'
   color?: 'light' | 'lime' | 'basic' | 'gray'
   onclick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }

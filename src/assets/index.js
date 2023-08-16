@@ -9,6 +9,8 @@ import errorName from './errorName.svg'
 import illust from './illust.svg'
 import blackLogo from './blackLogo.svg'
 import kakaoBtn from './kakaoBtn.svg'
+import nextonIcon from './nextonIcon.svg'
+import rankingArrow from './rankingArrow.svg'
 import zoomIn from './zoomIn.svg'
 import zoomOut from './zoomOut.svg'
 
@@ -24,6 +26,8 @@ export {
   illust,
   blackLogo,
   kakaoBtn,
+  nextonIcon,
+  rankingArrow,
   zoomIn,
   zoomOut,
 }
