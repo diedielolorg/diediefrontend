@@ -1,7 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled } from 'styled-components'
+import { rankingArrow } from '../assets'
+import { Badge } from '../components/common'
 
 const Ranking = () => {
+  const [selectBox, setSelectBox] = useState(false)
+
+  const onSelectBoxOptionHandler = () => {
+    setSelectBox(!selectBox)
+  }
+  interface CalendarOption {
+    value: number
+    label: string
+  }
+
+  const calendar: CalendarOption[] = [
+    { value: 7, label: '2023년 07월' },
+    { value: 8, label: '2023년 08월' },
+    { value: 9, label: '2023년 09월' },
+    { value: 10, label: '2023년 10월' },
+    { value: 11, label: '2023년 11월' },
+    { value: 12, label: '2023년 12월' },
+  ]
+
+  const [selectedOption, setSelectedOption] = useState<CalendarOption | null>(calendar[0])
+
+  const handleSelectChange = (value: number) => {
+    const selectedOption = calendar.find((option) => option.value === value) || null
+    setSelectedOption(selectedOption)
+  }
   return (
     <RankingContainer>
       <RankinTitleWrap>
@@ -21,7 +48,8 @@ const Ranking = () => {
           </ReportThisMonthCountWrap>
           <MajorCurseWrap>
             <h3>{'주요 욕 카테고리'}</h3>
-            <MajorCurseCategory>{'성희롱'}</MajorCurseCategory>
+            {/* <MajorCurseCategory>{'성희롱'}</MajorCurseCategory> */}
+            <Badge category={'aversion'} />
           </MajorCurseWrap>
         </RankingTitleBottomWrap>
       </RankinTitleWrap>
@@ -31,6 +59,34 @@ const Ranking = () => {
           <h2>{'TOP'}</h2>
           <p>{'100'}</p>
         </RankingH2Wrap>
+        <RankingSelectBoxWrap>
+          <RankingSelectBoxLabel
+            type={'button'}
+            onClick={() => {
+              handleSelectChange(selectedOption?.value || 0)
+              onSelectBoxOptionHandler()
+            }}
+          >
+            {selectedOption?.label}
+            <img src={rankingArrow} alt={'화살표 아이콘'} />
+          </RankingSelectBoxLabel>
+          {selectBox && (
+            <RankingSelectBoxOptionWrap>
+              {calendar.map((option) => (
+                <RankingSelectBoxOption
+                  type={'button'}
+                  key={option.value}
+                  onClick={() => {
+                    handleSelectChange(option.value)
+                    onSelectBoxOptionHandler()
+                  }}
+                >
+                  <p>{option.label}</p>
+                </RankingSelectBoxOption>
+              ))}
+            </RankingSelectBoxOptionWrap>
+          )}
+        </RankingSelectBoxWrap>
       </RankingCalendarContainer>
 
       <RankingBodyHeader>
@@ -58,8 +114,8 @@ const Ranking = () => {
 
       <RankinBodyItem>
         <RankingBodyNumber>{'2'}</RankingBodyNumber>
-        <RankinBodySummoner>{'방배동둠피스트'}</RankinBodySummoner>
-        <RankingReportsNumber>{'전과 713범'}</RankingReportsNumber>
+        <RankinBodySummoner>{'방배동둠피스트방배동둠피스트'}</RankinBodySummoner>
+        <RankingReportsNumber>{'전과 13범'}</RankingReportsNumber>
         <RankingLatestTime>{'23. 07. 25. 13:00'}</RankingLatestTime>
         <ProgressContainer>
           <Progress />
@@ -129,7 +185,7 @@ const RankingTitleBottomWrap = styled.div`
   &::before {
     content: '';
     position: absolute;
-    left: 304px;
+    left: 556px;
     width: 2px;
     height: 68px;
     background-color: #5e5e5e;
@@ -142,7 +198,7 @@ const RankingTitleBottomWrap = styled.div`
 `
 
 const ReportAccruedCountWrap = styled.div`
-  margin-left: 118px;
+  margin-left: 348px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -200,6 +256,9 @@ const MajorCurseCategory = styled.span`
 
 const RankingCalendarContainer = styled.div`
   margin: 42px 0 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
 const RankingH2Wrap = styled.div`
@@ -230,19 +289,19 @@ const Summoner = styled.p`
 `
 
 const ReportsNumber = styled.p`
-  margin-left: 283px;
+  margin-left: 417px;
 `
 
 const LatestTime = styled.p`
-  margin-left: 77px;
+  margin-left: 93px;
 `
 
 const WinningRate = styled.p`
-  margin-left: 104px;
+  margin-left: 120px;
 `
 
 const MajorDesire = styled.p`
-  margin-left: 223px;
+  margin-left: 254px;
 `
 
 const RankinBodyItem = styled.div`
@@ -264,22 +323,22 @@ const RankinBodySummoner = styled.p`
   margin-left: 46px;
   font-size: 20px;
   font-weight: 700;
+  width: 460px;
 `
 
 const RankingReportsNumber = styled.p`
-  margin-left: 203px;
   font-size: 20px;
   font-weight: 500;
+  width: 151px;
 `
 
 const RankingLatestTime = styled.p`
-  margin-left: 51px;
   font-size: 20px;
   font-weight: 500;
 `
 
 const ProgressContainer = styled.div`
-  margin-left: 51px;
+  margin-left: 69px;
   width: 154px;
   height: 20px;
   background: ${({ theme }) => theme.gray.SF};
@@ -323,8 +382,54 @@ const Progress = styled.div`
 `
 
 const RankingMajorDesire = styled.p`
-  margin-left: 98px;
+  margin-left: 128px;
   font-size: 20px;
   font-weight: 500;
+`
+
+const RankingSelectBoxWrap = styled.div`
+  position: relative;
+`
+
+const RankingSelectBoxLabel = styled.button`
+  width: 137px;
+  height: 31px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.white};
+  color: ${({ theme }) => theme.color.black};
+  font-family: SUIT;
+  font-size: 15px;
+  font-weight: 700;
+  padding-inline: 13px;
+`
+
+const RankingSelectBoxOptionWrap = styled.div`
+  position: absolute;
+  top: 38px;
+  width: 137px;
+  height: 206px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.color.white};
+`
+
+const RankingSelectBoxOption = styled.button`
+  background-color: ${({ theme }) => theme.color.white};
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
+  font-family: SUIT;
+  font-size: 15px;
+  &:hover {
+    transition: all 0.4s;
+    background-color: ${({ theme }) => theme.gray.DE};
+  }
 `
 export default Ranking

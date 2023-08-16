@@ -10,6 +10,7 @@ import illust from './illust.svg'
 import blackLogo from './blackLogo.svg'
 import kakaoBtn from './kakaoBtn.svg'
 import nextonIcon from './nextonIcon.svg'
+import rankingArrow from './rankingArrow.svg'
 
 export {
   ScreenShot,
@@ -24,4 +25,5 @@ export {
   blackLogo,
   kakaoBtn,
   nextonIcon,
+  rankingArrow
 }
