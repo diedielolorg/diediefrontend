@@ -32,6 +32,6 @@ export const ZoomBtn = styled.button`
   height: 40px;
   position: absolute;
   top: 25%;
-  right: 27%;
+  right: 26%;
   background-color: transparent;
 `
