@@ -1,6 +1,7 @@
 import React from 'react'
 import { styled } from 'styled-components'
 import { PotalProps } from '../../interfaces/CommonTypes'
+import { UserListDivProps } from '../../interfaces/ModalTypes'
 import { Image, Badge, Tier } from '../common'
 import { closeIcon, exampleUserIcon } from '../../assets'
 
@@ -25,7 +26,7 @@ const Ingame = ({ onclick }: PotalProps) => {
         </GameInfoSection>
 
         <MatchInfoSection>
-          <UserListDiv>
+          <UserListDiv $position={'left'}>
             <div>
               <Image width={50} height={50} $border={5} />
               <EachUserDiv>
@@ -47,7 +48,7 @@ const Ingame = ({ onclick }: PotalProps) => {
               <Tier $tier={'EMERALD'} $rank={'III'} />
             </div>
           </UserListDiv>
-          <UserListDiv>
+          <UserListDiv $position={'right'}>
             <div>
               <Image width={50} height={50} $border={5} />
               <EachUserDiv>
@@ -145,11 +146,14 @@ const MatchInfoSection = styled.section`
     border-radius: 10px;
   }
 `
-const UserListDiv = styled.div`
+const UserListDiv = styled.div<UserListDivProps>`
   display: flex;
   flex-direction: column;
   gap: 40px;
-  background: linear-gradient(160deg, #000000, #151900, #2c3300);
+  background: ${({ $position }) =>
+    $position === 'left'
+      ? 'linear-gradient(160deg, #000000, #151900, #2c3300)'
+      : 'linear-gradient(-160deg, #000000, #151900, #2c3300)'};
   & > div {
     display: flex;
     justify-content: center;
