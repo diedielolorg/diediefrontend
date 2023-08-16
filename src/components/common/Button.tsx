@@ -48,6 +48,9 @@ const CommonBtn = styled.button<BtnProps>`
       case 'xxl':
         return 'width: 330px; height: 55px; border-radius: 10px; font-size: 20px;'
         break
+      case 'xxxl':
+        return 'width: 660px; height: 55px; border-radius: 10px; font-size: 20px;'
+        break
       default:
         return ''
     }
