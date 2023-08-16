@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
-import RankingArrowo from '../assets/rankingArrow.svg'
+import { rankingArrow } from '../assets'
+import { Badge } from '../components/common'
 
 const Ranking = () => {
   const [selectBox, setSelectBox] = useState(false)
@@ -47,7 +48,8 @@ const Ranking = () => {
           </ReportThisMonthCountWrap>
           <MajorCurseWrap>
             <h3>{'주요 욕 카테고리'}</h3>
-            <MajorCurseCategory>{'성희롱'}</MajorCurseCategory>
+            {/* <MajorCurseCategory>{'성희롱'}</MajorCurseCategory> */}
+            <Badge category={'aversion'} />
           </MajorCurseWrap>
         </RankingTitleBottomWrap>
       </RankinTitleWrap>
@@ -66,7 +68,7 @@ const Ranking = () => {
             }}
           >
             {selectedOption?.label}
-            <img src={RankingArrowo} alt={'화살표 아이콘'} />
+            <img src={rankingArrow} alt={'화살표 아이콘'} />
           </RankingSelectBoxLabel>
           {selectBox && (
             <RankingSelectBoxOptionWrap>
@@ -112,8 +114,8 @@ const Ranking = () => {
 
       <RankinBodyItem>
         <RankingBodyNumber>{'2'}</RankingBodyNumber>
-        <RankinBodySummoner>{'방배동둠피스트'}</RankinBodySummoner>
-        <RankingReportsNumber>{'전과 713범'}</RankingReportsNumber>
+        <RankinBodySummoner>{'방배동둠피스트방배동둠피스트'}</RankinBodySummoner>
+        <RankingReportsNumber>{'전과 13범'}</RankingReportsNumber>
         <RankingLatestTime>{'23. 07. 25. 13:00'}</RankingLatestTime>
         <ProgressContainer>
           <Progress />
@@ -183,7 +185,7 @@ const RankingTitleBottomWrap = styled.div`
   &::before {
     content: '';
     position: absolute;
-    left: 304px;
+    left: 556px;
     width: 2px;
     height: 68px;
     background-color: #5e5e5e;
@@ -196,7 +198,7 @@ const RankingTitleBottomWrap = styled.div`
 `
 
 const ReportAccruedCountWrap = styled.div`
-  margin-left: 118px;
+  margin-left: 348px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -287,19 +289,19 @@ const Summoner = styled.p`
 `
 
 const ReportsNumber = styled.p`
-  margin-left: 283px;
+  margin-left: 417px;
 `
 
 const LatestTime = styled.p`
-  margin-left: 77px;
+  margin-left: 93px;
 `
 
 const WinningRate = styled.p`
-  margin-left: 104px;
+  margin-left: 120px;
 `
 
 const MajorDesire = styled.p`
-  margin-left: 223px;
+  margin-left: 254px;
 `
 
 const RankinBodyItem = styled.div`
@@ -321,22 +323,22 @@ const RankinBodySummoner = styled.p`
   margin-left: 46px;
   font-size: 20px;
   font-weight: 700;
+  width: 460px;
 `
 
 const RankingReportsNumber = styled.p`
-  margin-left: 203px;
   font-size: 20px;
   font-weight: 500;
+  width: 151px;
 `
 
 const RankingLatestTime = styled.p`
-  margin-left: 51px;
   font-size: 20px;
   font-weight: 500;
 `
 
 const ProgressContainer = styled.div`
-  margin-left: 51px;
+  margin-left: 69px;
   width: 154px;
   height: 20px;
   background: ${({ theme }) => theme.gray.SF};
@@ -380,7 +382,7 @@ const Progress = styled.div`
 `
 
 const RankingMajorDesire = styled.p`
-  margin-left: 98px;
+  margin-left: 128px;
   font-size: 20px;
   font-weight: 500;
 `

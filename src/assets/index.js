@@ -7,5 +7,6 @@ import logo from './logo.svg'
 import errorPageIcon from './errorPageIcon.svg'
 import errorName from './errorName.svg'
 import illust from './illust.svg'
+import rankingArrow from './rankingArrow.svg'
 
-export { ScreenShot, reportImg, errorImg, arrowDown, arrowUp, logo, errorPageIcon, errorName, illust }
+export { ScreenShot, reportImg, errorImg, arrowDown, arrowUp, logo, errorPageIcon, errorName, illust, rankingArrow }
