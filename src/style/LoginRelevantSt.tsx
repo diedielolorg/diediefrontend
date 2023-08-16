@@ -5,13 +5,13 @@ export const BackgroundMain = styled.main`
   justify-content: center;
 `
 
-export const OverRaySection = styled.section`
+export const OverRaySection = styled.section<{ size?: 'login' }>`
   width: 702px;
   padding-top: 74px;
   padding-left: 98px;
   padding-right: 98px;
   padding-bottom: 63px;
-  margin-top: 23px;
+  margin-top: ${(props) => (props.size === 'login' ? '40px' : '23px')};
 
   border-radius: 20px;
   background: ${({ theme }) => theme.color.white};
@@ -20,6 +20,7 @@ export const OverRaySection = styled.section`
 export const UserInfoBoxDiv = styled.div`
   display: flex;
   flex-direction: column;
+
   margin-top: 37px;
 `
 
@@ -50,6 +51,7 @@ export const UserInfoInput = styled.input`
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.gray.DE};
   padding-left: 14px;
+  outline: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.gray.AE};
@@ -68,4 +70,9 @@ export const HelpMessageDiv = styled.div`
 
   margin-top: 8px;
   margin-bottom: 15px;
+`
+export const ConfirmBoxDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `
