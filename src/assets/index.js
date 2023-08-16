@@ -13,6 +13,8 @@ import nextonIcon from './nextonIcon.svg'
 import rankingArrow from './rankingArrow.svg'
 import zoomIn from './zoomIn.svg'
 import zoomOut from './zoomOut.svg'
+import closeIcon from './closeIcon.svg'
+import exampleUserIcon from './exampleUserIcon.svg'
 
 export {
   ScreenShot,
@@ -30,4 +32,6 @@ export {
   rankingArrow,
   zoomIn,
   zoomOut,
+  closeIcon,
+  exampleUserIcon,
 }
