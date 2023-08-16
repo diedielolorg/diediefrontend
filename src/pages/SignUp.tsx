@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import * as CSS from '../components/loginRelevant/LoginRelevantSt'
+import * as CSS from '../style/LoginRelevantSt'
 import { Button, Image } from '../components/common'
 import { blackLogo } from '../assets'
 
@@ -29,7 +29,7 @@ const SignUp = () => {
 
   return (
     <CSS.BackgroundMain>
-      <CSS.OverRaySection>
+      <CSS.OverRaySection size={'login'}>
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
           <CSS.UserLabel>{'닉네임'}</CSS.UserLabel>

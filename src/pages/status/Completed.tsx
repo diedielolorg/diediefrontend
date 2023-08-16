@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
-import { BackgroundMain } from '../../components/loginRelevant/LoginRelevantSt'
+import { BackgroundMain } from '../../style/LoginRelevantSt'
 import { Button } from '../../components/common'
 
 const Completed = () => {
