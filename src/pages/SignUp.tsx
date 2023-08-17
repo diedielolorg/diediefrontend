@@ -12,6 +12,7 @@ const SignUp = () => {
   const [emailHelpMsg, setEmailHelpMsg] = useState('')
   const [PwHelpMsg, setPwHelpMsg] = useState('')
   const [certified, setCertified] = useState(false)
+  const [nickNameSuccess, setNickNameSuccess] = useState(true)
 
   const nickNameConfirm = () => setNickNameDuplication('사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)')
   const emailAuthenticationBtnHandler = () => {
@@ -39,7 +40,7 @@ const SignUp = () => {
               {'중복확인'}
             </Button>
           </CSS.ConfirmBoxDiv>
-          <CSS.HelpMessageDiv>{nickNameDuplication}</CSS.HelpMessageDiv>
+          <CSS.HelpMessageDiv color={nickNameSuccess ? 'true' : 'false'}>{nickNameDuplication}</CSS.HelpMessageDiv>
           <CSS.UserLabel>{'이메일'}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput size={167} />

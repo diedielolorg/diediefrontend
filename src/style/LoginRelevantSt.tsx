@@ -61,8 +61,8 @@ export const UserInfoInput = styled.input`
   }
 `
 
-export const HelpMessageDiv = styled.div`
-  color: ${({ theme }) => theme.color.red};
+export const HelpMessageDiv = styled.div<{ color?: string }>`
+  color: ${({ color, theme }) => (color === 'true' ? theme.gray.SF : theme.color.red)};
   font-size: 13px;
   font-weight: 400;
   line-height: 16px;
