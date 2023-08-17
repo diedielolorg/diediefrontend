@@ -58,7 +58,7 @@ const SignUp = () => {
               </CSS.UserLabel>
               <CSS.ConfirmBoxDiv>
                 <CSS.UserInfoInput size={316} />
-                <Button size={'s'} onclick={nickNameConfirm}>
+                <Button size={'s'} color={'gray'} onclick={nickNameConfirm}>
                   {'재전송'}
                 </Button>
                 <Button size={'s'} color={'lime'} onclick={certifiedBtnHandler}>
