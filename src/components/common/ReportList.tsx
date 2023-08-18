@@ -24,14 +24,18 @@ const ReportList = ({ reportlist }: ReportListProps) => {
     }))
 
   return (
-    <div>
+    <>
       {reportlist &&
         reportlist.map((list, idx) => (
           <ReportInfoDiv key={list.reportId}>
-            <MoreBtn onClick={() => onMoreClickHandler(idx)}>
-              {'더보기'}
-              <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />
-            </MoreBtn>
+            <BtnWrapDiv>
+              {/* // TODO onclick 시 삭제 사유 모달 호출, 작성자와 로그인 일치할 때 삭제 버튼 출력 */}
+              <DeleteBtn>{'삭제'}</DeleteBtn>
+              <MoreBtn onClick={() => onMoreClickHandler(idx)}>
+                {'더보기'}
+                <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />
+              </MoreBtn>
+            </BtnWrapDiv>
             <div>
               <span>
                 <strong>{'욕 카테고리'}</strong>
@@ -68,7 +72,7 @@ const ReportList = ({ reportlist }: ReportListProps) => {
           </ReportInfoDiv>
         ))}
       <PaginationDiv>{/* 페이지네이션 */}</PaginationDiv>
-    </div>
+    </>
   )
 }
 
@@ -108,15 +112,30 @@ const ReportContentP = styled.p<ReportContentProps>`
   text-overflow: ellipsis;
 `
 
+const BtnWrapDiv = styled.div`
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  right: 35px;
+  button {
+    background: transparent;
+    font-size: 20px;
+    font-weight: 600;
+  }
+`
+
+const DeleteBtn = styled.button`
+  color: ${({ theme }) => theme.gray.TF};
+  &:hover {
+    color: ${({ theme }) => theme.gray.DE};
+    transition: 0.2s ease;
+  }
+`
+
 const MoreBtn = styled.button`
   display: flex;
   align-items: center;
-  position: absolute;
-  right: 35px;
   color: ${({ theme }) => theme.green.basic};
-  font-size: 20px;
-  font-weight: 600;
-  background: transparent;
   img {
     margin-left: 5px;
   }
