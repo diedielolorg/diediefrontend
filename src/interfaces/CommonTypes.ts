@@ -2,6 +2,7 @@
 export interface PotalProps {
   type?: string
   src?: string
+  snackBar?: string
   onclick?: (
     event: React.MouseEvent<HTMLDivElement, MouseEvent> | React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void

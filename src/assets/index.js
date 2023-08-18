@@ -15,6 +15,8 @@ import zoomIn from './zoomIn.svg'
 import zoomOut from './zoomOut.svg'
 import closeIcon from './closeIcon.svg'
 import exampleUserIcon from './exampleUserIcon.svg'
+import blackCloseIcon from './blackCloseIcon.svg'
+import successIcon from './successIcon.svg'
 
 export {
   ScreenShot,
@@ -34,4 +36,6 @@ export {
   zoomOut,
   closeIcon,
   exampleUserIcon,
+  blackCloseIcon,
+  successIcon,
 }
