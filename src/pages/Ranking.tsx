@@ -49,7 +49,7 @@ const Ranking = () => {
           <MajorCurseWrap>
             <h3>{'주요 욕 카테고리'}</h3>
             {/* <MajorCurseCategory>{'성희롱'}</MajorCurseCategory> */}
-            {/* <Badge category={'aversion'} /> */}
+            <Badge category={'aversion'} />
           </MajorCurseWrap>
         </RankingTitleBottomWrap>
       </RankinTitleWrap>

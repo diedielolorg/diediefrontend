@@ -1,14 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import * as CSS from '../style/LoginRelevantSt'
-import { Button, Image } from '../components/common'
+import { Button, Image, Portal } from '../components/common'
 import { blackLogo, kakaoBtn } from '../assets'
 
 const SignIn = () => {
+  const [snackBar, setSnackBar] = useState(false)
   const navigate = useNavigate()
   const moveToSignUpBtnHandler = () => {
     navigate('/signup')
+  }
+  console.log(snackBar)
+  const loginBtnHandler = () => {
+    setSnackBar(!snackBar)
+    setTimeout(() => {
+      setSnackBar(false)
+    }, 1500)
   }
   return (
     <CSS.BackgroundMain>
@@ -23,9 +31,11 @@ const SignIn = () => {
           <CSS.HelpMessageDiv>{'헬프메세지'}</CSS.HelpMessageDiv>
         </CSS.UserInfoBoxDiv>
         <LoginBtnBoxDiv>
-          <Button size={'xxl'} color={'lime'}>
+          <Button size={'xxl'} color={'lime'} onclick={loginBtnHandler}>
             {'로그인'}
           </Button>
+          {snackBar && <Portal type={'SnackBar'} snackBar={'login'} />}
+
           <TextDiv>
             <button type={'button'} onClick={moveToSignUpBtnHandler}>
               {'회원가입'}

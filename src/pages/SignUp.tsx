@@ -2,8 +2,9 @@
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import * as CSS from '../style/LoginRelevantSt'
-import { Button, Image } from '../components/common'
+import { Button, Image, Portal } from '../components/common'
 import { blackLogo } from '../assets'
+import SnackBar from '../components/modal/SnackBar'
 
 const SignUp = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -12,6 +13,8 @@ const SignUp = () => {
   const [emailHelpMsg, setEmailHelpMsg] = useState('')
   const [PwHelpMsg, setPwHelpMsg] = useState('')
   const [certified, setCertified] = useState(false)
+  const [nickNameSuccess, setNickNameSuccess] = useState(true)
+  const [snackBar, setSnackBar] = useState(false)
 
   const nickNameConfirm = () => setNickNameDuplication('사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)')
   const emailAuthenticationBtnHandler = () => {
@@ -21,6 +24,8 @@ const SignUp = () => {
   const certifiedBtnHandler = () => {
     setDiscrepancy('인증번호가 일치하지 않습니다.')
     setCertified(false)
+    setSnackBar(true)
+    alert('?')
   }
   const signUpBtnHandler = () => {
     setPasswordConfirm('비밀번호가 일치하지 않습니다.')
@@ -39,7 +44,7 @@ const SignUp = () => {
               {'중복확인'}
             </Button>
           </CSS.ConfirmBoxDiv>
-          <CSS.HelpMessageDiv>{nickNameDuplication}</CSS.HelpMessageDiv>
+          <CSS.HelpMessageDiv color={nickNameSuccess ? 'true' : 'false'}>{nickNameDuplication}</CSS.HelpMessageDiv>
           <CSS.UserLabel>{'이메일'}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput size={167} />
@@ -64,6 +69,7 @@ const SignUp = () => {
                 <Button size={'s'} color={'lime'} onclick={certifiedBtnHandler}>
                   {'인증'}
                 </Button>
+                {snackBar && <Portal type={'SnackBar'} snackBar={'one'} />}
               </CSS.ConfirmBoxDiv>
               <CSS.HelpMessageDiv>{discrepancy}</CSS.HelpMessageDiv>
             </>
