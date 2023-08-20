@@ -1,11 +1,67 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
+import headerLogo from '../../assets/headerLogo.svg'
+import langKo from '../../assets/langKo.svg'
 
 const Layout = () => {
+  const navigate = useNavigate()
+  const [isLogin, setIsLogin] = useState(false)
+  // hooks
+  useEffect(() => {
+    const checkLoginStatusHandler = () => {
+      // ! 임시 로그인 여부 확인 로직 추가
+    }
+    checkLoginStatusHandler()
+  })
+  // functions
+  const moveToMainBtnHandler = () => {
+    // 로고
+    navigate('/')
+  }
+  const moveToRankingBtnHandler = () => {
+    // 랭킹
+    navigate('/ranking')
+  }
+  const moveToMypageBtnHandler = () => {
+    // 마이페이지
+    navigate('/mypage')
+  }
+  const moveToSignInBtnHandler = () => {
+    // 로그인
+    navigate('/signin')
+  }
+  const moveToSignOutBtnHandler = () => {
+    // 로그아웃
+    navigate('/')
+  }
   return (
     <BackgroundColor>
-      <Header />
+      <Header>
+        <Logo type="button" onClick={moveToMainBtnHandler}>
+          <img src={headerLogo} alt={'로고'} />
+        </Logo>
+        <Menu>
+          <MenuBtn type="button" onClick={moveToRankingBtnHandler}>
+            랭킹
+          </MenuBtn>
+          <MenuBtn type="button" onClick={moveToMypageBtnHandler}>
+            마이페이지
+          </MenuBtn>
+          {isLogin ? (
+            <MenuBtn type="button" onClick={moveToSignOutBtnHandler}>
+              로그아웃
+            </MenuBtn>
+          ) : (
+            <MenuBtn type="button" onClick={moveToSignInBtnHandler}>
+              로그인
+            </MenuBtn>
+          )}
+          <MenuBtn type="button">
+            <img src={langKo} alt={'언어 번역 버튼'} />
+          </MenuBtn>
+        </Menu>
+      </Header>
       <MaxWidth>
         <Outlet />
       </MaxWidth>
@@ -25,10 +81,37 @@ const MaxWidth = styled.div`
   margin: 0 auto;
 `
 
-// ! 임시 Header
+// 헤더
 const Header = styled.div`
   width: 100%;
   height: 88px;
   background-color: ${({ theme }) => theme.color.black};
+  display: flex;
+  gap: 741px;
+  @media screen and (max-width: 1440px) {
+    gap: 508px;
+  }
+  justify-content: center;
+  align-items: center;
+  // ! 임시 태블릿 744px 반응형 추후 추가
+`
+// 헤더 내 로고
+const Logo = styled.button`
+  background-color: transparent;
+`
+// 헤더 내 메뉴 wrap
+const Menu = styled.div`
+  display: flex;
+  gap: 85px;
+`
+// 메뉴
+const MenuBtn = styled.button`
+  color: ${({ theme }) => theme.green.basic};
+  background-color: transparent;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  font-family: SUIT;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
 `
 export default Layout
