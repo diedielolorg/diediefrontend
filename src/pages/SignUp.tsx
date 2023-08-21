@@ -1,12 +1,15 @@
 /* eslint-disable prettier/prettier */
+import { useRecoilState } from 'recoil'
 import { useState } from 'react'
 import { styled } from 'styled-components'
 import * as CSS from '../style/LoginRelevantSt'
 import { Button, Image, Portal } from '../components/common'
 import { blackLogo } from '../assets'
 import SnackBar from '../components/modal/SnackBar'
+import SnackBarAtom from '../recoil/SnackBarAtom'
 
 const SignUp = () => {
+  const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [nickNameDuplication, setNickNameDuplication] = useState('')
   const [discrepancy, setDiscrepancy] = useState('')
@@ -14,7 +17,6 @@ const SignUp = () => {
   const [PwHelpMsg, setPwHelpMsg] = useState('')
   const [certified, setCertified] = useState(false)
   const [nickNameSuccess, setNickNameSuccess] = useState(true)
-  const [snackBar, setSnackBar] = useState(false)
 
   const nickNameConfirm = () => setNickNameDuplication('사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)')
   const emailAuthenticationBtnHandler = () => {
@@ -22,10 +24,9 @@ const SignUp = () => {
     setEmailHelpMsg('이미 등록된 이메일 입니다.')
   }
   const certifiedBtnHandler = () => {
+    setIsSnackBar({ open: true })
     setDiscrepancy('인증번호가 일치하지 않습니다.')
-    setCertified(false)
-    setSnackBar(true)
-    alert('?')
+    // setCertified(false)
   }
   const signUpBtnHandler = () => {
     setPasswordConfirm('비밀번호가 일치하지 않습니다.')
@@ -69,7 +70,7 @@ const SignUp = () => {
                 <Button size={'s'} color={'lime'} onclick={certifiedBtnHandler}>
                   {'인증'}
                 </Button>
-                {snackBar && <Portal type={'SnackBar'} snackBar={'one'} />}
+                {isSnackbar.open && <Portal type={'SnackBar'} snackBar={'one'} />}
               </CSS.ConfirmBoxDiv>
               <CSS.HelpMessageDiv>{discrepancy}</CSS.HelpMessageDiv>
             </>

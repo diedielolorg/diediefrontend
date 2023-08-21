@@ -1,25 +1,26 @@
+import { useRecoilState } from 'recoil'
 import { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { blackCloseIcon, successIcon } from '../../assets'
 import { Image } from '../common'
 import { snackBar } from '../../interfaces/ModalTypes'
+import SnackBarAtom from '../../recoil/SnackBarAtom'
 
 const SnackBar = ({ type }: snackBar) => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
 
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
-        setIsOpen(!isOpen)
-      }, 1500)
-    }
-  }, [isOpen])
+  if (isSnackbar.open) {
+    setTimeout(() => {
+      setIsSnackBar({ open: false })
+    }, 1500)
+  }
+
   const snackBarCloseBtnHandler = () => {
-    setIsOpen(!isOpen)
+    setIsSnackBar({ open: false })
   }
   return (
     <main>
-      {isOpen && (
+      {isSnackbar.open && (
         <SnackWrapDiv>
           {type === 'one' && <OneLineTextP>{'이메일 인증이 되었습니다.'}</OneLineTextP>}
           {type === 'date' && (

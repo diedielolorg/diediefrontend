@@ -1,22 +1,20 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import * as CSS from '../style/LoginRelevantSt'
 import { Button, Image, Portal } from '../components/common'
 import { blackLogo, kakaoBtn } from '../assets'
+import SnackBarAtom from '../recoil/SnackBarAtom'
 
 const SignIn = () => {
-  const [snackBar, setSnackBar] = useState(false)
+  const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const navigate = useNavigate()
   const moveToSignUpBtnHandler = () => {
     navigate('/signup')
   }
-  console.log(snackBar)
   const loginBtnHandler = () => {
-    setSnackBar(!snackBar)
-    setTimeout(() => {
-      setSnackBar(false)
-    }, 1500)
+    setIsSnackBar({ open: true })
   }
   return (
     <CSS.BackgroundMain>
@@ -34,7 +32,7 @@ const SignIn = () => {
           <Button size={'xxl'} color={'lime'} onclick={loginBtnHandler}>
             {'로그인'}
           </Button>
-          {snackBar && <Portal type={'SnackBar'} snackBar={'login'} />}
+          {isSnackbar.open && <Portal type={'SnackBar'} snackBar={'login'} />}
 
           <TextDiv>
             <button type={'button'} onClick={moveToSignUpBtnHandler}>
