@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
+import Image from './Image'
 import headerLogo from '../../assets/headerLogo.svg'
 import langKo from '../../assets/langKo.svg'
+import langEn from '../../assets/langEn.svg'
 
 const Layout = () => {
   const navigate = useNavigate()
+  // 로그인 상태
   const [isLogin, setIsLogin] = useState(false)
+  // 언어
+  const [isKorean, setIsKorean] = useState(true)
   // hooks
   useEffect(() => {
     const checkLoginStatusHandler = () => {
@@ -35,19 +40,25 @@ const Layout = () => {
     // 로그아웃
     navigate('/')
   }
+  // 언어 상태 변환 핸들러
+  const translateBtnHandler = () => {
+    setIsKorean((prevState) => !prevState)
+  }
   return (
     <BackgroundColor>
       <Header>
         <Logo type="button" onClick={moveToMainBtnHandler}>
-          <img src={headerLogo} alt={'로고'} />
+          <Image src={headerLogo} alt={'로고'} />
         </Logo>
         <Menu>
           <MenuBtn type="button" onClick={moveToRankingBtnHandler}>
             랭킹
           </MenuBtn>
-          <MenuBtn type="button" onClick={moveToMypageBtnHandler}>
-            마이페이지
-          </MenuBtn>
+          {isLogin ? (
+            <MenuBtn type="button" onClick={moveToMypageBtnHandler}>
+              마이페이지
+            </MenuBtn>
+          ) : null}
           {isLogin ? (
             <MenuBtn type="button" onClick={moveToSignOutBtnHandler}>
               로그아웃
@@ -57,8 +68,8 @@ const Layout = () => {
               로그인
             </MenuBtn>
           )}
-          <MenuBtn type="button">
-            <img src={langKo} alt={'언어 번역 버튼'} />
+          <MenuBtn type="button" onClick={translateBtnHandler}>
+            <Image src={isKorean ? langKo : langEn} alt={'언어 번역 버튼'} />
           </MenuBtn>
         </Menu>
       </Header>
@@ -102,6 +113,8 @@ const Logo = styled.button`
 // 헤더 내 메뉴 wrap
 const Menu = styled.div`
   display: flex;
+  min-width: 500px;
+  justify-content: flex-end;
   gap: 85px;
 `
 // 메뉴
