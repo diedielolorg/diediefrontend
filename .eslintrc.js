@@ -31,9 +31,10 @@ module.exports = {
     // jsx 파일 확장자 .jx, .jsx, .ts, .tsx 허용
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     // 화살표 함수의 파라미터가 하나일때 괄호 생략
-    'arrow-parens': ['warn', 'as-needed'],
+    'arrow-parens': ['warn', 'always'],
     // 사용하지 않는 변수가 있을 때 발생하는 경고 비활성화
     'no-unused-vars': ['off'],
+    '@typescript-eslint/no-unused-vars': 'off',
     // 콘솔 사용 시 발생하는 경고 비활성화
     'no-console': ['off'],
     // export문이 하나일 때 default export 사용 권장 경고 비활성화
@@ -42,8 +43,8 @@ module.exports = {
     'react-hooks/exhaustive-deps': ['warn'],
     // 컴포넌트 이름은 PascalCase로
     'react/jsx-pascal-case': 'warn',
-    // 반복문으로 생성하는 요소에 key 강제
-    'react/jsx-key': 'warn',
+    // 반복문으로 생성하는 요소에 key 강제 off
+    'react/jsx-key': 'off',
     // 디버그 허용
     'no-debugger': 'off',
     // [error] Delete `␍` prettier/prettier
@@ -67,6 +68,15 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'no-shadow': 0,
     'jsx-a11y/no-noninteractive-element-interactions': 0,
+    // A form label must be associated with a control jsx-a11y/label-has-associated-control 라벨 오류
+    'jsx-a11y/label-has-associated-control': [
+      2,
+      {
+        labelAttributes: ['htmlFor'],
+      },
+    ],
+    // ts에서는 interface 사용하므로 propTypes 미사용 시 defaultProps 선언 규칙 해제
+    'react/require-default-props': 'off',
   },
   settings: {
     'import/resolver': {
