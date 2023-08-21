@@ -7,6 +7,7 @@ import { Button, Image, Portal } from '../components/common'
 import { blackLogo } from '../assets'
 import SnackBar from '../components/modal/SnackBar'
 import SnackBarAtom from '../recoil/SnackBarAtom'
+import Timer from '../components/Timer'
 
 const SignUp = () => {
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
@@ -17,11 +18,13 @@ const SignUp = () => {
   const [PwHelpMsg, setPwHelpMsg] = useState('')
   const [certified, setCertified] = useState(false)
   const [nickNameSuccess, setNickNameSuccess] = useState(true)
+  const [timer, setTimer] = useState(0)
 
   const nickNameConfirm = () => setNickNameDuplication('사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)')
   const emailAuthenticationBtnHandler = () => {
     setCertified(true)
     setEmailHelpMsg('이미 등록된 이메일 입니다.')
+    setTimer(10)
   }
   const certifiedBtnHandler = () => {
     setIsSnackBar({ open: true })
@@ -31,6 +34,9 @@ const SignUp = () => {
   const signUpBtnHandler = () => {
     setPasswordConfirm('비밀번호가 일치하지 않습니다.')
     setPwHelpMsg('사용할 수 없는 비밀번호 입니다.')
+  }
+  const RetransmissionBtnHandler = () => {
+    setTimer(10)
   }
 
   return (
@@ -63,11 +69,21 @@ const SignUp = () => {
                 <p>{'작성하신 이메일로 인증번호를 전송했어요.'}</p>
               </CSS.UserLabel>
               <CSS.ConfirmBoxDiv>
-                <CSS.UserInfoInput size={316} />
-                <Button size={'s'} color={'gray'} onclick={nickNameConfirm}>
+                <InputBoxDiv>
+                  <CSS.UserInfoInput size={316} />
+                  <TimerP>
+                    <Timer timeLimit={timer} onTimerEnd={() => setTimer(0)} />
+                  </TimerP>
+                </InputBoxDiv>
+                <Button size={'s'} color={'gray'} onclick={RetransmissionBtnHandler}>
                   {'재전송'}
                 </Button>
-                <Button size={'s'} color={'lime'} onclick={certifiedBtnHandler}>
+                <Button
+                  size={'s'}
+                  color={timer === 0 ? 'light' : 'lime'}
+                  onclick={certifiedBtnHandler}
+                  disabled={timer === 0}
+                >
                   {'인증'}
                 </Button>
                 {isSnackbar.open && <Portal type={'SnackBar'} snackBar={'one'} />}
@@ -75,6 +91,7 @@ const SignUp = () => {
               <CSS.HelpMessageDiv>{discrepancy}</CSS.HelpMessageDiv>
             </>
           )}
+
           <CSS.UserLabel>{'비밀번호'}</CSS.UserLabel>
           <CSS.UserInfoInput type={'password'} size={504} placeholder={'영문, 숫자, 특수문자 포함 8~13자'} />
           <CSS.HelpMessageDiv>{PwHelpMsg}</CSS.HelpMessageDiv>
@@ -98,4 +115,17 @@ const SignUpBtnDiv = styled.div`
   display: flex;
   justify-content: center;
   color: ${({ theme }) => theme.gray.AE};
+`
+const InputBoxDiv = styled.div`
+  position: relative;
+`
+const TimerP = styled.p`
+  color: ${({ theme }) => theme.color.red};
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+
+  position: absolute;
+  top: 15px;
+  right: 15px;
 `
