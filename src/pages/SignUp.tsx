@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { useRecoilState } from 'recoil'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import * as CSS from '../style/LoginRelevantSt'
 import { Button, Image, Portal } from '../components/common'
@@ -8,6 +8,7 @@ import { blackLogo } from '../assets'
 import SnackBar from '../components/modal/SnackBar'
 import SnackBarAtom from '../recoil/SnackBarAtom'
 import Timer from '../components/Timer'
+import useInput from '../utils/useInput'
 
 const SignUp = () => {
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
@@ -16,21 +17,38 @@ const SignUp = () => {
   const [discrepancy, setDiscrepancy] = useState('')
   const [emailHelpMsg, setEmailHelpMsg] = useState('')
   const [PwHelpMsg, setPwHelpMsg] = useState('')
-  const [certified, setCertified] = useState(false)
+  const [isCertified, setIsCertified] = useState(false)
   const [nickNameSuccess, setNickNameSuccess] = useState(true)
   const [timer, setTimer] = useState(0)
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [data, onChange] = useInput({
+    nickName: '',
+    email: '',
+    address: '',
+    ConfirmNumber: '',
+    password: '',
+    passwordConfirm: '',
+  })
+  useEffect(() => {
+    const isNickNameValid = data.nickName.length >= 2
+    const areFieldsFilled = Object.values(data)
+      .slice(1)
+      .every((value) => value.length !== 0)
+
+    setIsSignUp(isNickNameValid && areFieldsFilled)
+  }, [data])
 
   const nickNameConfirm = () => setNickNameDuplication('사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)')
   const emailAuthenticationBtnHandler = () => {
-    setCertified(true)
+    setIsCertified(true)
     setEmailHelpMsg('이미 등록된 이메일 입니다.')
     setTimer(10)
   }
   const certifiedBtnHandler = () => {
     setIsSnackBar({ open: true })
     setDiscrepancy('인증번호가 일치하지 않습니다.')
-    // setCertified(false)
   }
+
   const signUpBtnHandler = () => {
     setPasswordConfirm('비밀번호가 일치하지 않습니다.')
     setPwHelpMsg('사용할 수 없는 비밀번호 입니다.')
@@ -38,15 +56,21 @@ const SignUp = () => {
   const RetransmissionBtnHandler = () => {
     setTimer(10)
   }
-
   return (
     <CSS.BackgroundMain>
-      <CSS.OverRaySection size={'login'}>
+      <CSS.OverRaySection>
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
           <CSS.UserLabel>{'닉네임'}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
-            <CSS.UserInfoInput size={408} placeholder={'2자 이상 20자 이하의 닉네임을 입력해주세요.'} />
+            <CSS.UserInfoInput
+              size={408}
+              name={'nickName'}
+              value={data.nickName}
+              onChange={onChange}
+              placeholder={'2자 이상 12자 이하의 닉네임을 입력해주세요.'}
+            />
+            {/* 회의할때 얘기해봐야함 20자는 너무 길어서 일단 12자 해놓음 */}
             <Button size={'s'} color={'lime'} onclick={nickNameConfirm}>
               {'중복확인'}
             </Button>
@@ -54,15 +78,15 @@ const SignUp = () => {
           <CSS.HelpMessageDiv color={nickNameSuccess ? 'true' : 'false'}>{nickNameDuplication}</CSS.HelpMessageDiv>
           <CSS.UserLabel>{'이메일'}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
-            <CSS.UserInfoInput size={167} />
+            <CSS.UserInfoInput size={167} name={'email'} value={data.email} onChange={onChange} />
             <p>{'@'}</p>
-            <CSS.UserInfoInput size={238} />
+            <CSS.UserInfoInput size={238} name={'address'} value={data.address} onChange={onChange} />
             <Button size={'xs'} color={'lime'} onclick={emailAuthenticationBtnHandler}>
               {'인증'}
             </Button>
           </CSS.ConfirmBoxDiv>
           <CSS.HelpMessageDiv>{emailHelpMsg}</CSS.HelpMessageDiv>
-          {certified && (
+          {isCertified && (
             <>
               <CSS.UserLabel>
                 {'인증번호'}
@@ -70,7 +94,7 @@ const SignUp = () => {
               </CSS.UserLabel>
               <CSS.ConfirmBoxDiv>
                 <InputBoxDiv>
-                  <CSS.UserInfoInput size={316} />
+                  <CSS.UserInfoInput size={316} name={'ConfirmNumber'} value={data.ConfirmNumber} onChange={onChange} />
                   <TimerP>
                     <Timer timeLimit={timer} onTimerEnd={() => setTimer(0)} />
                   </TimerP>
@@ -93,14 +117,28 @@ const SignUp = () => {
           )}
 
           <CSS.UserLabel>{'비밀번호'}</CSS.UserLabel>
-          <CSS.UserInfoInput type={'password'} size={504} placeholder={'영문, 숫자, 특수문자 포함 8~13자'} />
+          <CSS.UserInfoInput
+            type={'password'}
+            size={504}
+            name={'password'}
+            value={data.password}
+            onChange={onChange}
+            placeholder={'영문, 숫자, 특수문자 포함 8~13자'}
+          />
           <CSS.HelpMessageDiv>{PwHelpMsg}</CSS.HelpMessageDiv>
           <CSS.UserLabel>{'비밀번호 확인'}</CSS.UserLabel>
-          <CSS.UserInfoInput type={'password'} size={504} placeholder={'비밀번호를 다시 입력해주세요.'} />
+          <CSS.UserInfoInput
+            type={'password'}
+            size={504}
+            name={'passwordConfirm'}
+            value={data.passwordConfirm}
+            onChange={onChange}
+            placeholder={'비밀번호를 다시 입력해주세요.'}
+          />
           <CSS.HelpMessageDiv>{passwordConfirm}</CSS.HelpMessageDiv>
         </CSS.UserInfoBoxDiv>
-        <SignUpBtnDiv>
-          <Button size={'l'} color={'light'} onclick={signUpBtnHandler}>
+        <SignUpBtnDiv isSignUp={!isSignUp}>
+          <Button size={'l'} color={!isSignUp ? 'light' : 'lime'} disabled={!isSignUp} onclick={signUpBtnHandler}>
             {'회원가입 하기'}
           </Button>
         </SignUpBtnDiv>
@@ -111,10 +149,10 @@ const SignUp = () => {
 
 export default SignUp
 
-const SignUpBtnDiv = styled.div`
+const SignUpBtnDiv = styled.div<{ isSignUp: boolean }>`
   display: flex;
   justify-content: center;
-  color: ${({ theme }) => theme.gray.AE};
+  color: ${({ theme, isSignUp }) => (isSignUp ? theme.color.black : theme.gray.AE)};
 `
 const InputBoxDiv = styled.div`
   position: relative;
