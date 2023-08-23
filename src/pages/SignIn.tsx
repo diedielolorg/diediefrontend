@@ -6,9 +6,14 @@ import * as CSS from '../style/LoginRelevantSt'
 import { Button, Image, Portal } from '../components/common'
 import { blackLogo, kakaoBtn } from '../assets'
 import SnackBarAtom from '../recoil/SnackBarAtom'
+import useInput from '../utils/useInput'
 
 const SignIn = () => {
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
+  const [data, onChange] = useInput({
+    email: '',
+    password: '',
+  })
   const navigate = useNavigate()
   const moveToSignUpBtnHandler = () => {
     navigate('/signup')
@@ -21,11 +26,26 @@ const SignIn = () => {
       <CSS.OverRaySection size={'login'}>
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
-          <CSS.UserLabel>{'이메일'}</CSS.UserLabel>
-          <CSS.UserInfoInput type={'password'} size={504} placeholder={'이메일을 입력하세요.'} />
+          <CSS.UserLabel htmlFor={'email'}>{'이메일'}</CSS.UserLabel>
+          <CSS.UserInfoInput
+            id={'email'}
+            name={'email'}
+            value={data.email}
+            onChange={onChange}
+            size={504}
+            placeholder={'이메일을 입력하세요.'}
+          />
           <CSS.HelpMessageDiv>{'헬프메세지'}</CSS.HelpMessageDiv>
-          <CSS.UserLabel>{'비밀번호'}</CSS.UserLabel>
-          <CSS.UserInfoInput type={'password'} size={504} placeholder={'영문, 숫자, 특수문자 포함 8~13자'} />
+          <CSS.UserLabel htmlFor={'password'}>{'비밀번호'}</CSS.UserLabel>
+          <CSS.UserInfoInput
+            id={'password'}
+            type={'password'}
+            size={504}
+            name={'password'}
+            value={data.password}
+            onChange={onChange}
+            placeholder={'영문, 숫자, 특수문자 포함 8~13자'}
+          />
           <CSS.HelpMessageDiv>{'헬프메세지'}</CSS.HelpMessageDiv>
         </CSS.UserInfoBoxDiv>
         <LoginBtnBoxDiv>
