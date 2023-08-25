@@ -15,7 +15,7 @@ const Completed = () => {
       <OverRaySection>
         <div>
           <NickNameBoxDiv>
-            <TextP color={'name'}>{'방배동둠피스트'}</TextP>
+            <TextP color={'name'}>{'방배동둠피스트방배동둠피'}</TextP>
             <TextP>{'님,'}</TextP>
           </NickNameBoxDiv>
           <TextP>{'가입을 축하합니다!'}</TextP>
@@ -33,15 +33,13 @@ export default Completed
 const OverRaySection = styled.section`
   width: 506px;
   height: 361px;
-
   margin-top: 182px;
-
+  padding-top: 92px;
   border-radius: 20px;
   background: ${({ theme }) => theme.color.white};
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 52px;
 `
