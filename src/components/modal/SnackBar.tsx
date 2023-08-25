@@ -1,5 +1,5 @@
 import { useRecoilState } from 'recoil'
-import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components'
 import { blackCloseIcon, successIcon } from '../../assets'
 import { Image } from '../common'
@@ -7,6 +7,8 @@ import { snackBar } from '../../interfaces/ModalTypes'
 import SnackBarAtom from '../../recoil/SnackBarAtom'
 
 const SnackBar = ({ type }: snackBar) => {
+  const { t } = useTranslation()
+
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
 
   if (isSnackbar.open) {
@@ -22,11 +24,11 @@ const SnackBar = ({ type }: snackBar) => {
     <main>
       {isSnackbar.open && (
         <SnackWrapDiv>
-          {type === 'one' && <OneLineTextP>{'이메일 인증이 되었습니다.'}</OneLineTextP>}
+          {type === 'one' && <OneLineTextP>{t('이메일 인증이 되었습니다.')}</OneLineTextP>}
           {type === 'date' && (
             <div>
-              <OneLineTextP>{'날짜 형식을 확인해주세요.'}</OneLineTextP>
-              <DateP>{'yyyy. mm. dd.로 적어주세요.'}</DateP>
+              <OneLineTextP>{t('날짜 형식을 확인해주세요.')}</OneLineTextP>
+              <DateP>{t('yyyy. mm. dd.로 적어주세요.')}</DateP>
             </div>
           )}
 
