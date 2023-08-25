@@ -4,8 +4,7 @@ import { styled } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import Image from './Image'
 import headerLogo from '../../assets/headerLogo.svg'
-import langKo from '../../assets/langKo.svg'
-import langEn from '../../assets/langEn.svg'
+import { langKo, langEn } from '../../assets'
 import { Languages, languages } from '../../utils/Locales/i18n'
 
 const Layout = () => {
@@ -57,7 +56,7 @@ const Layout = () => {
           <Image src={headerLogo} alt={'로고'} />
         </Logo>
         <Menu>
-          <MenuBtn type="button" onClick={moveToRankingBtnHandler}>
+          <MenuBtn type={'button'} onClick={moveToRankingBtnHandler}>
             {t('랭킹')}
           </MenuBtn>
           {isLogin ? (
@@ -70,11 +69,11 @@ const Layout = () => {
               {'로그아웃'}
             </MenuBtn>
           ) : (
-            <MenuBtn type="button" onClick={moveToSignInBtnHandler}>
+            <MenuBtn type={'button'} onClick={moveToSignInBtnHandler}>
               {t('로그인')}
             </MenuBtn>
           )}
-          <MenuBtn type="button" onClick={() => translateBtnHandler(isKorean ? 'ko' : 'en')}>
+          <MenuBtn type={'button'} onClick={() => translateBtnHandler(isKorean ? 'ko' : 'en')}>
             <Image src={isKorean ? langKo : langEn} alt={'언어 번역 버튼'} />
           </MenuBtn>
         </Menu>
