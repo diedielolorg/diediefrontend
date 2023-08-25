@@ -2,16 +2,16 @@ import React from 'react'
 import { styled } from 'styled-components'
 import { TierProps } from '../../interfaces/CommonTypes'
 
-const Tier = ({ tier, rank }: TierProps) => {
-  let userTier = tier === 'GRANDMASTER' ? 'GM' : tier?.slice(0, 1)
+const Tier = ({ $tier, $rank }: TierProps) => {
+  let userTier = $tier === 'GRANDMASTER' ? 'GM' : $tier?.slice(0, 1)
 
-  if (rank === 'I') userTier += '1'
-  else if (rank === 'II') userTier += '2'
-  else if (rank === 'III') userTier += '3'
-  else userTier += '4'
+  if ($rank === 'I') userTier += '1'
+  else if ($rank === 'II') userTier += '2'
+  else if ($rank === 'III') userTier += '3'
+  else if ($rank === 'Ⅳ') userTier += '4'
 
   return (
-    <CommonTier type={'button'} tier={tier}>
+    <CommonTier type={'button'} $tier={$tier}>
       {userTier}
     </CommonTier>
   )
@@ -26,8 +26,8 @@ const CommonTier = styled.button<TierProps>`
   font-weight: 700;
   border-radius: 3px;
   cursor: default;
-  background: ${({ tier, theme }) => {
-    switch (tier) {
+  background: ${({ $tier, theme }) => {
+    switch ($tier) {
       case 'IRON':
         return theme.rank.ir
         break

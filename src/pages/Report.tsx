@@ -1,9 +1,25 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, ChangeEvent } from 'react'
 import { styled } from 'styled-components'
 import ScreenShotImg from '../assets/ScreenShot.svg'
 
 const Report = () => {
+  const [fileAttach, setFileAttach] = useState<Array<File | null>>([null])
+  const [fileName, setFileName] = useState<string>('')
+  const [preview, setPreview] = useState<string | null>(null)
   const [date, setDate] = useState<number>(0)
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files && event.target.files[0]
+
+    if (selectedFile) {
+      setFileAttach((prevArray) => [...prevArray, selectedFile])
+      const fileName = selectedFile.name
+      setFileName(fileName)
+      const objectUrl = URL.createObjectURL(selectedFile)
+      setPreview(objectUrl)
+      console.log()
+    }
+  }
 
   const DateInput = useRef<HTMLInputElement>(null)
 
@@ -46,7 +62,7 @@ const Report = () => {
             </div>
             <div>
               <FileButton htmlFor={'file'}>{'파일 선택'}</FileButton>
-              <FileInput type={'file'} id={'file'} />
+              <FileInput type={'file'} id={'file'} onChange={handleFileChange} />
             </div>
           </FileWrap>
         </FileContainer>

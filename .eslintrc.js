@@ -43,8 +43,8 @@ module.exports = {
     'react-hooks/exhaustive-deps': ['warn'],
     // 컴포넌트 이름은 PascalCase로
     'react/jsx-pascal-case': 'warn',
-    // 반복문으로 생성하는 요소에 key 강제
-    'react/jsx-key': 'warn',
+    // 반복문으로 생성하는 요소에 key 강제 off
+    'react/jsx-key': 'off',
     // 디버그 허용
     'no-debugger': 'off',
     // [error] Delete `␍` prettier/prettier

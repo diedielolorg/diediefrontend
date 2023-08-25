@@ -1,57 +1,102 @@
 /* eslint-disable prettier/prettier */
+import { useRecoilState } from 'recoil'
 import { useState } from 'react'
 import { styled } from 'styled-components'
-import * as CSS from '../components/loginRelevant/LoginRelevantSt'
-import { Button, Image } from '../components/common'
-import blackLogo from '../assets/blackLogo.svg'
+import * as CSS from '../style/LoginRelevantSt'
+import { Button, Image, Portal } from '../components/common'
+import { blackLogo } from '../assets'
+import SnackBar from '../components/modal/SnackBar'
+import SnackBarAtom from '../recoil/SnackBarAtom'
+import Timer from '../components/Timer'
 
 const SignUp = () => {
+  const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [passwordConfirm, setPasswordConfirm] = useState('')
-  // const [certified, setCertified] = useState(true)
+  const [nickNameDuplication, setNickNameDuplication] = useState('')
+  const [discrepancy, setDiscrepancy] = useState('')
+  const [emailHelpMsg, setEmailHelpMsg] = useState('')
+  const [PwHelpMsg, setPwHelpMsg] = useState('')
+  const [certified, setCertified] = useState(false)
+  const [nickNameSuccess, setNickNameSuccess] = useState(true)
+  const [timer, setTimer] = useState(0)
 
-  const nickNameConfirm = () => console.log('닉네임중복검사버튼')
-  const signUpBtnHandler = () => setPasswordConfirm('비밀번호가 일치하지 않습니다.')
-  const emailAuthenticationBtnHandler = () => console.log('이메일 검사')
+  const nickNameConfirm = () => setNickNameDuplication('사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)')
+  const emailAuthenticationBtnHandler = () => {
+    setCertified(true)
+    setEmailHelpMsg('이미 등록된 이메일 입니다.')
+    setTimer(10)
+  }
+  const certifiedBtnHandler = () => {
+    setIsSnackBar({ open: true })
+    setDiscrepancy('인증번호가 일치하지 않습니다.')
+    // setCertified(false)
+  }
+  const signUpBtnHandler = () => {
+    setPasswordConfirm('비밀번호가 일치하지 않습니다.')
+    setPwHelpMsg('사용할 수 없는 비밀번호 입니다.')
+  }
+  const RetransmissionBtnHandler = () => {
+    setTimer(10)
+  }
+
   return (
     <CSS.BackgroundMain>
-      <CSS.OverRaySection>
+      <CSS.OverRaySection size={'login'}>
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
           <CSS.UserLabel>{'닉네임'}</CSS.UserLabel>
-          <ConfirmBoxDiv>
+          <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput size={408} placeholder={'2자 이상 20자 이하의 닉네임을 입력해주세요.'} />
-            <Button size={'s'} color={'basic'} onclick={nickNameConfirm}>
+            <Button size={'s'} color={'lime'} onclick={nickNameConfirm}>
               {'중복확인'}
             </Button>
-          </ConfirmBoxDiv>
-          <CSS.HelpMessageDiv>{'사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)'}</CSS.HelpMessageDiv>
+          </CSS.ConfirmBoxDiv>
+          <CSS.HelpMessageDiv color={nickNameSuccess ? 'true' : 'false'}>{nickNameDuplication}</CSS.HelpMessageDiv>
           <CSS.UserLabel>{'이메일'}</CSS.UserLabel>
-          <ConfirmBoxDiv>
+          <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput size={167} />
             <p>{'@'}</p>
             <CSS.UserInfoInput size={238} />
-            <Button size={'xs'} color={'basic'} onclick={emailAuthenticationBtnHandler}>
+            <Button size={'xs'} color={'lime'} onclick={emailAuthenticationBtnHandler}>
               {'인증'}
             </Button>
-          </ConfirmBoxDiv>
-          <CSS.HelpMessageDiv>{'이미 등록된 이메일 입니다.'}</CSS.HelpMessageDiv>
-          <CSS.UserLabel>
-            {'인증번호'}
-            <p>{'작성하신 이메일로 인증번호를 전송했어요.'}</p>
-          </CSS.UserLabel>
+          </CSS.ConfirmBoxDiv>
+          <CSS.HelpMessageDiv>{emailHelpMsg}</CSS.HelpMessageDiv>
+          {certified && (
+            <>
+              <CSS.UserLabel>
+                {'인증번호'}
+                <p>{'작성하신 이메일로 인증번호를 전송했어요.'}</p>
+              </CSS.UserLabel>
+              <CSS.ConfirmBoxDiv>
+                <InputBoxDiv>
+                  <CSS.UserInfoInput size={316} />
+                  <TimerP>
+                    <Timer timeLimit={timer} onTimerEnd={() => setTimer(0)} />
+                  </TimerP>
+                </InputBoxDiv>
+                <Button size={'s'} color={'gray'} onclick={RetransmissionBtnHandler}>
+                  {'재전송'}
+                </Button>
+                <Button
+                  size={'s'}
+                  color={timer === 0 ? 'light' : 'lime'}
+                  onclick={certifiedBtnHandler}
+                  disabled={timer === 0}
+                >
+                  {'인증'}
+                </Button>
+                {isSnackbar.open && <Portal type={'SnackBar'} snackBar={'one'} />}
+              </CSS.ConfirmBoxDiv>
+              <CSS.HelpMessageDiv>{discrepancy}</CSS.HelpMessageDiv>
+            </>
+          )}
 
-          <ConfirmBoxDiv>
-            <CSS.UserInfoInput size={408} placeholder={'2자 이상 20자 이하의 닉네임을 입력해주세요.'} />
-            <Button size={'s'} color={'basic'} onclick={nickNameConfirm}>
-              {'중복확인'}
-            </Button>
-          </ConfirmBoxDiv>
-          <CSS.HelpMessageDiv />
           <CSS.UserLabel>{'비밀번호'}</CSS.UserLabel>
-          <CSS.UserInfoInput size={504} placeholder={'영문, 숫자, 특수문자 포함 8~13자'} />
-          <CSS.HelpMessageDiv>{'사용할 수 없는 비밀번호 입니다.'}</CSS.HelpMessageDiv>
+          <CSS.UserInfoInput type={'password'} size={504} placeholder={'영문, 숫자, 특수문자 포함 8~13자'} />
+          <CSS.HelpMessageDiv>{PwHelpMsg}</CSS.HelpMessageDiv>
           <CSS.UserLabel>{'비밀번호 확인'}</CSS.UserLabel>
-          <CSS.UserInfoInput size={504} placeholder={'비밀번호를 다시 입력해주세요.'} />
+          <CSS.UserInfoInput type={'password'} size={504} placeholder={'비밀번호를 다시 입력해주세요.'} />
           <CSS.HelpMessageDiv>{passwordConfirm}</CSS.HelpMessageDiv>
         </CSS.UserInfoBoxDiv>
         <SignUpBtnDiv>
@@ -66,13 +111,21 @@ const SignUp = () => {
 
 export default SignUp
 
-const ConfirmBoxDiv = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-`
 const SignUpBtnDiv = styled.div`
   display: flex;
   justify-content: center;
   color: ${({ theme }) => theme.gray.AE};
+`
+const InputBoxDiv = styled.div`
+  position: relative;
+`
+const TimerP = styled.p`
+  color: ${({ theme }) => theme.color.red};
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+
+  position: absolute;
+  top: 15px;
+  right: 15px;
 `

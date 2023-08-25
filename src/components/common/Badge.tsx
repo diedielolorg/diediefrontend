@@ -2,17 +2,20 @@ import React from 'react'
 import { styled } from 'styled-components'
 import { BadgeProps } from '../../interfaces/CommonTypes'
 
-const Badge = ({ category }: BadgeProps) => {
+// ! [props]
+// * $category : response로 오는 array를 map으로 처리한 string값
+
+const Badge = ({ $category }: BadgeProps) => {
   let swearWord = ''
 
-  if (category === 'fWord') swearWord = '쌍욕'
-  else if (category === 'aversion') swearWord = '혐오성 발언'
-  else if (category === 'adHominem') swearWord = '인신공격'
-  else if (category === 'sHarassment') swearWord = '성희롱'
-  else if (category === 'immorality') swearWord = '패드립'
+  if ($category === 'fWord') swearWord = '쌍욕'
+  else if ($category === 'aversion') swearWord = '혐오성 발언'
+  else if ($category === 'adHominem') swearWord = '인신공격'
+  else if ($category === 'sHarassment') swearWord = '성희롱'
+  else if ($category === 'immorality') swearWord = '패드립'
   else swearWord = '기타'
 
-  return <CommonBadge category={category}>{swearWord}</CommonBadge>
+  return <CommonBadge $category={$category}>{swearWord}</CommonBadge>
 }
 
 export default Badge
@@ -24,8 +27,8 @@ const CommonBadge = styled.button<BadgeProps>`
   font-weight: 700;
   border-radius: 3px;
   cursor: default;
-  ${({ category, theme }) => {
-    switch (category) {
+  ${({ $category, theme }) => {
+    switch ($category) {
       case 'fWord':
         return `border: 1px solid ${theme.color.orange}; color: ${theme.color.orange};`
         break
