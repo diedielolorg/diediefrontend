@@ -21,13 +21,13 @@ const Main = () => {
 
   return (
     <>
-      <Image src={logo} alt={'로고'} />
+      {/* <Image src={logo} alt={'로고'} /> */}
       <div>
         <SearchInputBoxDiv>
           <SearchInput type={'text'} placeholder={'소환사명을 검색하세요.'} />
-          <SearchBtn type={'button'}>
-            <Image src={searchBtn} alt={'검색창 아이콘'} />
-          </SearchBtn>
+          {/* <SearchBtn type={'button'}> */}
+          {/* <Image src={searchBtn} alt={'검색창 아이콘'} /> */}
+          {/* </SearchBtn> */}
         </SearchInputBoxDiv>
         <SearchResultBoxDiv>
           {searchSummonerList &&
@@ -35,7 +35,7 @@ const Main = () => {
               return (
                 <SearchSummonerBoxDiv>
                   <SearchSummonerInfoDiv>
-                    <Image width={26} height={26} src={searchSummoner.summonerIcon} />
+                    {/* <Image width={26} height={26} src={searchSummoner.summonerIcon} /> */}
                     <SearchSummonerNameP>{searchSummoner.summonerName}</SearchSummonerNameP>
                   </SearchSummonerInfoDiv>
                 </SearchSummonerBoxDiv>

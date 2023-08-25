@@ -57,10 +57,8 @@ const Layout = () => {
           <Image src={headerLogo} alt={'로고'} />
         </Logo>
         <Menu>
-
           <MenuBtn type="button" onClick={moveToRankingBtnHandler}>
             {t('랭킹')}
-
           </MenuBtn>
           {isLogin ? (
             <MenuBtn type={'button'} onClick={moveToMypageBtnHandler}>
