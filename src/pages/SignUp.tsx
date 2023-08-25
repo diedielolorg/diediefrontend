@@ -9,7 +9,7 @@ import SnackBarAtom from '../recoil/SnackBarAtom'
 import Timer from '../components/Timer'
 import useInput from '../utils/useInput'
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [helpMsg, setHelpMsg] = useState({
     nickName: '',
@@ -27,7 +27,7 @@ const SignUp = () => {
     passwordConfirm: '',
   })
   const [isCertified, setIsCertified] = useState(false)
-  const [nickNameSuccess, setNickNameSuccess] = useState(false)
+  const [isNickNameSuccess, setIsNickNameSuccess] = useState(false)
   const [timer, setTimer] = useState(0)
   const [isSignUp, setIsSignUp] = useState(false)
 
@@ -40,10 +40,22 @@ const SignUp = () => {
     setIsSignUp(isNickNameValid && areFieldsFilled)
   }, [data])
 
-  const nickNameConfirm = () =>
-    setHelpMsg((prevState) => ({ ...prevState, nickName: '사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)' }))
+  const nickNameConfirm = () => {
+    const regex = /^[가-힣a-zA-Z]*$/
+    if (!regex.test(data.nickName)) {
+      setHelpMsg((prevState) => ({
+        ...prevState,
+        nickName: '사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)',
+      }))
+    }
+  }
 
   const emailAuthenticationBtnHandler = () => {
+    const regex = /\./
+    if (!regex.test(data.address)) {
+      setHelpMsg((prevState) => ({ ...prevState, email: '이메일 형식을 확인해주세요.' }))
+      return
+    }
     setIsCertified(true)
     setHelpMsg((prevState) => ({ ...prevState, email: '이미 등록된 이메일 입니다.' }))
     setTimer(10)
@@ -54,8 +66,12 @@ const SignUp = () => {
   }
 
   const signUpBtnHandler = () => {
-    setHelpMsg((prevState) => ({ ...prevState, password: '비밀번호가 일치하지 않습니다.' }))
-    setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '사용할 수 없는 비밀번호 입니다.' }))
+    setHelpMsg((prevState) => ({ ...prevState, password: '사용할 수 없는 비밀번호 입니다.' }))
+    if (data.password !== data.passwordConfirm) {
+      setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '비밀번호가 일치하지 않습니다.' }))
+    } else {
+      setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '' }))
+    }
   }
   const RetransmissionBtnHandler = () => {
     setTimer(10)
@@ -80,7 +96,7 @@ const SignUp = () => {
               {'중복확인'}
             </Button>
           </CSS.ConfirmBoxDiv>
-          <CSS.HelpMessageDiv color={nickNameSuccess ? 'true' : 'false'}>{helpMsg.nickName}</CSS.HelpMessageDiv>
+          <CSS.HelpMessageDiv color={isNickNameSuccess ? 'true' : 'false'}>{helpMsg.nickName}</CSS.HelpMessageDiv>
           <CSS.UserLabel htmlFor={'email'}>{'이메일'}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput id={'email'} size={167} name={'email'} value={data.email} onChange={onChange} />
