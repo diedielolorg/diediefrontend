@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
 import { v4 as uuid } from 'uuid'
+import ReactPaginate from 'react-paginate'
 import Image from './Image'
 import Badge from './Badge'
 import { arrowUp, arrowDown } from '../../assets'
@@ -14,14 +15,22 @@ const ReportList = ({ reportlist }: ReportListProps) => {
     3: false,
     4: false,
   })
+  const [currentPage, setCurrentPage] = useState(0)
 
   const uniqueId: string = uuid()
 
+  // * [더보기 버튼] onClick
   const onMoreClickHandler = (idx: number) =>
     setToggleMoreBtn((prev) => ({
       ...prev,
       [idx]: !toggleMoreBtn[idx],
     }))
+
+  // * [pagination] onClick
+  const pageClickHandler = (selectedIdx: { selected: number }) => console.log(selectedIdx.selected)
+
+  // * [pagination] onChange
+  const pageChangeHandler = (selectedIdx: { selected: number }) => setCurrentPage(selectedIdx.selected)
 
   return (
     <>
@@ -62,7 +71,6 @@ const ReportList = ({ reportlist }: ReportListProps) => {
                   </span>
                   <ReportImgDiv>
                     {list.reportCapture.map((img) => (
-                      // TODO key값
                       <Image key={uniqueId + img} width={400} height={285} $border={5} src={img} $zoom={'on'} />
                     ))}
                   </ReportImgDiv>
@@ -71,7 +79,21 @@ const ReportList = ({ reportlist }: ReportListProps) => {
             </div>
           </ReportInfoDiv>
         ))}
-      <PaginationDiv>{/* 페이지네이션 */}</PaginationDiv>
+      <PaginationDiv>
+        <StPagination
+          // TODO [pageCount] 전체 페이지 수 = 총 아이템 수 / 페이지 당 아이템 수이므로 이후 API 연결했을 때 해당 값 맞춰서 length / 5 로 수정할 것
+          pageCount={Math.ceil(35 / 3)}
+          marginPagesDisplayed={0}
+          pageRangeDisplayed={4}
+          forcePage={currentPage}
+          onClick={pageClickHandler}
+          onPageChange={pageChangeHandler}
+          breakLabel={''}
+          previousLabel={'<'}
+          nextLabel={'>'}
+          activeClassName={'active'}
+        />
+      </PaginationDiv>
     </>
   )
 }
@@ -147,5 +169,22 @@ const ReportImgDiv = styled.div`
 `
 
 const PaginationDiv = styled.div`
-  //
+  margin: 65px auto 0 auto;
+`
+
+const StPagination = styled(ReactPaginate)`
+  display: flex;
+  gap: 10px;
+  li {
+    margin: 0 15px;
+    color: ${({ theme }) => theme.gray.AE};
+    font-size: 18px;
+  }
+  li a {
+    cursor: pointer;
+  }
+  li.active a {
+    color: ${({ theme }) => theme.green.basic};
+    font-weight: 900;
+  }
 `

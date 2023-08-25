@@ -14,6 +14,7 @@ export interface BtnProps {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl'
   color?: 'light' | 'lime' | 'basic' | 'gray'
   onclick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  disabled?: boolean
 }
 
 // Badge.tsx
