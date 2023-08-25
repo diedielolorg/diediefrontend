@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
@@ -9,6 +10,8 @@ import SnackBarAtom from '../recoil/SnackBarAtom'
 import useInput from '../utils/useInput'
 
 const SignIn: React.FC = () => {
+  const { t, i18n } = useTranslation()
+
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [data, onChange] = useInput({
     email: '',
@@ -33,7 +36,7 @@ const SignIn: React.FC = () => {
             value={data.email}
             onChange={onChange}
             size={504}
-            placeholder={'이메일을 입력하세요.'}
+            placeholder={t('이메일을 입력하세요.')}
           />
           <CSS.HelpMessageDiv>{''}</CSS.HelpMessageDiv>
           <CSS.UserLabel htmlFor={'password'}>{'비밀번호'}</CSS.UserLabel>
@@ -56,7 +59,7 @@ const SignIn: React.FC = () => {
 
           <TextDiv>
             <button type={'button'} onClick={moveToSignUpBtnHandler}>
-              {'회원가입'}
+              {t('회원가입')}
             </button>
           </TextDiv>
           <TextDiv>

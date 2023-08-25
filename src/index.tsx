@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RecoilRoot } from 'recoil'
 import { GlobalStyle, theme } from './style'
 import App from './App'
+import './utils/Locales/i18n'
 import reportWebVitals from './reportWebVitals'
 
 const queryClient = new QueryClient({
