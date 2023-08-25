@@ -41,7 +41,6 @@ export const UserLabel = styled.label`
     line-height: 16px;
 
     padding-left: 10px;
-    margin-bottom: 10px;
   }
 `
 
