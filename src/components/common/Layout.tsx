@@ -53,21 +53,23 @@ const Layout = () => {
   return (
     <BackgroundColor>
       <Header>
-        <Logo type="button" onClick={moveToMainBtnHandler}>
+        <Logo type={'button'} onClick={moveToMainBtnHandler}>
           <Image src={headerLogo} alt={'로고'} />
         </Logo>
         <Menu>
+
           <MenuBtn type="button" onClick={moveToRankingBtnHandler}>
             {t('랭킹')}
+
           </MenuBtn>
           {isLogin ? (
-            <MenuBtn type="button" onClick={moveToMypageBtnHandler}>
-              마이페이지
+            <MenuBtn type={'button'} onClick={moveToMypageBtnHandler}>
+              {'마이페이지'}
             </MenuBtn>
           ) : null}
           {isLogin ? (
-            <MenuBtn type="button" onClick={moveToSignOutBtnHandler}>
-              로그아웃
+            <MenuBtn type={'button'} onClick={moveToSignOutBtnHandler}>
+              {'로그아웃'}
             </MenuBtn>
           ) : (
             <MenuBtn type="button" onClick={moveToSignInBtnHandler}>
@@ -128,7 +130,6 @@ const MenuBtn = styled.button`
   color: ${({ theme }) => theme.green.basic};
   background-color: transparent;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
