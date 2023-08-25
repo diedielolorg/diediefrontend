@@ -73,7 +73,8 @@ const MoveToBtnDiv = styled.div`
   display: flex;
   align-items: center;
   padding-left: 46px;
+  padding-right: 48px;
   margin-bottom: 15px;
-  gap: 657px;
+  justify-content: space-between;
   cursor: pointer;
 `

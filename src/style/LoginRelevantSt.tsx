@@ -8,10 +8,10 @@ export const BackgroundMain = styled.main`
 export const OverRaySection = styled.section<{ size?: 'login' }>`
   width: 702px;
   padding-top: 74px;
-  padding-left: 98px;
   padding-right: 98px;
   padding-bottom: 63px;
-  margin-top: ${(props) => (props.size === 'login' ? '40px' : '23px')};
+  padding-left: 98px;
+  margin-top: ${(props) => (props.size === 'login' ? '69px' : '23px')};
 
   border-radius: 20px;
   background: ${({ theme }) => theme.color.white};
@@ -30,11 +30,10 @@ export const UserLabel = styled.label`
   font-weight: 800;
   line-height: 16px;
 
-  margin-bottom: 10px;
-
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding-bottom: 10px;
   P {
     color: ${({ theme }) => theme.gray.AE};
     font-size: 15px;
@@ -42,6 +41,7 @@ export const UserLabel = styled.label`
     line-height: 16px;
 
     padding-left: 10px;
+    margin-bottom: 10px;
   }
 `
 
@@ -52,6 +52,7 @@ export const UserInfoInput = styled.input`
   border: 1px solid ${({ theme }) => theme.gray.DE};
   padding-left: 14px;
   outline: none;
+  letter-spacing: 1px;
 
   &::placeholder {
     color: ${({ theme }) => theme.gray.AE};
@@ -61,8 +62,8 @@ export const UserInfoInput = styled.input`
   }
 `
 
-export const HelpMessageDiv = styled.div`
-  color: ${({ theme }) => theme.color.red};
+export const HelpMessageDiv = styled.div<{ color?: string }>`
+  color: ${({ color, theme }) => (color === 'true' ? theme.gray.SF : theme.color.red)};
   font-size: 13px;
   font-weight: 400;
   line-height: 16px;

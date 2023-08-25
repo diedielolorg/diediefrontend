@@ -23,7 +23,7 @@ const Image = ({ width, height, $border, src, alt, $zoom = 'off' }: ImgProps) =>
         src={src || errorImg}
         alt={alt || `${src} image`}
         $zoom={$zoom}
-        onClick={onZoomClickHandler}
+        onClick={$zoom !== 'off' ? onZoomClickHandler : undefined}
       />
       {toggleZoom && <Portal type={'ZoomImg'} onclick={onZoomClickHandler} src={src} />}
     </>

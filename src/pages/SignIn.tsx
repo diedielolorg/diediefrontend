@@ -1,30 +1,66 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { styled } from 'styled-components'
+import { useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import * as CSS from '../style/LoginRelevantSt'
-import { Button, Image } from '../components/common'
+import { Button, Image, Portal } from '../components/common'
 import { blackLogo, kakaoBtn } from '../assets'
+import SnackBarAtom from '../recoil/SnackBarAtom'
+import useInput from '../utils/useInput'
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
+  const { t, i18n } = useTranslation()
+
+  const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
+  const [data, onChange] = useInput({
+    email: '',
+    password: '',
+  })
+  const navigate = useNavigate()
+  const moveToSignUpBtnHandler = () => {
+    navigate('/signup')
+  }
+  const loginBtnHandler = () => {
+    setIsSnackBar({ open: true })
+  }
   return (
     <CSS.BackgroundMain>
-      <CSS.OverRaySection>
+      <CSS.OverRaySection size={'login'}>
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
-          <CSS.UserLabel>{'이메일'}</CSS.UserLabel>
-          <CSS.UserInfoInput type={'password'} size={504} placeholder={'이메일을 입력하세요.'} />
-          <CSS.HelpMessageDiv>{'헬프메세지'}</CSS.HelpMessageDiv>
-          <CSS.UserLabel>{'비밀번호'}</CSS.UserLabel>
-          <CSS.UserInfoInput type={'password'} size={504} placeholder={'영문, 숫자, 특수문자 포함 8~13자'} />
-          <CSS.HelpMessageDiv>{'헬프메세지'}</CSS.HelpMessageDiv>
+          <CSS.UserLabel htmlFor={'email'}>{'이메일'}</CSS.UserLabel>
+          <CSS.UserInfoInput
+            id={'email'}
+            name={'email'}
+            value={data.email}
+            onChange={onChange}
+            size={504}
+            placeholder={t('이메일을 입력하세요.')}
+          />
+          <CSS.HelpMessageDiv>{''}</CSS.HelpMessageDiv>
+          <CSS.UserLabel htmlFor={'password'}>{'비밀번호'}</CSS.UserLabel>
+          <CSS.UserInfoInput
+            id={'password'}
+            type={'password'}
+            size={504}
+            name={'password'}
+            value={data.password}
+            onChange={onChange}
+            placeholder={'영문, 숫자, 특수문자 포함 8~13자'}
+          />
+          <CSS.HelpMessageDiv>{''}</CSS.HelpMessageDiv>
         </CSS.UserInfoBoxDiv>
         <LoginBtnBoxDiv>
-          <Button size={'xxl'} color={'lime'}>
+          <Button size={'xxl'} color={'lime'} onclick={loginBtnHandler}>
             {'로그인'}
           </Button>
+          {isSnackbar.open && <Portal type={'SnackBar'} snackBar={'login'} />}
+
           <TextDiv>
-            <p>{'회원가입'}</p>
-            <p>{'|'}</p>
-            <p>{'비밀번호 찾기'}</p>
+            <button type={'button'} onClick={moveToSignUpBtnHandler}>
+              {t('회원가입')}
+            </button>
           </TextDiv>
           <TextDiv>
             <p>{'--------------------'}</p>
@@ -51,6 +87,15 @@ const TextDiv = styled.div`
   line-height: 16px;
   font-size: 16px;
   color: ${({ theme }) => theme.gray.AE};
+
+  button {
+    background-color: transparent;
+    color: ${({ theme }) => theme.gray.AE};
+    font-weight: 500;
+    line-height: 16px;
+    font-size: 16px;
+    text-align: center;
+  }
 `
 
 const LoginBtnBoxDiv = styled.div`

@@ -2,6 +2,7 @@
 export interface PotalProps {
   type?: string
   src?: string
+  snackBar?: string
   onclick?: (
     event: React.MouseEvent<HTMLDivElement, MouseEvent> | React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void
@@ -13,6 +14,7 @@ export interface BtnProps {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl' | 'xxl' | 'xxxl'
   color?: 'light' | 'lime' | 'basic' | 'gray'
   onclick?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  disabled?: boolean
 }
 
 // Badge.tsx
@@ -32,8 +34,8 @@ export interface ImgProps {
 
 // Tier.tsx
 export interface TierProps {
-  tier?: string
-  rank?: string
+  $tier?: string
+  $rank?: string
 }
 
 // ReportList.tsx

@@ -7,10 +7,9 @@ import { BtnProps } from '../../interfaces/CommonTypes'
 // * size : 버튼 width 사이즈 (xs: 60, s: 90, m: 125, l: 185, xl: 200, xxl: 330)
 // * color : 버튼 색상
 // * onClick : onClick 이벤트
-
-const Button = ({ children, size, color, onclick }: BtnProps) => {
+const Button = ({ children, size, color, onclick, disabled }: BtnProps) => {
   return (
-    <CommonBtn type={'button'} size={size} color={color} onClick={onclick}>
+    <CommonBtn type={'button'} size={size} color={color} onClick={onclick} disabled={disabled}>
       {children}
     </CommonBtn>
   )
@@ -27,7 +26,9 @@ const CommonBtn = styled.button<BtnProps>`
       ? theme.green.lime
       : color === 'basic'
       ? theme.green.basic
-      : theme.gray.DE};
+      : color === 'gray'
+      ? theme.gray.DE
+      : 'transparent'};
   ${({ size }) => {
     switch (size) {
       case 'xs':

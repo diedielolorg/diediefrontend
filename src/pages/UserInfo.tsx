@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 import { Portal, Button, Image, ReportList } from '../components/common'
+import { SwordChart, RegionChart } from '../components'
 import { reportImg, errorImg, errorPageIcon } from '../assets'
 
 const UserInfo = () => {
@@ -47,6 +49,7 @@ const UserInfo = () => {
     },
   ])
 
+  const navigate = useNavigate()
   const toggleIngameHandler = () => setToggleIngame(!toggleIngame)
 
   return (
@@ -66,7 +69,7 @@ const UserInfo = () => {
             </Button>
             {/* // TODO API 호출 UserInfo.tsx or Portal.tsx */}
             {toggleIngame && <Portal type={'Ingame'} onclick={toggleIngameHandler} />}
-            <Button size={'l'} color={'basic'}>
+            <Button size={'l'} color={'basic'} onclick={() => navigate('/report')}>
               {'신고하기'}
             </Button>
           </UserBtnDiv>
@@ -90,11 +93,11 @@ const UserInfo = () => {
       <ChartSection>
         <SwearWordsDiv>
           <h2>{'욕 통계'}</h2>
-          <div>{'욕 통계 차트'}</div>
+          <SwordChart />
         </SwearWordsDiv>
         <RegionDiv>
           <h2>{'출몰지역 통계'}</h2>
-          <div>{'출몰지역 통계 차트'}</div>
+          <RegionChart />
         </RegionDiv>
       </ChartSection>
 
@@ -103,7 +106,11 @@ const UserInfo = () => {
           <h2>{'등록된 신고'}</h2>
           <p>{`총 ${reportList.length}개`}</p>
         </ReportCountDiv>
-        <ReportList reportlist={reportList} />
+        {reportList.length === 0 ? (
+          <NoneListDiv>{'등록된 신고가 없습니다.'}</NoneListDiv>
+        ) : (
+          <ReportList reportlist={reportList} />
+        )}
       </ReportSection>
     </WrapDiv>
   )
@@ -134,6 +141,9 @@ const WrapDiv = styled.div`
   }
   strong {
     font-weight: 700;
+  }
+  canvas {
+    margin: -20px auto 0 auto;
   }
 `
 
@@ -214,4 +224,12 @@ const ReportCountDiv = styled.div`
     background: ${({ theme }) => theme.gray.TF};
     border-radius: 10px;
   }
+`
+
+const NoneListDiv = styled.div`
+  margin: 50px 0;
+  color: ${({ theme }) => theme.gray.AE};
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
 `
