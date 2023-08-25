@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { useRecoilState } from 'recoil'
+import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import * as CSS from '../style/LoginRelevantSt'
@@ -10,6 +11,8 @@ import Timer from '../components/Timer'
 import useInput from '../utils/useInput'
 
 const SignUp: React.FC = () => {
+  const { t } = useTranslation()
+
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [helpMsg, setHelpMsg] = useState({
     nickName: '',
@@ -81,7 +84,7 @@ const SignUp: React.FC = () => {
       <CSS.OverRaySection>
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
-          <CSS.UserLabel htmlFor={'nickName'}>{'닉네임'}</CSS.UserLabel>
+          <CSS.UserLabel htmlFor={'nickName'}>{t('닉네임')}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput
               id={'nickName'}
@@ -89,29 +92,29 @@ const SignUp: React.FC = () => {
               name={'nickName'}
               value={data.nickName}
               onChange={onChange}
-              placeholder={'2자 이상 12자 이하의 닉네임을 입력해주세요.'}
+              placeholder={t('2자 이상 12자 이하의 닉네임을 입력해주세요.')}
             />
             {/* 회의할때 얘기해봐야함 20자는 너무 길어서 일단 12자 해놓음 */}
             <Button size={'s'} color={'lime'} onclick={nickNameConfirm}>
-              {'중복확인'}
+              {t('중복확인')}
             </Button>
           </CSS.ConfirmBoxDiv>
-          <CSS.HelpMessageDiv color={isNickNameSuccess ? 'true' : 'false'}>{helpMsg.nickName}</CSS.HelpMessageDiv>
-          <CSS.UserLabel htmlFor={'email'}>{'이메일'}</CSS.UserLabel>
+          <CSS.HelpMessageDiv color={isNickNameSuccess ? 'true' : 'false'}>{t(helpMsg.nickName)}</CSS.HelpMessageDiv>
+          <CSS.UserLabel htmlFor={'email'}>{t('이메일')}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
             <CSS.UserInfoInput id={'email'} size={167} name={'email'} value={data.email} onChange={onChange} />
             <p>{'@'}</p>
             <CSS.UserInfoInput id={'email'} size={238} name={'address'} value={data.address} onChange={onChange} />
             <Button size={'xs'} color={'lime'} onclick={emailAuthenticationBtnHandler}>
-              {'인증'}
+              {t('인증')}
             </Button>
           </CSS.ConfirmBoxDiv>
-          <CSS.HelpMessageDiv>{helpMsg.email}</CSS.HelpMessageDiv>
+          <CSS.HelpMessageDiv>{t(helpMsg.email)}</CSS.HelpMessageDiv>
           {isCertified && (
             <>
               <CSS.UserLabel htmlFor={'ConfirmNumber'}>
-                {'인증번호'}
-                <p>{'작성하신 이메일로 인증번호를 전송했어요.'}</p>
+                {t('인증번호')}
+                <p>{t('작성하신 이메일로 인증번호를 전송했어요.')}</p>
               </CSS.UserLabel>
               <CSS.ConfirmBoxDiv>
                 <InputBoxDiv>
@@ -127,7 +130,7 @@ const SignUp: React.FC = () => {
                   </TimerP>
                 </InputBoxDiv>
                 <Button size={'s'} color={'gray'} onclick={RetransmissionBtnHandler}>
-                  {'재전송'}
+                  {t('재전송')}
                 </Button>
                 <Button
                   size={'s'}
@@ -135,15 +138,15 @@ const SignUp: React.FC = () => {
                   onclick={certifiedBtnHandler}
                   disabled={timer === 0}
                 >
-                  {'인증'}
+                  {t('인증')}
                 </Button>
                 {isSnackbar.open && <Portal type={'SnackBar'} snackBar={'one'} />}
               </CSS.ConfirmBoxDiv>
-              <CSS.HelpMessageDiv>{helpMsg.certified}</CSS.HelpMessageDiv>
+              <CSS.HelpMessageDiv>{t(helpMsg.certified)}</CSS.HelpMessageDiv>
             </>
           )}
 
-          <CSS.UserLabel htmlFor={'password'}>{'비밀번호'}</CSS.UserLabel>
+          <CSS.UserLabel htmlFor={'password'}>{t('비밀번호')}</CSS.UserLabel>
           <CSS.UserInfoInput
             id={'password'}
             type={'password'}
@@ -151,10 +154,10 @@ const SignUp: React.FC = () => {
             name={'password'}
             value={data.password}
             onChange={onChange}
-            placeholder={'영문, 숫자, 특수문자 포함 8~13자'}
+            placeholder={t('영문, 숫자, 특수문자 포함 8~13자')}
           />
-          <CSS.HelpMessageDiv>{helpMsg.password}</CSS.HelpMessageDiv>
-          <CSS.UserLabel htmlFor={'passwordConfirm'}>{'비밀번호 확인'}</CSS.UserLabel>
+          <CSS.HelpMessageDiv>{t(helpMsg.password)}</CSS.HelpMessageDiv>
+          <CSS.UserLabel htmlFor={'passwordConfirm'}>{t('비밀번호 확인')}</CSS.UserLabel>
           <CSS.UserInfoInput
             id={'passwordConfirm'}
             type={'password'}
@@ -162,13 +165,13 @@ const SignUp: React.FC = () => {
             name={'passwordConfirm'}
             value={data.passwordConfirm}
             onChange={onChange}
-            placeholder={'비밀번호를 다시 입력해주세요.'}
+            placeholder={t('비밀번호를 다시 입력해주세요.')}
           />
-          <CSS.HelpMessageDiv>{helpMsg.passwordConfirm}</CSS.HelpMessageDiv>
+          <CSS.HelpMessageDiv>{t(helpMsg.passwordConfirm)}</CSS.HelpMessageDiv>
         </CSS.UserInfoBoxDiv>
         <SignUpBtnDiv isSignUp={!isSignUp}>
           <Button size={'l'} color={!isSignUp ? 'light' : 'lime'} disabled={!isSignUp} onclick={signUpBtnHandler}>
-            {'회원가입 하기'}
+            {t('회원가입 하기')}
           </Button>
         </SignUpBtnDiv>
       </CSS.OverRaySection>
