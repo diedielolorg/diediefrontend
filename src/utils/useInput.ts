@@ -8,10 +8,22 @@ const useInput = (initialValue: useInputProps) => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target
 
-      setData({ ...data, [name]: value })
+      if (name === 'ConfirmNumber') {
+        if (value.length <= 4) {
+          // 최대 4글자까지만 허용
+          setData({ ...data, [name]: value })
+        }
+      } else if (name === 'nickName') {
+        if (value.length <= 12) {
+          setData({ ...data, [name]: value })
+        }
+      } else {
+        setData({ ...data, [name]: value })
+      }
     },
     [data],
   )
   return [data, handler] as const
 }
+
 export default useInput

@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import Image from './Image'
 import headerLogo from '../../assets/headerLogo.svg'
 import langKo from '../../assets/langKo.svg'
 import langEn from '../../assets/langEn.svg'
+import { Languages, languages } from '../../utils/Locales/i18n'
 
 const Layout = () => {
+  const { t, i18n } = useTranslation()
+
   const navigate = useNavigate()
   // 로그인 상태
   const [isLogin, setIsLogin] = useState(false)
   // 언어
   const [isKorean, setIsKorean] = useState(true)
+
   // hooks
   useEffect(() => {
     const checkLoginStatusHandler = () => {
@@ -41,8 +46,9 @@ const Layout = () => {
     navigate('/')
   }
   // 언어 상태 변환 핸들러
-  const translateBtnHandler = () => {
+  const translateBtnHandler = (lang: Languages) => {
     setIsKorean((prevState) => !prevState)
+    i18n.changeLanguage(lang)
   }
   return (
     <BackgroundColor>
@@ -51,8 +57,10 @@ const Layout = () => {
           <Image src={headerLogo} alt={'로고'} />
         </Logo>
         <Menu>
-          <MenuBtn type={'button'} onClick={moveToRankingBtnHandler}>
-            {'랭킹'}
+
+          <MenuBtn type="button" onClick={moveToRankingBtnHandler}>
+            {t('랭킹')}
+
           </MenuBtn>
           {isLogin ? (
             <MenuBtn type={'button'} onClick={moveToMypageBtnHandler}>
@@ -64,11 +72,11 @@ const Layout = () => {
               {'로그아웃'}
             </MenuBtn>
           ) : (
-            <MenuBtn type={'button'} onClick={moveToSignInBtnHandler}>
-              {'로그인'}
+            <MenuBtn type="button" onClick={moveToSignInBtnHandler}>
+              {t('로그인')}
             </MenuBtn>
           )}
-          <MenuBtn type={'button'} onClick={translateBtnHandler}>
+          <MenuBtn type="button" onClick={() => translateBtnHandler(isKorean ? 'ko' : 'en')}>
             <Image src={isKorean ? langKo : langEn} alt={'언어 번역 버튼'} />
           </MenuBtn>
         </Menu>

@@ -52,6 +52,7 @@ export const UserInfoInput = styled.input`
   border: 1px solid ${({ theme }) => theme.gray.DE};
   padding-left: 14px;
   outline: none;
+  letter-spacing: 1px;
 
   &::placeholder {
     color: ${({ theme }) => theme.gray.AE};

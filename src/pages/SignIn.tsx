@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { styled } from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
@@ -8,7 +9,9 @@ import { blackLogo, kakaoBtn } from '../assets'
 import SnackBarAtom from '../recoil/SnackBarAtom'
 import useInput from '../utils/useInput'
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
+  const { t, i18n } = useTranslation()
+
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [data, onChange] = useInput({
     email: '',
@@ -33,9 +36,9 @@ const SignIn = () => {
             value={data.email}
             onChange={onChange}
             size={504}
-            placeholder={'이메일을 입력하세요.'}
+            placeholder={t('이메일을 입력하세요.')}
           />
-          <CSS.HelpMessageDiv>{'헬프메세지'}</CSS.HelpMessageDiv>
+          <CSS.HelpMessageDiv>{''}</CSS.HelpMessageDiv>
           <CSS.UserLabel htmlFor={'password'}>{'비밀번호'}</CSS.UserLabel>
           <CSS.UserInfoInput
             id={'password'}
@@ -46,7 +49,7 @@ const SignIn = () => {
             onChange={onChange}
             placeholder={'영문, 숫자, 특수문자 포함 8~13자'}
           />
-          <CSS.HelpMessageDiv>{'헬프메세지'}</CSS.HelpMessageDiv>
+          <CSS.HelpMessageDiv>{''}</CSS.HelpMessageDiv>
         </CSS.UserInfoBoxDiv>
         <LoginBtnBoxDiv>
           <Button size={'xxl'} color={'lime'} onclick={loginBtnHandler}>
@@ -56,7 +59,7 @@ const SignIn = () => {
 
           <TextDiv>
             <button type={'button'} onClick={moveToSignUpBtnHandler}>
-              {'회원가입'}
+              {t('회원가입')}
             </button>
           </TextDiv>
           <TextDiv>
