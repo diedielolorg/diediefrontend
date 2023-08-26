@@ -73,7 +73,7 @@ const Layout = () => {
               {t('로그인')}
             </MenuBtn>
           )}
-          <MenuBtn type={'button'} onClick={() => translateBtnHandler(isKorean ? 'ko' : 'en')}>
+          <MenuBtn type={'button'} onClick={() => translateBtnHandler(isKorean ? 'en' : 'ko')}>
             <Image src={isKorean ? langKo : langEn} alt={'언어 번역 버튼'} />
           </MenuBtn>
         </Menu>
