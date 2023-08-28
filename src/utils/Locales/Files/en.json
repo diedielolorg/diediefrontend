@@ -11,7 +11,7 @@
   "인증": "Certified",
   "재전송": "Retransmission",
   "인증번호": "Authentication",
-  "작성하신 이메일로 인증번호를 전송했어요.": "I sent the certificate number of authentication number",
+  "작성하신 이메일로 인증번호를 전송했어요.": " I sent the certificate number of authentication number",
   "SNS로 간편 로그인하기": "Log in easily with SNS",
   "이메일을 입력하세요.": "Please enter your email.",
   "영문, 숫자, 특수문자 포함 8~13자": "8 to 13 characters including English, numbers, and special characters",
@@ -22,5 +22,9 @@
   "이미 등록된 이메일 입니다.": "This email is already registered.",
   "인증번호가 일치하지 않습니다.": "The authentication number does not match.",
   "사용할 수 없는 비밀번호 입니다.": "Password is not available.",
-  "비밀번호가 일치하지 않습니다.": "Password does not match."
+  "비밀번호가 일치하지 않습니다.": "Password does not match.",
+  "내 정보 수정": "Modify My Information",
+  "저장하기": "Save",
+  "회원탈퇴": "Membership Withdrawal",
+  "닉네임 변경을 위해 비밀번호를 입력해주세요.": "Please enter your password to change your nickname."
 }
