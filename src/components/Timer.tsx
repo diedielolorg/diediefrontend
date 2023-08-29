@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { TimeFormatter, timerProps } from '../interfaces/TimerTypes'
 
-const Timer = ({ timeLimit, onTimerEnd }: timerProps) => {
+const Timer = ({ timeLimit, onTimerEnd, reTimeLimit }: timerProps) => {
   const [count, setCount] = useState(timeLimit)
 
   useEffect(() => {
@@ -14,14 +14,14 @@ const Timer = ({ timeLimit, onTimerEnd }: timerProps) => {
         }
         clearInterval(id)
         if (prevCount === 0) {
-          onTimerEnd() // 타이머 종료 시 콜백 함수 호출
+          onTimerEnd()
         }
         return prevCount
       })
     }, 1000)
 
     return () => clearInterval(id)
-  }, [timeLimit, onTimerEnd]) // timeLimit과 key를 의존성 배열에 추가
+  }, [timeLimit, onTimerEnd, reTimeLimit])
 
   const formatTime: TimeFormatter = (time) => {
     const minutes = Math.floor(time / 60)

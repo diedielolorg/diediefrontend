@@ -10,6 +10,7 @@ const MyPage = () => {
   const movoToEditMyInfoBtnHandler = () => {
     navigate('/editinfo')
   }
+
   return (
     <CSS.BackgroundMain>
       <Section>

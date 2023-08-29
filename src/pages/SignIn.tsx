@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { styled } from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
-import * as CSS from '../style/LoginRelevantSt'
-import { Button, Image, Portal } from '../components/common'
+import { styled } from 'styled-components'
 import { blackLogo, kakaoBtn } from '../assets'
+import { login } from '../axios/login'
+import { Button, Image, Portal } from '../components/common'
 import SnackBarAtom from '../recoil/SnackBarAtom'
+import * as CSS from '../style/LoginRelevantSt'
 import useInput from '../utils/useInput'
 
 const SignIn: React.FC = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [data, onChange] = useInput({
@@ -18,11 +20,23 @@ const SignIn: React.FC = () => {
     password: '',
   })
   const navigate = useNavigate()
+  const param = useParams()
+  const loginMutation = useMutation(login, {
+    onSuccess: (data) => {
+      console.log(param)
+    },
+    onError: (error) => {
+      setIsSnackBar({ open: true })
+    },
+  })
   const moveToSignUpBtnHandler = () => {
     navigate('/signup')
   }
   const loginBtnHandler = () => {
-    setIsSnackBar({ open: true })
+    loginMutation.mutate({
+      email: data.email,
+      password: data.password,
+    })
   }
   return (
     <CSS.BackgroundMain>

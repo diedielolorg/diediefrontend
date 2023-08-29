@@ -1,17 +1,36 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import * as CSS from '../style/LoginRelevantSt'
 import { Button } from '../components/common'
+import useInput from '../utils/useInput'
 
 const EditInfo = () => {
-  const [nickNameDuplication, setNickNameDuplication] = useState('')
-  const [PwHelpMsg, setPwHelpMsg] = useState('')
+  const { t } = useTranslation()
+
+  const [data, onChange] = useInput({
+    nickName: '',
+    password: '',
+  })
+  const [helpMsg, setHelpMsg] = useState({
+    nickName: '',
+    password: '',
+  })
+
   const navigate = useNavigate()
 
-  const nickNameConfirm = () => setNickNameDuplication('사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)')
+  const nickNameConfirm = () => {
+    const regex = /^[가-힣a-zA-Z]*$/
+    if (!regex.test(data.nickName)) {
+      setHelpMsg((prevState) => ({
+        ...prevState,
+        nickName: '사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)',
+      }))
+    }
+  }
   const infoSaveBtnHandler = () => {
-    setPwHelpMsg('사용할 수 없는 비밀번호 입니다.')
+    setHelpMsg((prevState) => ({ ...prevState, password: '비밀번호가 일치하지 않습니다.' }))
   }
   const moveToWithdrawalBtnHandler = () => {
     navigate('/withdrawal')
@@ -20,25 +39,40 @@ const EditInfo = () => {
   return (
     <CSS.BackgroundMain>
       <OverRaySection>
-        <h1>{'내 정보 수정'}</h1>
+        <h1>{t('내 정보 수정')}</h1>
 
-        <CSS.UserLabel>{'닉네임'}</CSS.UserLabel>
+        <CSS.UserLabel>{t('닉네임')}</CSS.UserLabel>
         <CSS.ConfirmBoxDiv>
-          <CSS.UserInfoInput size={564} placeholder={'2자 이상 20자 이하의 닉네임을 입력해주세요.'} />
+          <CSS.UserInfoInput
+            id={'nickName'}
+            name={'nickName'}
+            value={data.nickName}
+            onChange={onChange}
+            size={564}
+            placeholder={t('2자 이상 12자 이하의 닉네임을 입력해주세요.')}
+          />
           <Button size={'s'} color={'lime'} onclick={nickNameConfirm}>
-            {'중복확인'}
+            {t('중복확인')}
           </Button>
         </CSS.ConfirmBoxDiv>
-        <CSS.HelpMessageDiv>{nickNameDuplication}</CSS.HelpMessageDiv>
-        <CSS.UserLabel>{'비밀번호'}</CSS.UserLabel>
+        <CSS.HelpMessageDiv>{t(helpMsg.nickName)}</CSS.HelpMessageDiv>
+        <CSS.UserLabel>{t('비밀번호')}</CSS.UserLabel>
         <CSS.ConfirmBoxDiv>
-          <CSS.UserInfoInput size={660} placeholder={'닉네임 변경을 위해 비밀번호를 입력해주세요.'} />
+          <CSS.UserInfoInput
+            id={'password'}
+            type={'password'}
+            name={'password'}
+            value={data.password}
+            onChange={onChange}
+            size={660}
+            placeholder={t('닉네임 변경을 위해 비밀번호를 입력해주세요.')}
+          />
         </CSS.ConfirmBoxDiv>
-        <CSS.HelpMessageDiv>{PwHelpMsg}</CSS.HelpMessageDiv>
+        <CSS.HelpMessageDiv>{t(helpMsg.password)}</CSS.HelpMessageDiv>
         <Button size={'xxxl'} color={'lime'} onclick={infoSaveBtnHandler}>
-          {'저장하기'}
+          {t('저장하기')}
         </Button>
-        <WithdrawalDiv onClick={moveToWithdrawalBtnHandler}>회원탈퇴</WithdrawalDiv>
+        <WithdrawalDiv onClick={moveToWithdrawalBtnHandler}>{t('회원탈퇴')}</WithdrawalDiv>
       </OverRaySection>
     </CSS.BackgroundMain>
   )
