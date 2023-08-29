@@ -1,6 +1,5 @@
 import { AuthCodeProps, SignUpProps, ValidationProps } from '../interfaces/axiosTypes'
-import api from './instance'
-import { postRequest } from './crud'
+import { postRequest } from './instance'
 
 // 이메일 인증
 export const authCode = async (props: AuthCodeProps) => {
@@ -9,15 +8,7 @@ export const authCode = async (props: AuthCodeProps) => {
 
 // 인증번호
 export const validation = async (props: ValidationProps) => {
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const response = await api.post(`/api/users/authcodevalidation`, {
-      code: props.code,
-    })
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  return postRequest('/api/users/authcode', { code: props.code })
 }
 
 // 회원가입
