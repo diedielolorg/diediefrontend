@@ -1,5 +1,6 @@
 export interface timerProps {
   timeLimit: number
+  reTimeLimit: number
   onTimerEnd: () => void
 }
 

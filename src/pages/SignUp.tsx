@@ -34,6 +34,7 @@ const SignUp: React.FC = () => {
   const [isCertified, setIsCertified] = useState(false)
   const [isNickNameSuccess, setIsNickNameSuccess] = useState(false)
   const [timer, setTimer] = useState(0)
+  const [reTimer, setReTimer] = useState(0)
   const [isSignUp, setIsSignUp] = useState(false)
 
   const authCodeMutation = useMutation(authCode, {
@@ -72,7 +73,7 @@ const SignUp: React.FC = () => {
       return
     }
     authCodeMutation.mutate({ email: FullEmail })
-    setTimer(10)
+    setTimer(180)
   }
 
   const certifiedBtnHandler = () => {
@@ -89,7 +90,7 @@ const SignUp: React.FC = () => {
     }
   }
   const RetransmissionBtnHandler = () => {
-    setTimer(10)
+    setReTimer(reTimer + 1)
   }
   return (
     <CSS.BackgroundMain>
@@ -138,7 +139,7 @@ const SignUp: React.FC = () => {
                     onChange={onChange}
                   />
                   <TimerP>
-                    <Timer timeLimit={timer} onTimerEnd={() => setTimer(0)} />
+                    <Timer reTimeLimit={reTimer} timeLimit={timer} onTimerEnd={() => setTimer(0)} />
                   </TimerP>
                 </InputBoxDiv>
                 <Button size={'s'} color={'gray'} onclick={RetransmissionBtnHandler}>
