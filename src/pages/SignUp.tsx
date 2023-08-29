@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { useMutation } from '@tanstack/react-query'
 import { useRecoilState } from 'recoil'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
@@ -9,6 +10,7 @@ import { blackLogo } from '../assets'
 import SnackBarAtom from '../recoil/SnackBarAtom'
 import Timer from '../components/Timer'
 import useInput from '../utils/useInput'
+import { authCode } from '../axios/login'
 
 const SignUp: React.FC = () => {
   const { t } = useTranslation()
@@ -34,6 +36,15 @@ const SignUp: React.FC = () => {
   const [timer, setTimer] = useState(0)
   const [isSignUp, setIsSignUp] = useState(false)
 
+  const authCodeMutation = useMutation(authCode, {
+    onSuccess: () => {
+      setIsCertified(true)
+    },
+    onError: (error) => {
+      setHelpMsg((prevState) => ({ ...prevState, email: '이미 등록된 이메일 입니다.' }))
+    },
+  })
+
   useEffect(() => {
     const isNickNameValid = data.nickName.length >= 2
     const areFieldsFilled = Object.values(data)
@@ -54,15 +65,16 @@ const SignUp: React.FC = () => {
   }
 
   const emailAuthenticationBtnHandler = () => {
+    const FullEmail = `${data.email}@${data.address}`
     const regex = /\./
     if (!regex.test(data.address)) {
       setHelpMsg((prevState) => ({ ...prevState, email: '이메일 형식을 확인해주세요.' }))
       return
     }
-    setIsCertified(true)
-    setHelpMsg((prevState) => ({ ...prevState, email: '이미 등록된 이메일 입니다.' }))
+    authCodeMutation.mutate({ email: FullEmail })
     setTimer(10)
   }
+
   const certifiedBtnHandler = () => {
     setIsSnackBar({ open: true })
     setHelpMsg((prevState) => ({ ...prevState, certified: '인증번호가 일치하지 않습니다.' }))
