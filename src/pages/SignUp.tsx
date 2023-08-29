@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 import { useMutation } from '@tanstack/react-query'
-import { useRecoilState } from 'recoil'
-import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
-import * as CSS from '../style/LoginRelevantSt'
-import { Button, Image, Portal } from '../components/common'
 import { blackLogo } from '../assets'
-import SnackBarAtom from '../recoil/SnackBarAtom'
+import { authCode, signUp, validation } from '../axios/login'
 import Timer from '../components/Timer'
+import { Button, Image, Portal } from '../components/common'
+import SnackBarAtom from '../recoil/SnackBarAtom'
+import * as CSS from '../style/LoginRelevantSt'
 import useInput from '../utils/useInput'
-import { authCode } from '../axios/login'
 
 const SignUp: React.FC = () => {
   const { t } = useTranslation()
@@ -45,7 +45,29 @@ const SignUp: React.FC = () => {
       setHelpMsg((prevState) => ({ ...prevState, email: '이미 등록된 이메일 입니다.' }))
     },
   })
+  const validationMutation = useMutation(validation, {
+    onSuccess: () => {
+      setIsCertified(false)
+    },
+    onError: (error) => {
+      setIsSnackBar({ open: true })
+      setHelpMsg((prevState) => ({ ...prevState, certified: '인증번호가 일치하지 않습니다.' }))
+    },
+  })
+  const signUpMutation = useMutation(signUp, {
+    onSuccess: () => {},
+    onError: (error) => {
+      setHelpMsg((prevState) => ({ ...prevState, password: '사용할 수 없는 비밀번호 입니다.' }))
+    },
+  })
+  const FullEmail = `${data.email}@${data.address}`
 
+  const apiData = {
+    nickname: data.nickname,
+    email: FullEmail,
+    code: data.ConfirmNumber,
+    password: data.password,
+  }
   useEffect(() => {
     const isNickNameValid = data.nickName.length >= 2
     const areFieldsFilled = Object.values(data)
@@ -66,23 +88,20 @@ const SignUp: React.FC = () => {
   }
 
   const emailAuthenticationBtnHandler = () => {
-    const FullEmail = `${data.email}@${data.address}`
     const regex = /\./
     if (!regex.test(data.address)) {
       setHelpMsg((prevState) => ({ ...prevState, email: '이메일 형식을 확인해주세요.' }))
       return
     }
-    authCodeMutation.mutate({ email: FullEmail })
+    authCodeMutation.mutate({ email: apiData.email })
     setTimer(180)
   }
 
   const certifiedBtnHandler = () => {
-    setIsSnackBar({ open: true })
-    setHelpMsg((prevState) => ({ ...prevState, certified: '인증번호가 일치하지 않습니다.' }))
+    validationMutation.mutate({ code: apiData.code })
   }
 
   const signUpBtnHandler = () => {
-    setHelpMsg((prevState) => ({ ...prevState, password: '사용할 수 없는 비밀번호 입니다.' }))
     if (data.password !== data.passwordConfirm) {
       setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '비밀번호가 일치하지 않습니다.' }))
     } else {

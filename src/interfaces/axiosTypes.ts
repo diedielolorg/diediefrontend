@@ -19,3 +19,14 @@ export interface AuthCodeProps {
 export interface ValidationProps {
   code: string
 }
+
+// 닉네임 중복확인
+export interface NicknameConfirmProps {
+  nickname: string
+}
+
+// 로그인
+export interface LoginProps {
+  email: string
+  password: string
+}

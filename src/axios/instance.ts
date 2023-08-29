@@ -29,7 +29,7 @@ api.interceptors.response.use(
   // 응답을 내보내기 전 수행되는 함수
   (response) => {
     try {
-      return response.data
+      return response
     } catch (error) {
       return Promise.reject(error)
     }
@@ -45,7 +45,11 @@ const postRequest = async (url: string, data: PostRequest) => {
   // eslint-disable-next-line no-useless-catch
   try {
     const response = await api.post(url, data)
-    return response.data
+    const token: string = response.data.authorization
+    if (token) {
+      Cookies.set('accessToken', token)
+    }
+    return response
   } catch (error) {
     throw error
   }
