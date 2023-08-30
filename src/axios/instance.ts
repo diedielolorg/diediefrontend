@@ -1,9 +1,10 @@
 import axios, { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
-import { PostRequest } from '../interfaces/axiosTypes'
+import { RequestType } from '../interfaces/axiosTypes'
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_SERVER_API,
+  timeout: 10000,
 })
 
 api.interceptors.request.use(
@@ -41,47 +42,28 @@ api.interceptors.response.use(
   },
 )
 
-const postRequest = async (url: string, data: PostRequest) => {
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const response = await api.post(url, data)
-    const token: string = response.data.authorization
-    if (token) {
-      Cookies.set('accessToken', token)
-    }
-    return response
-  } catch (error) {
-    throw error
-  }
-}
-
 const getRequest = async (url: string) => {
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const response = await api.get(url)
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await api.get(url)
+  return response.data
 }
 
-const putRequest = async (url: string, data: PostRequest) => {
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const response = await api.put(url, data)
-    return response.data
-  } catch (error) {
-    throw error
+const postRequest = async (url: string, data: RequestType) => {
+  const response = await api.post(url, data)
+  const token: string = response.data.authorization
+  if (token) {
+    Cookies.set('accessToken', token)
   }
+  return response
 }
+
+const putRequest = async (url: string, data: RequestType) => {
+  const response = await api.put(url, data)
+  return response.data
+}
+
 const deleteRequest = async (url: string) => {
-  // eslint-disable-next-line no-useless-catch
-  try {
-    const response = await api.delete(url)
-    return response.data
-  } catch (error) {
-    throw error
-  }
+  const response = await api.delete(url)
+  return response.data
 }
 
 export { api, postRequest, getRequest, putRequest, deleteRequest }

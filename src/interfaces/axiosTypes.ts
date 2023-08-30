@@ -1,6 +1,6 @@
 // POST컴포넌트
-export interface PostRequest {
-  [key: string]: string
+export interface RequestType {
+  [key: string]: string | number | boolean
 }
 
 // 회원가입
