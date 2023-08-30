@@ -38,8 +38,8 @@ const ReportList = ({ reportlist }: ReportListProps) => {
         reportlist.map((list, idx) => (
           <ReportInfoDiv key={list.reportId}>
             <BtnWrapDiv>
-              {/* // TODO onclick 시 삭제 사유 모달 호출, 작성자와 로그인 일치할 때 삭제 버튼 출력 */}
-              <DeleteBtn>{'삭제'}</DeleteBtn>
+              {/* // ! 삭제 기능 2차 스코프로 변경됨 */}
+              {/* <DeleteBtn>{'삭제'}</DeleteBtn> */}
               <MoreBtn onClick={() => onMoreClickHandler(idx)}>
                 {'더보기'}
                 <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />

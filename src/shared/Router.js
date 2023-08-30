@@ -22,7 +22,6 @@ const Router = () => {
           <Route path={'editinfo'} element={<EditInfo />} />
           <Route path={'withdrawal'} element={<Withdrawal />} />
           <Route path={'afterlogin'} element={<AfterLoginPage />} />
-          <Route path={'snackbar'} element={<SnackBar />} />
           <Route path={'*'} element={<NoMatch />} />
         </Route>
       </Routes>
