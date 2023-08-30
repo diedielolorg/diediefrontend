@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { useMutation } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
@@ -23,7 +23,7 @@ const SignUp: React.FC = () => {
     password: '',
     passwordConfirm: '',
   })
-  const [data, onChange] = useInput({
+  const [data, onChange, updateConfirmNumber] = useInput({
     nickName: '',
     email: '',
     address: '',
@@ -33,13 +33,14 @@ const SignUp: React.FC = () => {
   })
   const [isCertified, setIsCertified] = useState(false)
   const [isNickNameSuccess, setIsNickNameSuccess] = useState(false)
-  const [timer, setTimer] = useState(0)
-  const [reTimer, setReTimer] = useState(0)
+  const [timer, setTimer] = useState(10)
   const [isSignUp, setIsSignUp] = useState(false)
+  const [isBtnOpen, setIsBtnOpen] = useState(false)
 
   const authCodeMutation = useMutation(authCode, {
     onSuccess: () => {
       setIsCertified(true)
+      setIsBtnOpen(false)
     },
     onError: (error) => {
       setHelpMsg((prevState) => ({ ...prevState, email: '이미 등록된 이메일 입니다.' }))
@@ -48,9 +49,10 @@ const SignUp: React.FC = () => {
   const validationMutation = useMutation(validation, {
     onSuccess: () => {
       setIsCertified(false)
+      setIsSnackBar({ open: true })
+      updateConfirmNumber('')
     },
     onError: (error) => {
-      setIsSnackBar({ open: true })
       setHelpMsg((prevState) => ({ ...prevState, certified: '인증번호가 일치하지 않습니다.' }))
     },
   })
@@ -77,12 +79,22 @@ const SignUp: React.FC = () => {
     setIsSignUp(isNickNameValid && areFieldsFilled)
   }, [data])
 
+  useEffect(() => {
+    setIsBtnOpen(true)
+  }, [data.email, data.address])
+
   const nickNameConfirm = () => {
     const regex = /^[가-힣a-zA-Z]*$/
     if (!regex.test(data.nickName)) {
       setHelpMsg((prevState) => ({
         ...prevState,
         nickName: '사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)',
+      }))
+    }
+    if (data.nickName.length < 2) {
+      setHelpMsg((prevState) => ({
+        ...prevState,
+        nickName: '닉네임을 입력해주세요',
       }))
     }
   }
@@ -94,7 +106,9 @@ const SignUp: React.FC = () => {
       return
     }
     authCodeMutation.mutate({ email: apiData.email })
-    setTimer(180)
+    if (!isCertified) {
+      setTimer(10)
+    }
   }
 
   const certifiedBtnHandler = () => {
@@ -109,8 +123,13 @@ const SignUp: React.FC = () => {
     }
   }
   const RetransmissionBtnHandler = () => {
-    setReTimer(reTimer + 1)
+    setTimer(10)
   }
+  const memoizedTimer = useMemo(
+    () => <Timer isBtnOpen={isBtnOpen} timeLimit={timer} onTimerEnd={() => setTimer(0)} />,
+    [timer, isBtnOpen],
+  )
+
   return (
     <CSS.BackgroundMain>
       <CSS.OverRaySection>
@@ -137,7 +156,12 @@ const SignUp: React.FC = () => {
             <CSS.UserInfoInput id={'email'} size={167} name={'email'} value={data.email} onChange={onChange} />
             <p>{'@'}</p>
             <CSS.UserInfoInput id={'email'} size={238} name={'address'} value={data.address} onChange={onChange} />
-            <Button size={'xs'} color={'lime'} onclick={emailAuthenticationBtnHandler}>
+            <Button
+              size={'xs'}
+              color={!isBtnOpen ? 'light' : 'lime'}
+              onclick={emailAuthenticationBtnHandler}
+              disabled={!isBtnOpen}
+            >
               {t('인증')}
             </Button>
           </CSS.ConfirmBoxDiv>
@@ -158,7 +182,8 @@ const SignUp: React.FC = () => {
                     onChange={onChange}
                   />
                   <TimerP>
-                    <Timer reTimeLimit={reTimer} timeLimit={timer} onTimerEnd={() => setTimer(0)} />
+                    {/* <Timer timeLimit={timer} onTimerEnd={() => setTimer(0)} /> */}
+                    {memoizedTimer}
                   </TimerP>
                 </InputBoxDiv>
                 <Button size={'s'} color={'gray'} onclick={RetransmissionBtnHandler}>

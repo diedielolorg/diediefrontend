@@ -1,27 +1,31 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { TimeFormatter, timerProps } from '../interfaces/TimerTypes'
 
-const Timer = ({ timeLimit, onTimerEnd, reTimeLimit }: timerProps) => {
-  const [count, setCount] = useState(timeLimit)
+const Timer = ({ timeLimit, onTimerEnd, isBtnOpen }: timerProps) => {
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
-    setCount(timeLimit) // 타이머를 초기화
+    let id: NodeJS.Timeout
 
-    const id = setInterval(() => {
-      setCount((prevCount) => {
-        if (prevCount > 0) {
-          return prevCount - 1
-        }
-        clearInterval(id)
-        if (prevCount === 0) {
+    if (!isBtnOpen) {
+      setCount(timeLimit) // 타이머를 초기화
+
+      id = setInterval(() => {
+        setCount((prevCount) => {
+          if (prevCount > 0) {
+            return prevCount - 1
+          }
+          clearInterval(id)
           onTimerEnd()
-        }
-        return prevCount
-      })
-    }, 1000)
+          return prevCount
+        })
+      }, 1000)
+    }
 
-    return () => clearInterval(id)
-  }, [timeLimit, onTimerEnd, reTimeLimit])
+    return () => {
+      clearInterval(id)
+    }
+  }, [timeLimit, onTimerEnd, isBtnOpen])
 
   const formatTime: TimeFormatter = (time) => {
     const minutes = Math.floor(time / 60)
@@ -34,4 +38,4 @@ const Timer = ({ timeLimit, onTimerEnd, reTimeLimit }: timerProps) => {
   return <p>{formatTime(count)}</p>
 }
 
-export default Timer
+export default memo(Timer)

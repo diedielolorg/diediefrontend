@@ -14,16 +14,18 @@ import useInput from '../utils/useInput'
 const SignIn: React.FC = () => {
   const { t } = useTranslation()
 
+  // ystart5008@naver.com
+  // fdsafawe
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [data, onChange] = useInput({
     email: '',
     password: '',
   })
   const navigate = useNavigate()
-  const param = useParams()
+
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
-      console.log(param)
+      navigate('/')
     },
     onError: (error) => {
       setIsSnackBar({ open: true })
