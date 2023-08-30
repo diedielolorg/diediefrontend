@@ -130,5 +130,6 @@ const MenuBtn = styled.button`
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
+  cursor: pointer;
 `
 export default Layout

@@ -1,6 +1,6 @@
 export interface timerProps {
   timeLimit: number
-  reTimeLimit: number
+  isBtnOpen: boolean
   onTimerEnd: () => void
 }
 
