@@ -1,76 +1,81 @@
-import React from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 import { styled } from 'styled-components'
 import { PotalProps } from '../../interfaces/CommonTypes'
 import { UserListDivProps } from '../../interfaces/ModalTypes'
+import { IngameType } from '../../interfaces/UserInfoTypes'
 import { Image, Badge, Tier } from '../common'
 import { closeIcon, exampleUserIcon } from '../../assets'
+import { getIngame } from '../../axios/userInfo'
 
-const Ingame = ({ onclick }: PotalProps) => {
+const Ingame = ({ nickname, onclick }: PotalProps) => {
+  const { data, isLoading, error } = useQuery(['getIngame'], () => getIngame(nickname && nickname))
+
   return (
     <BackgroundDiv>
       <ContentDiv>
-        <GameInfoSection>
-          <div>
-            <h1>{'인게임 정보'}</h1>
-            <div>
-              <p>{'솔로랭크'}</p>
-              <p>{'|'}</p>
-              <p>{'소환사 협곡'}</p>
-              <p>{'|'}</p>
-              <p>{'15분 13초'}</p>
-            </div>
-          </div>
-          <button type={'button'} onClick={onclick}>
-            <Image src={closeIcon} />
-          </button>
-        </GameInfoSection>
+        {isLoading ? (
+          <h1>{'Loading'}</h1>
+        ) : error ? (
+          <h1>{'error'}</h1>
+        ) : (
+          data && (
+            <>
+              <GameInfoSection>
+                <div>
+                  <h1>{'인게임 정보'}</h1>
+                  <div>
+                    <p>{data.gameMode}</p>
+                    <p>{'|'}</p>
+                    <p>{data.gameType}</p>
+                    <p>{'|'}</p>
+                    <p>{data.gameLength}</p>
+                  </div>
+                </div>
+                <button type={'button'} onClick={onclick}>
+                  <Image src={closeIcon} />
+                </button>
+              </GameInfoSection>
 
-        <MatchInfoSection>
-          <UserListDiv $position={'left'}>
-            <div>
-              <Image width={50} height={50} $border={5} />
-              <EachUserDiv>
-                <p>{'오빤18내맘몰라'}</p>
-                <div>
-                  <span>{'전과 7범'}</span>
-                  <Badge $category={'fWord'} />
-                </div>
-              </EachUserDiv>
-              <Tier $tier={'CHALLENGER'} $rank={''} />
-            </div>
-            <div>
-              <Image width={50} height={50} $border={5} />
-              <EachUserDiv>
-                <p>{'방배동둠피스트'}</p>
-                <span>{'모범시민'}</span>
-                <Image width={13} height={18} src={exampleUserIcon} />
-              </EachUserDiv>
-              <Tier $tier={'EMERALD'} $rank={'III'} />
-            </div>
-          </UserListDiv>
-          <UserListDiv $position={'right'}>
-            <div>
-              <Image width={50} height={50} $border={5} />
-              <EachUserDiv>
-                <p>{'축지법아저씨'}</p>
-                <div>
-                  <span>{'전과 67범'}</span>
-                  <Badge $category={'aversion'} />
-                </div>
-              </EachUserDiv>
-              <Tier $tier={'GRANDMASTER'} $rank={''} />
-            </div>
-            <div>
-              <Image width={50} height={50} $border={5} />
-              <EachUserDiv>
-                <p>{'강아지는애옹'}</p>
-                <span>{'전과 33범'}</span>
-                <Badge $category={'adHominem'} />
-              </EachUserDiv>
-              <Tier $tier={'PLATINUM'} $rank={'Ⅳ'} />
-            </div>
-          </UserListDiv>
-        </MatchInfoSection>
+              <MatchInfoSection>
+                <UserListDiv $position={'left'}>
+                  {data.participants.map(
+                    (user: IngameType) =>
+                      user.teamId === 100 && (
+                        <div>
+                          <Image width={50} height={50} $border={5} src={user.championImageUrl} />
+                          <EachUserDiv>
+                            {/* // TODO 신고데이터 있을 경우 */}
+                            <p>{user.summonerName}</p>
+                            <span>{'모범시민'}</span>
+                            <Image width={13} height={18} src={exampleUserIcon} />
+                          </EachUserDiv>
+                          <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
+                        </div>
+                      ),
+                  )}
+                </UserListDiv>
+                <UserListDiv $position={'right'}>
+                  {data.participants.map(
+                    (user: IngameType) =>
+                      user.teamId === 200 && (
+                        <div>
+                          <Image width={50} height={50} $border={5} src={user.championImageUrl} />
+                          <EachUserDiv>
+                            {/* // TODO 신고데이터 있을 경우 */}
+                            <p>{user.summonerName}</p>
+                            <span>{'모범시민'}</span>
+                            <Image width={13} height={18} src={exampleUserIcon} />
+                          </EachUserDiv>
+                          <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
+                        </div>
+                      ),
+                  )}
+                </UserListDiv>
+              </MatchInfoSection>
+            </>
+          )
+        )}
       </ContentDiv>
     </BackgroundDiv>
   )
@@ -173,8 +178,4 @@ const EachUserDiv = styled.div`
   img {
     margin-left: 7px;
   }
-`
-
-const RightUserList = styled.div`
-  background: linear-gradient(-160deg, #000000, #151900, #2c3300);
 `

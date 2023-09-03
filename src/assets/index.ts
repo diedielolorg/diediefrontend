@@ -16,7 +16,6 @@ import langKo from './langKo.svg'
 import logo from './logo.svg'
 import nextonIcon from './nextonIcon.svg'
 import rankingArrow from './rankingArrow.svg'
-import reportImg from './reportImg.svg'
 import ScreenShot from './ScreenShot.svg'
 import searchBtn from './searchBtn.svg'
 import successIcon from './successIcon.svg'
@@ -42,7 +41,6 @@ export {
   logo,
   nextonIcon,
   rankingArrow,
-  reportImg,
   ScreenShot,
   searchBtn,
   successIcon,

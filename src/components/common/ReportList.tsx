@@ -49,15 +49,16 @@ const ReportList = ({ reportlist }: ReportListProps) => {
               <span>
                 <strong>{'욕 카테고리'}</strong>
               </span>
-              {list.cussWord.map((words) => (
+              {/* // TODO DB에 데이터 넣어주면 해당 res값 반영해서 처리 */}
+              {/* {list.cussWord.map((words) => (
                 <Badge key={uniqueId + words} $category={words} />
-              ))}
+              ))} */}
             </div>
             <div>
               <span>
                 <strong>{'욕한 날짜'}</strong>
               </span>
-              <span>{list.reportDate.replace(/-/g, '. ')}</span>
+              <span>{list.reportDate}</span>
             </div>
             <div>
               <span>
@@ -79,10 +80,10 @@ const ReportList = ({ reportlist }: ReportListProps) => {
             </div>
           </ReportInfoDiv>
         ))}
+      {/* // TODO 데이터 5개 이상 있을 때 & 백에서 페이지네이션 구현 되면 다시 체크 */}
       <PaginationDiv>
         <StPagination
-          // TODO [pageCount] 전체 페이지 수 = 총 아이템 수 / 페이지 당 아이템 수이므로 이후 API 연결했을 때 해당 값 맞춰서 length / 5 로 수정할 것
-          pageCount={Math.ceil(35 / 3)}
+          pageCount={Math.ceil(reportlist.length / 5)}
           marginPagesDisplayed={0}
           pageRangeDisplayed={4}
           forcePage={currentPage}

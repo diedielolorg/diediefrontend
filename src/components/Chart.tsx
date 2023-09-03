@@ -1,18 +1,21 @@
-import React from 'react'
 import { ChartOptions, Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
-import { useTheme } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
+import { ChartProps } from '../interfaces/UserInfoTypes'
 
-const SwordChart = () => {
+const Chart = ({ chartData, label }: ChartProps) => {
   ChartJS.register(ArcElement, Tooltip, Legend)
+
+  const LabelArr = Object.keys(chartData)
+  const dataArr = Object.values(chartData)
 
   const theme = useTheme()
   const data = {
-    labels: ['패드립', '기타', '성희롱', '인신공격', '혐오성 발언', '쌍욕'],
+    labels: LabelArr && LabelArr,
     datasets: [
       {
-        label: '욕 통계',
-        data: [8, 8, 8, 8, 16, 16],
+        label,
+        data: dataArr && dataArr,
         backgroundColor: [
           theme.green.basic,
           theme.gray.DE,
@@ -64,7 +67,28 @@ const SwordChart = () => {
     },
   }
 
-  return <Doughnut data={data} options={options} width={400} height={400} />
+  return (
+    <div>
+      {dataArr.every((value) => !value) ? (
+        <NoneDataDiv>
+          <h3>{'등록된 통계 데이터가 없습니다.'}</h3>
+        </NoneDataDiv>
+      ) : (
+        <StyledChart data={data} options={options} width={400} height={400} />
+      )}
+    </div>
+  )
 }
 
-export default SwordChart
+export default Chart
+
+const NoneDataDiv = styled.div`
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const StyledChart = styled(Doughnut)`
+  height: 350px;
+`

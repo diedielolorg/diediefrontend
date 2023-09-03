@@ -3,6 +3,7 @@ export interface PotalProps {
   type?: string
   src?: string
   snackBar?: string
+  nickname?: string
   onclick?: (
     event: React.MouseEvent<HTMLDivElement, MouseEvent> | React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void
@@ -41,11 +42,12 @@ export interface TierProps {
 // ReportList.tsx
 export interface ReportListProps {
   reportlist: {
-    reportId: number
-    cussWord: string[]
-    reportDate: string
-    reportPayload: string
+    category: string[]
     reportCapture: string[]
+    reportDate: string
+    reportId: number
+    reportPayload: string
+    summonerName: string
   }[]
 }
 
