@@ -1,4 +1,3 @@
-import SwordChart from './SwordChart'
-import RegionChart from './RegionChart'
+import Chart from './Chart'
 
-export { SwordChart, RegionChart }
+export { Chart }
