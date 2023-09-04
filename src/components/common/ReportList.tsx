@@ -49,10 +49,7 @@ const ReportList = ({ reportlist }: ReportListProps) => {
               <span>
                 <strong>{'욕 카테고리'}</strong>
               </span>
-              {/* // TODO DB에 데이터 넣어주면 해당 res값 반영해서 처리 */}
-              {/* {list.cussWord.map((words) => (
-                <Badge key={uniqueId + words} $category={words} />
-              ))} */}
+              <Badge $category={list.category} />
             </div>
             <div>
               <span>

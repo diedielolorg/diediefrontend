@@ -12,6 +12,8 @@ export const GlobalStyle = createGlobalStyle`
   *, *:before, *:after { box-sizing: border-box; }
   html { 
     overflow-y: auto;
+    overflow-x: hidden;
+  
     ::-webkit-scrollbar {
       width: 12px;
       height: 125px;
@@ -21,12 +23,15 @@ export const GlobalStyle = createGlobalStyle`
       background-color: ${({ theme }) => theme.gray.SF};
       border-radius: 6px;
     }
-
+  
     ::-webkit-scrollbar-track {
       background-color: ${({ theme }) => theme.gray.TO};
     }
   }
-  body { min-width: 320px; }
+  body { 
+    min-width: 320px;
+  
+  }
   ol, ul, li { list-style: none; }
   a { text-decoration: none; color: inherit; }
   img { border: 0; vertical-align: middle; }

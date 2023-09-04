@@ -20,7 +20,7 @@ export interface BtnProps {
 
 // Badge.tsx
 export interface BadgeProps {
-  $category?: string
+  $category: string
 }
 
 // Image.tsx
@@ -42,7 +42,7 @@ export interface TierProps {
 // ReportList.tsx
 export interface ReportListProps {
   reportlist: {
-    category: string[]
+    category: string
     reportCapture: string[]
     reportDate: string
     reportId: number

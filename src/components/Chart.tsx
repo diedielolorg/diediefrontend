@@ -6,32 +6,23 @@ import { ChartProps } from '../interfaces/UserInfoTypes'
 const Chart = ({ chartData, label }: ChartProps) => {
   ChartJS.register(ArcElement, Tooltip, Legend)
 
+  const theme = useTheme()
+
   const LabelArr = Object.keys(chartData)
   const dataArr = Object.values(chartData)
+  const colors =
+    dataArr.length === 6
+      ? [theme.green.basic, theme.gray.DE, theme.green.neon, theme.color.yellow, theme.color.blue, theme.color.orange]
+      : [theme.green.name, theme.gray.DE, theme.green.basic, theme.green.dark]
 
-  const theme = useTheme()
   const data = {
     labels: LabelArr && LabelArr,
     datasets: [
       {
         label,
         data: dataArr && dataArr,
-        backgroundColor: [
-          theme.green.basic,
-          theme.gray.DE,
-          theme.green.neon,
-          theme.color.yellow,
-          theme.color.blue,
-          theme.color.orange,
-        ],
-        borderColor: [
-          theme.green.basic,
-          theme.gray.DE,
-          theme.green.neon,
-          theme.color.yellow,
-          theme.color.blue,
-          theme.color.orange,
-        ],
+        backgroundColor: colors,
+        borderColor: colors,
         borderWidth: 1,
       },
     ],

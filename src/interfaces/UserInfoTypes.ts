@@ -21,4 +21,9 @@ export interface IngameType {
     rank: string
     tier: string
   }
+  reportsData?: {
+    category: string
+    reportCount: number
+    summonerName: string
+  }
 }

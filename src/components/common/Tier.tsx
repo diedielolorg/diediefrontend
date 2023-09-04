@@ -12,7 +12,7 @@ const Tier = ({ $tier, $rank }: TierProps) => {
 
   return (
     <CommonTier type={'button'} $tier={$tier}>
-      {userTier}
+      {userTier || '언랭'}
     </CommonTier>
   )
 }
@@ -59,7 +59,7 @@ const CommonTier = styled.button<TierProps>`
         return theme.rank.ch
         break
       default:
-        return ''
+        return theme.gray.SF
     }
   }};
 `

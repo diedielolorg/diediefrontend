@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
 import { styled } from 'styled-components'
 import { PotalProps } from '../../interfaces/CommonTypes'
 import { UserListDivProps } from '../../interfaces/ModalTypes'
@@ -11,13 +10,62 @@ import { getIngame } from '../../axios/userInfo'
 const Ingame = ({ nickname, onclick }: PotalProps) => {
   const { data, isLoading, error } = useQuery(['getIngame'], () => getIngame(nickname && nickname))
 
+  const renderUser = (user: IngameType, position: number) => (
+    <div key={user.championId}>
+      <Image width={50} height={50} $border={5} src={user.championImageUrl} />
+      <EachUserDiv>
+        <p>{user.summonerName}</p>
+        {user.reportsData ? (
+          <>
+            <span>{position === 100 ? '전과있음' : `전과 ${user.reportsData.reportCount}범`}</span>
+            {position !== 100 && <Badge $category={user.reportsData.category} />}
+          </>
+        ) : (
+          <>
+            <span>{'모범시민'}</span>
+            <Image width={13} height={18} src={exampleUserIcon} />
+          </>
+        )}
+      </EachUserDiv>
+      <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
+    </div>
+  )
+
   return (
     <BackgroundDiv>
       <ContentDiv>
         {isLoading ? (
-          <h1>{'Loading'}</h1>
+          <>
+            <GameInfoSection>
+              <div>
+                <h1>{'인게임 정보'}</h1>
+              </div>
+              <button type={'button'} onClick={onclick}>
+                <Image src={closeIcon} />
+              </button>
+            </GameInfoSection>
+            <MatchInfoSection>
+              <ErrorDiv>
+                <h1>{'L O A D I N G . . .'}</h1>
+              </ErrorDiv>
+            </MatchInfoSection>
+          </>
         ) : error ? (
-          <h1>{'error'}</h1>
+          <>
+            <GameInfoSection>
+              <div>
+                <h1>{'인게임 정보'}</h1>
+              </div>
+              <button type={'button'} onClick={onclick}>
+                <Image src={closeIcon} />
+              </button>
+            </GameInfoSection>
+            <MatchInfoSection>
+              <ErrorDiv>
+                <h1>{'진행 중인 게임이 없습니다.'}</h1>
+              </ErrorDiv>
+            </MatchInfoSection>
+          </>
         ) : (
           data && (
             <>
@@ -27,7 +75,7 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
                   <div>
                     <p>{data.gameMode}</p>
                     <p>{'|'}</p>
-                    <p>{data.gameType}</p>
+                    <p>{data.gameName}</p>
                     <p>{'|'}</p>
                     <p>{data.gameLength}</p>
                   </div>
@@ -39,38 +87,14 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
 
               <MatchInfoSection>
                 <UserListDiv $position={'left'}>
-                  {data.participants.map(
-                    (user: IngameType) =>
-                      user.teamId === 100 && (
-                        <div>
-                          <Image width={50} height={50} $border={5} src={user.championImageUrl} />
-                          <EachUserDiv>
-                            {/* // TODO 신고데이터 있을 경우 */}
-                            <p>{user.summonerName}</p>
-                            <span>{'모범시민'}</span>
-                            <Image width={13} height={18} src={exampleUserIcon} />
-                          </EachUserDiv>
-                          <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
-                        </div>
-                      ),
-                  )}
+                  {data.participants
+                    .filter((user: IngameType) => user.teamId === 100)
+                    .map((user: IngameType) => renderUser(user, 100))}
                 </UserListDiv>
                 <UserListDiv $position={'right'}>
-                  {data.participants.map(
-                    (user: IngameType) =>
-                      user.teamId === 200 && (
-                        <div>
-                          <Image width={50} height={50} $border={5} src={user.championImageUrl} />
-                          <EachUserDiv>
-                            {/* // TODO 신고데이터 있을 경우 */}
-                            <p>{user.summonerName}</p>
-                            <span>{'모범시민'}</span>
-                            <Image width={13} height={18} src={exampleUserIcon} />
-                          </EachUserDiv>
-                          <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
-                        </div>
-                      ),
-                  )}
+                  {data.participants
+                    .filter((user: IngameType) => user.teamId === 200)
+                    .map((user: IngameType) => renderUser(user, 200))}
                 </UserListDiv>
               </MatchInfoSection>
             </>
@@ -151,6 +175,18 @@ const MatchInfoSection = styled.section`
     border-radius: 10px;
   }
 `
+
+const ErrorDiv = styled.section`
+  width: 100%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  h1 {
+    color: ${({ theme }) => theme.gray.AE};
+  }
+`
+
 const UserListDiv = styled.div<UserListDivProps>`
   display: flex;
   flex-direction: column;
