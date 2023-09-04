@@ -86,7 +86,13 @@ const UserInfo = () => {
                     {'인게임 정보 보기'}
                   </Button>
                   {toggleIngame && <Portal type={'Ingame'} onclick={toggleIngameHandler} nickname={nickname} />}
-                  <Button size={'l'} color={'basic'} onclick={() => navigate('/report')}>
+                  <Button
+                    size={'l'}
+                    color={'basic'}
+                    onclick={() => {
+                      navigate('/report', { state: { nickname } })
+                    }}
+                  >
                     {'신고하기'}
                   </Button>
                 </UserBtnDiv>
