@@ -38,18 +38,18 @@ const UserInfo = () => {
   useEffect(() => {
     if (data) {
       const userSWord = {
-        기타: data.getCussWordData.categoryCounts.기타,
-        성희롱: data.getCussWordData.categoryCounts.성희롱,
-        쌍욕: data.getCussWordData.categoryCounts.쌍욕,
-        인신공격: data.getCussWordData.categoryCounts.인신공격,
-        패드립: data.getCussWordData.categoryCounts.패드립,
-        혐오성발언: data.getCussWordData.categoryCounts.혐오성발언,
+        기타: data.getCussWordData.categoryCounts.기타 || 0,
+        성희롱: data.getCussWordData.categoryCounts.성희롱 || 0,
+        쌍욕: data.getCussWordData.categoryCounts.쌍욕 || 0,
+        인신공격: data.getCussWordData.categoryCounts.인신공격 || 0,
+        패드립: data.getCussWordData.categoryCounts.패드립 || 0,
+        혐오성발언: data.getCussWordData.categoryCounts.혐오성발언 || 0,
       }
       const userRegion = {
-        아레나: data.Arena.gameCount,
-        자유랭크: data.RANKED_FLEX_SR.gameCount,
-        솔로랭크: data.RANKED_SOLO_5x5.gameCount,
-        TFT: data.RANKED_TFT.gameCount,
+        이벤트게임: data.Event_Game.gameCount || 0,
+        자유랭크: data.RANKED_FLEX_SR.gameCount || 0,
+        솔로랭크: data.RANKED_SOLO_5x5.gameCount || 0,
+        TFT: data.RANKED_TFT.gameCount || 0,
       }
       setSWordData((prev) => ({
         ...prev,
@@ -75,9 +75,9 @@ const UserInfo = () => {
             <InfoSection>
               <div>
                 <UserInfoDiv>
-                  <Image width={100} height={100} $border={5} />
+                  <Image width={100} height={100} $border={5} src={data.profileIconIdUrl} />
                   <div>
-                    <h2>{`TOP ${data.getCussWordData.rank}`}</h2>
+                    <h2>{data.getCussWordData.rank === 0 ? `No Ranking` : `TOP ${data.getCussWordData.rank}`}</h2>
                     <h1>{data.summonerName}</h1>
                   </div>
                 </UserInfoDiv>
