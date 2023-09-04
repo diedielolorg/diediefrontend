@@ -10,6 +10,27 @@ import { getIngame } from '../../axios/userInfo'
 const Ingame = ({ nickname, onclick }: PotalProps) => {
   const { data, isLoading, error } = useQuery(['getIngame'], () => getIngame(nickname && nickname))
 
+  const renderUser = (user: IngameType, position: number) => (
+    <div key={user.championId}>
+      <Image width={50} height={50} $border={5} src={user.championImageUrl} />
+      <EachUserDiv>
+        <p>{user.summonerName}</p>
+        {user.reportsData ? (
+          <>
+            <span>{position === 100 ? '전과있음' : `전과 ${user.reportsData.reportCount}범`}</span>
+            {position !== 100 && <Badge $category={user.reportsData.category} />}
+          </>
+        ) : (
+          <>
+            <span>{'모범시민'}</span>
+            <Image width={13} height={18} src={exampleUserIcon} />
+          </>
+        )}
+      </EachUserDiv>
+      <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
+    </div>
+  )
+
   return (
     <BackgroundDiv>
       <ContentDiv>
@@ -66,54 +87,14 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
 
               <MatchInfoSection>
                 <UserListDiv $position={'left'}>
-                  {data.participants.map(
-                    (user: IngameType) =>
-                      user.teamId === 100 && (
-                        <div key={user.championId}>
-                          <Image width={50} height={50} $border={5} src={user.championImageUrl} />
-                          <EachUserDiv>
-                            <p>{user.summonerName}</p>
-                            {user.reportsData ? (
-                              <>
-                                <span>{'전과있음'}</span>
-                                <Image width={13} height={18} src={exampleUserIcon} />
-                              </>
-                            ) : (
-                              <>
-                                <span>{'모범시민'}</span>
-                                <Image width={13} height={18} src={exampleUserIcon} />
-                              </>
-                            )}
-                          </EachUserDiv>
-                          <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
-                        </div>
-                      ),
-                  )}
+                  {data.participants
+                    .filter((user: IngameType) => user.teamId === 100)
+                    .map((user: IngameType) => renderUser(user, 100))}
                 </UserListDiv>
                 <UserListDiv $position={'right'}>
-                  {data.participants.map(
-                    (user: IngameType) =>
-                      user.teamId === 200 && (
-                        <div key={user.championId}>
-                          <Image width={50} height={50} $border={5} src={user.championImageUrl} />
-                          <EachUserDiv>
-                            <p>{user.summonerName}</p>
-                            {user.reportsData && user.summonerName === user.reportsData.summonerName ? (
-                              <>
-                                <span>{`전과 ${user.reportsData.reportCount}범`}</span>
-                                <Badge $category={user.reportsData.category} />
-                              </>
-                            ) : (
-                              <>
-                                <span>{'모범시민'}</span>
-                                <Image width={13} height={18} src={exampleUserIcon} />
-                              </>
-                            )}
-                          </EachUserDiv>
-                          <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
-                        </div>
-                      ),
-                  )}
+                  {data.participants
+                    .filter((user: IngameType) => user.teamId === 200)
+                    .map((user: IngameType) => renderUser(user, 200))}
                 </UserListDiv>
               </MatchInfoSection>
             </>
