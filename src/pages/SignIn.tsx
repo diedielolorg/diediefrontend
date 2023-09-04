@@ -11,7 +11,7 @@ import SnackBarAtom from '../recoil/SnackBarAtom'
 import * as CSS from '../style/LoginRelevantSt'
 import useInput from '../utils/useInput'
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
   const { t } = useTranslation()
 
   // ystart5008@naver.com

@@ -2,10 +2,11 @@
 import { useMutation } from '@tanstack/react-query'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 import { blackLogo } from '../assets'
-import { authCode, signUp, validation } from '../axios/login'
+import { authCode, nicknameConfirm, signUp, validation } from '../axios/login'
 import Timer from '../components/Timer'
 import { Button, Image, Portal } from '../components/common'
 import SnackBarAtom from '../recoil/SnackBarAtom'
@@ -31,16 +32,30 @@ const SignUp: React.FC = () => {
     password: '',
     passwordConfirm: '',
   })
+
+  const [timer, setTimer] = useState(10)
   const [isCertified, setIsCertified] = useState(false)
   const [isNickNameSuccess, setIsNickNameSuccess] = useState(false)
-  const [timer, setTimer] = useState(10)
   const [isSignUp, setIsSignUp] = useState(false)
   const [isBtnOpen, setIsBtnOpen] = useState(false)
+  const [isEmailSuccess, setIsEmailSuccess] = useState(false)
 
+  const navigate = useNavigate()
+
+  const nicknameConfirmMutation = useMutation(nicknameConfirm, {
+    onSuccess: () => {
+      setIsNickNameSuccess(true)
+      setHelpMsg((prevState) => ({ ...prevState, nickName: '사용가능한 닉네임입니다.' }))
+    },
+    onError: (error) => {
+      setHelpMsg((prevState) => ({ ...prevState, nickName: '중복된 닉네임 입니다.' }))
+    },
+  })
   const authCodeMutation = useMutation(authCode, {
     onSuccess: () => {
       setIsCertified(true)
       setIsBtnOpen(false)
+      setHelpMsg((prevState) => ({ ...prevState, email: '' }))
     },
     onError: (error) => {
       setHelpMsg((prevState) => ({ ...prevState, email: '이미 등록된 이메일 입니다.' }))
@@ -51,22 +66,24 @@ const SignUp: React.FC = () => {
       setIsCertified(false)
       setIsSnackBar({ open: true })
       updateConfirmNumber('')
+      setIsEmailSuccess(true)
     },
     onError: (error) => {
       setHelpMsg((prevState) => ({ ...prevState, certified: '인증번호가 일치하지 않습니다.' }))
     },
   })
   const signUpMutation = useMutation(signUp, {
-    onSuccess: () => {},
+    onSuccess: () => {
+      navigate('/completed', { state: data.nickName })
+    },
     onError: (error) => {
       setHelpMsg((prevState) => ({ ...prevState, password: '사용할 수 없는 비밀번호 입니다.' }))
     },
   })
-  const FullEmail = `${data.email}@${data.address}`
 
   const apiData = {
-    nickname: data.nickname,
-    email: FullEmail,
+    nickname: data.nickName,
+    email: `${data.email}@${data.address}`,
     code: data.ConfirmNumber,
     password: data.password,
   }
@@ -76,11 +93,12 @@ const SignUp: React.FC = () => {
       .slice(1)
       .every((value) => value.length !== 0)
 
-    setIsSignUp(isNickNameValid && areFieldsFilled)
-  }, [data])
+    setIsSignUp(isNickNameValid && areFieldsFilled && isNickNameSuccess && isEmailSuccess)
+  }, [data, isNickNameSuccess, isEmailSuccess])
 
   useEffect(() => {
     setIsBtnOpen(true)
+    setIsEmailSuccess(false)
   }, [data.email, data.address])
 
   const nickNameConfirm = () => {
@@ -90,13 +108,16 @@ const SignUp: React.FC = () => {
         ...prevState,
         nickName: '사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)',
       }))
+      return
     }
     if (data.nickName.length < 2) {
       setHelpMsg((prevState) => ({
         ...prevState,
         nickName: '닉네임을 입력해주세요',
       }))
+      return
     }
+    nicknameConfirmMutation.mutate({ nickname: apiData.nickname })
   }
 
   const emailAuthenticationBtnHandler = () => {
@@ -110,21 +131,25 @@ const SignUp: React.FC = () => {
       setTimer(10)
     }
   }
-
-  const certifiedBtnHandler = () => {
-    validationMutation.mutate({ code: apiData.code })
-  }
-
-  const signUpBtnHandler = () => {
-    if (data.password !== data.passwordConfirm) {
-      setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '비밀번호가 일치하지 않습니다.' }))
-    } else {
-      setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '' }))
-    }
-  }
   const RetransmissionBtnHandler = () => {
     setTimer(10)
   }
+  const certifiedBtnHandler = () => {
+    validationMutation.mutate({ code: apiData.code })
+  }
+  const signUpBtnHandler = () => {
+    if (data.password !== data.passwordConfirm) {
+      setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '비밀번호가 일치하지 않습니다.' }))
+      return
+    }
+    setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '' }))
+    signUpMutation.mutate({
+      nickname: apiData.nickname,
+      email: apiData.email,
+      password: apiData.password,
+    })
+  }
+
   const memoizedTimer = useMemo(
     () => <Timer isBtnOpen={isBtnOpen} timeLimit={timer} onTimerEnd={() => setTimer(0)} />,
     [timer, isBtnOpen],
@@ -162,7 +187,7 @@ const SignUp: React.FC = () => {
               onclick={emailAuthenticationBtnHandler}
               disabled={!isBtnOpen}
             >
-              {t('인증')}
+              {isEmailSuccess ? '✔️' : t('인증')}
             </Button>
           </CSS.ConfirmBoxDiv>
           <CSS.HelpMessageDiv>{t(helpMsg.email)}</CSS.HelpMessageDiv>
