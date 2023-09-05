@@ -27,3 +27,8 @@ export interface IngameType {
     summonerName: string
   }
 }
+
+export interface UserInfoParamType {
+  nickname: string | undefined
+  page: number
+}
