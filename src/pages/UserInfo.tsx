@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { styled } from 'styled-components'
+import { useRecoilValue } from 'recoil'
+import { pageState } from '../recoil/PageAtom'
 import { Portal, Button, Image, ReportList } from '../components/common'
 import { Chart } from '../components'
 import { exampleUserIcon } from '../assets'
@@ -11,18 +12,22 @@ import { ChartDataType } from '../interfaces/UserInfoTypes'
 
 const UserInfo = () => {
   const nickname = useParams().userNickname
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
 
   const [toggleIngame, setToggleIngame] = useState(false)
   const [sWordData, setSWordData] = useState<ChartDataType>({})
   const [regionData, setRegionData] = useState<ChartDataType>({})
 
+  const { page } = useRecoilValue(pageState)
+
   // * ingame portal 호출
   const toggleIngameHandler = () => setToggleIngame(!toggleIngame)
 
   // * 유저 정보 조회
-  // TODO 유저 정보 없을 때 (500 error)
-  const { data, isLoading, error } = useQuery(['getUserInfo'], () => getUserInfo(nickname))
+  const { data, isLoading, error } = useQuery(['getUserInfo', { nickname, page }], () =>
+    getUserInfo({ nickname, page }),
+  )
 
   // * 날짜 형식 변환
   const dateFormatHandler = (lastPlayTime: string) => {
@@ -35,6 +40,7 @@ const UserInfo = () => {
     return `${year}.${month}.${day}. ${hr}:${min}`
   }
 
+  // * 유저 정보 set
   useEffect(() => {
     if (data) {
       const userSWord = {
@@ -61,6 +67,11 @@ const UserInfo = () => {
       }))
     }
   }, [data])
+
+  // * 페이지네이션 set
+  useEffect(() => {
+    queryClient.invalidateQueries(['getUserInfo'])
+  }, [page])
 
   return (
     <WrapDiv>
@@ -137,10 +148,10 @@ const UserInfo = () => {
             <ReportSection>
               <ReportCountDiv>
                 <h2>{'등록된 신고'}</h2>
-                <p>{`총 ${data.reportData.length}개`}</p>
+                <p>{`총 ${data.getCussWordData.reportCount}개`}</p>
               </ReportCountDiv>
               {data.reportData.length ? (
-                <ReportList reportlist={data.reportData} />
+                <ReportList reportlist={data.reportData} reportlength={data.getCussWordData.reportCount} />
               ) : (
                 <NoneListDiv>{'등록된 신고가 없습니다.'}</NoneListDiv>
               )}

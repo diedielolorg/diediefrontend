@@ -41,6 +41,7 @@ export interface TierProps {
 
 // ReportList.tsx
 export interface ReportListProps {
+  reportlength: number
   reportlist: {
     category: string
     reportCapture: string[]
