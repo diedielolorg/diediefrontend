@@ -76,7 +76,6 @@ const ReportList = ({ reportlist, reportlength }: ReportListProps) => {
             </div>
           </ReportInfoDiv>
         ))}
-      {/* // TODO 데이터 5개 이상 있을 때 & 백에서 페이지네이션 구현 되면 다시 체크 */}
       <PaginationDiv>
         <StPagination
           pageCount={Math.ceil(reportlength / 5)}

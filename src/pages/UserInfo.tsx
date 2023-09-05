@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
+import { AxiosError } from 'axios'
 import { styled } from 'styled-components'
 import { useRecoilValue } from 'recoil'
 import { pageState } from '../recoil/PageAtom'
 import { Portal, Button, Image, ReportList } from '../components/common'
 import { Chart } from '../components'
 import { exampleUserIcon } from '../assets'
+import { Loading } from './status'
 import { getUserInfo } from '../axios/userInfo'
 import { ChartDataType } from '../interfaces/UserInfoTypes'
 
@@ -25,9 +27,16 @@ const UserInfo = () => {
   const toggleIngameHandler = () => setToggleIngame(!toggleIngame)
 
   // * 유저 정보 조회
-  const { data, isLoading, error } = useQuery(['getUserInfo', { nickname, page }], () =>
-    getUserInfo({ nickname, page }),
-  )
+  const { data, isLoading } = useQuery({
+    queryKey: ['getUserInfo', { nickname, page }],
+    queryFn: () => getUserInfo({ nickname, page }),
+    retry: 1,
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 500) {
+        navigate('/error')
+      }
+    },
+  })
 
   // * 날짜 형식 변환
   const dateFormatHandler = (lastPlayTime: string) => {
@@ -75,11 +84,8 @@ const UserInfo = () => {
 
   return (
     <WrapDiv>
-      {/* // TODO Loading, Error */}
       {isLoading ? (
-        <h1>{'Loading'}</h1>
-      ) : error ? (
-        <h1>{'error'}</h1>
+        <Loading />
       ) : (
         data && (
           <>

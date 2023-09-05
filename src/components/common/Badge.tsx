@@ -9,7 +9,7 @@ import { BadgeProps } from '../../interfaces/CommonTypes'
 const Badge = ({ $category }: BadgeProps) => {
   const uniqueId: string = uuid()
 
-  return $category.split(', ').map((item) => (
+  return $category.split(',').map((item) => (
     <CommonBadge key={uniqueId + item} $category={item.replaceAll(',', '')}>
       {item}
     </CommonBadge>
