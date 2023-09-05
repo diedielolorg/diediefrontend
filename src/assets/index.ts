@@ -13,6 +13,7 @@ import illust from './illust.svg'
 import kakaoBtn from './kakaoBtn.svg'
 import langEn from './langEn.svg'
 import langKo from './langKo.svg'
+import loading from './loading.gif'
 import logo from './logo.svg'
 import nextonIcon from './nextonIcon.svg'
 import rankingArrow from './rankingArrow.svg'
@@ -38,6 +39,7 @@ export {
   kakaoBtn,
   langEn,
   langKo,
+  loading,
   logo,
   nextonIcon,
   rankingArrow,

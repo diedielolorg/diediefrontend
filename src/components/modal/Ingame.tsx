@@ -5,20 +5,41 @@ import { UserListDivProps } from '../../interfaces/ModalTypes'
 import { IngameType } from '../../interfaces/UserInfoTypes'
 import { Image, Badge, Tier } from '../common'
 import { closeIcon, exampleUserIcon } from '../../assets'
+import { Loading } from '../../pages/status'
 import { getIngame } from '../../axios/userInfo'
 
 const Ingame = ({ nickname, onclick }: PotalProps) => {
-  const { data, isLoading, error } = useQuery(['getIngame'], () => getIngame(nickname && nickname))
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['getIngame'],
+    queryFn: () => getIngame(nickname && nickname),
+    retry: 1,
+  })
 
-  const renderUser = (user: IngameType, position: number) => (
+  const renderStatus = (type: string) => (
+    <>
+      <GameInfoSection>
+        <div>
+          <h1>{'인게임 정보'}</h1>
+        </div>
+        <button type={'button'} onClick={onclick}>
+          <Image src={closeIcon} />
+        </button>
+      </GameInfoSection>
+      <MatchInfoSection>
+        <ErrorDiv>{type === 'loading' ? <Loading /> : <h1>{'진행 중인 게임이 없습니다.'}</h1>}</ErrorDiv>
+      </MatchInfoSection>
+    </>
+  )
+
+  const renderUser = (user: IngameType) => (
     <div key={user.championId}>
       <Image width={50} height={50} $border={5} src={user.championImageUrl} />
       <EachUserDiv>
         <p>{user.summonerName}</p>
         {user.reportsData ? (
           <>
-            <span>{position === 100 ? '전과있음' : `전과 ${user.reportsData.reportCount}범`}</span>
-            {position !== 100 && <Badge $category={user.reportsData.category} />}
+            <span>{`전과 ${user.reportsData.reportCount}범`}</span>
+            <Badge $category={user.reportsData.category} />
           </>
         ) : (
           <>
@@ -34,72 +55,42 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
   return (
     <BackgroundDiv>
       <ContentDiv>
-        {isLoading ? (
-          <>
-            <GameInfoSection>
-              <div>
-                <h1>{'인게임 정보'}</h1>
-              </div>
-              <button type={'button'} onClick={onclick}>
-                <Image src={closeIcon} />
-              </button>
-            </GameInfoSection>
-            <MatchInfoSection>
-              <ErrorDiv>
-                <h1>{'L O A D I N G . . .'}</h1>
-              </ErrorDiv>
-            </MatchInfoSection>
-          </>
-        ) : error ? (
-          <>
-            <GameInfoSection>
-              <div>
-                <h1>{'인게임 정보'}</h1>
-              </div>
-              <button type={'button'} onClick={onclick}>
-                <Image src={closeIcon} />
-              </button>
-            </GameInfoSection>
-            <MatchInfoSection>
-              <ErrorDiv>
-                <h1>{'진행 중인 게임이 없습니다.'}</h1>
-              </ErrorDiv>
-            </MatchInfoSection>
-          </>
-        ) : (
-          data && (
-            <>
-              <GameInfoSection>
-                <div>
-                  <h1>{'인게임 정보'}</h1>
+        {isLoading
+          ? renderStatus('loading')
+          : error
+          ? renderStatus('error')
+          : data && (
+              <>
+                <GameInfoSection>
                   <div>
-                    <p>{data.gameMode}</p>
-                    <p>{'|'}</p>
-                    <p>{data.gameName}</p>
-                    <p>{'|'}</p>
-                    <p>{data.gameLength}</p>
+                    <h1>{'인게임 정보'}</h1>
+                    <div>
+                      <p>{data.gameMode}</p>
+                      <p>{'|'}</p>
+                      <p>{data.gameName}</p>
+                      <p>{'|'}</p>
+                      <p>{data.gameLength}</p>
+                    </div>
                   </div>
-                </div>
-                <button type={'button'} onClick={onclick}>
-                  <Image src={closeIcon} />
-                </button>
-              </GameInfoSection>
+                  <button type={'button'} onClick={onclick}>
+                    <Image src={closeIcon} />
+                  </button>
+                </GameInfoSection>
 
-              <MatchInfoSection>
-                <UserListDiv $position={'left'}>
-                  {data.participants
-                    .filter((user: IngameType) => user.teamId === 100)
-                    .map((user: IngameType) => renderUser(user, 100))}
-                </UserListDiv>
-                <UserListDiv $position={'right'}>
-                  {data.participants
-                    .filter((user: IngameType) => user.teamId === 200)
-                    .map((user: IngameType) => renderUser(user, 200))}
-                </UserListDiv>
-              </MatchInfoSection>
-            </>
-          )
-        )}
+                <MatchInfoSection>
+                  <UserListDiv $position={'left'}>
+                    {data.participants
+                      .filter((user: IngameType) => user.teamId === 100)
+                      .map((user: IngameType) => renderUser(user))}
+                  </UserListDiv>
+                  <UserListDiv $position={'right'}>
+                    {data.participants
+                      .filter((user: IngameType) => user.teamId === 200)
+                      .map((user: IngameType) => renderUser(user))}
+                  </UserListDiv>
+                </MatchInfoSection>
+              </>
+            )}
       </ContentDiv>
     </BackgroundDiv>
   )
