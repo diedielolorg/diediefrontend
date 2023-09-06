@@ -25,7 +25,6 @@ const CommonBadge = styled.button<BadgeProps>`
   font-weight: 700;
   border-radius: 3px;
   cursor: default;
-  color: white;
   ${({ $category, theme }) => {
     switch ($category) {
       case '쌍욕':
