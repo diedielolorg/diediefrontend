@@ -2,12 +2,16 @@ import React, { useState } from 'react'
 import { styled } from 'styled-components'
 import { v4 as uuid } from 'uuid'
 import ReactPaginate from 'react-paginate'
+import { useRecoilState } from 'recoil'
+import { pageState } from '../../recoil/PageAtom'
 import Image from './Image'
 import Badge from './Badge'
 import { arrowUp, arrowDown } from '../../assets'
 import { ReportListProps, ToggleMoreBtnState, ReportContentProps } from '../../interfaces/CommonTypes'
 
-const ReportList = ({ reportlist }: ReportListProps) => {
+const ReportList = ({ reportlist, reportlength }: ReportListProps) => {
+  const uniqueId: string = uuid()
+
   const [toggleMoreBtn, setToggleMoreBtn] = useState<ToggleMoreBtnState>({
     0: false,
     1: false,
@@ -15,9 +19,7 @@ const ReportList = ({ reportlist }: ReportListProps) => {
     3: false,
     4: false,
   })
-  const [currentPage, setCurrentPage] = useState(0)
-
-  const uniqueId: string = uuid()
+  const [currentPage, setCurrentPage] = useRecoilState(pageState)
 
   // * [더보기 버튼] onClick
   const onMoreClickHandler = (idx: number) =>
@@ -26,11 +28,10 @@ const ReportList = ({ reportlist }: ReportListProps) => {
       [idx]: !toggleMoreBtn[idx],
     }))
 
-  // * [pagination] onClick
-  const pageClickHandler = (selectedIdx: { selected: number }) => console.log(selectedIdx.selected)
-
   // * [pagination] onChange
-  const pageChangeHandler = (selectedIdx: { selected: number }) => setCurrentPage(selectedIdx.selected)
+  const pageChangeHandler = (event: { selected: number }) => {
+    setCurrentPage({ page: event.selected + 1 })
+  }
 
   return (
     <>
@@ -38,8 +39,6 @@ const ReportList = ({ reportlist }: ReportListProps) => {
         reportlist.map((list, idx) => (
           <ReportInfoDiv key={list.reportId}>
             <BtnWrapDiv>
-              {/* // TODO onclick 시 삭제 사유 모달 호출, 작성자와 로그인 일치할 때 삭제 버튼 출력 */}
-              <DeleteBtn>{'삭제'}</DeleteBtn>
               <MoreBtn onClick={() => onMoreClickHandler(idx)}>
                 {'더보기'}
                 <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />
@@ -49,15 +48,13 @@ const ReportList = ({ reportlist }: ReportListProps) => {
               <span>
                 <strong>{'욕 카테고리'}</strong>
               </span>
-              {list.cussWord.map((words) => (
-                <Badge key={uniqueId + words} $category={words} />
-              ))}
+              <Badge $category={list.category} />
             </div>
             <div>
               <span>
                 <strong>{'욕한 날짜'}</strong>
               </span>
-              <span>{list.reportDate.replace(/-/g, '. ')}</span>
+              <span>{list.reportDate}</span>
             </div>
             <div>
               <span>
@@ -81,12 +78,10 @@ const ReportList = ({ reportlist }: ReportListProps) => {
         ))}
       <PaginationDiv>
         <StPagination
-          // TODO [pageCount] 전체 페이지 수 = 총 아이템 수 / 페이지 당 아이템 수이므로 이후 API 연결했을 때 해당 값 맞춰서 length / 5 로 수정할 것
-          pageCount={Math.ceil(35 / 3)}
-          marginPagesDisplayed={0}
+          pageCount={Math.ceil(reportlength / 5)}
           pageRangeDisplayed={4}
-          forcePage={currentPage}
-          onClick={pageClickHandler}
+          marginPagesDisplayed={0}
+          forcePage={currentPage.page - 1}
           onPageChange={pageChangeHandler}
           breakLabel={''}
           previousLabel={'<'}
@@ -135,22 +130,12 @@ const ReportContentP = styled.p<ReportContentProps>`
 `
 
 const BtnWrapDiv = styled.div`
-  display: flex;
-  gap: 20px;
   position: absolute;
   right: 35px;
   button {
     background: transparent;
     font-size: 20px;
     font-weight: 600;
-  }
-`
-
-const DeleteBtn = styled.button`
-  color: ${({ theme }) => theme.gray.TF};
-  &:hover {
-    color: ${({ theme }) => theme.gray.DE};
-    transition: 0.2s ease;
   }
 `
 

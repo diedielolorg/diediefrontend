@@ -1,35 +1,51 @@
-import React, { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { styled } from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
-import * as CSS from '../style/LoginRelevantSt'
-import { Button, Image, Portal } from '../components/common'
+import { styled } from 'styled-components'
 import { blackLogo, kakaoBtn } from '../assets'
+import { login } from '../axios/login'
+import { Button, Image, Portal } from '../components/common'
 import SnackBarAtom from '../recoil/SnackBarAtom'
+import * as CSS from '../style/LoginRelevantSt'
 import useInput from '../utils/useInput'
 
 const SignIn: React.FC = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
+  // ystart5008@naver.com
+  // fdsafawe
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [data, onChange] = useInput({
     email: '',
     password: '',
   })
   const navigate = useNavigate()
+
+  const loginMutation = useMutation(login, {
+    onSuccess: (data) => {
+      navigate('/')
+    },
+    onError: (error) => {
+      setIsSnackBar({ open: true })
+    },
+  })
   const moveToSignUpBtnHandler = () => {
     navigate('/signup')
   }
   const loginBtnHandler = () => {
-    setIsSnackBar({ open: true })
+    loginMutation.mutate({
+      email: data.email,
+      password: data.password,
+    })
   }
   return (
     <CSS.BackgroundMain>
       <CSS.OverRaySection size={'login'}>
         <Image width={213} height={38.582} src={blackLogo} />
         <CSS.UserInfoBoxDiv>
-          <CSS.UserLabel htmlFor={'email'}>{'이메일'}</CSS.UserLabel>
+          <CSS.UserLabel htmlFor={'email'}>{t('이메일')}</CSS.UserLabel>
           <CSS.UserInfoInput
             id={'email'}
             name={'email'}
@@ -39,7 +55,7 @@ const SignIn: React.FC = () => {
             placeholder={t('이메일을 입력하세요.')}
           />
           <CSS.HelpMessageDiv>{''}</CSS.HelpMessageDiv>
-          <CSS.UserLabel htmlFor={'password'}>{'비밀번호'}</CSS.UserLabel>
+          <CSS.UserLabel htmlFor={'password'}>{t('비밀번호')}</CSS.UserLabel>
           <CSS.UserInfoInput
             id={'password'}
             type={'password'}
@@ -47,13 +63,13 @@ const SignIn: React.FC = () => {
             name={'password'}
             value={data.password}
             onChange={onChange}
-            placeholder={'영문, 숫자, 특수문자 포함 8~13자'}
+            placeholder={t('영문, 숫자, 특수문자 포함 8~13자')}
           />
           <CSS.HelpMessageDiv>{''}</CSS.HelpMessageDiv>
         </CSS.UserInfoBoxDiv>
         <LoginBtnBoxDiv>
           <Button size={'xxl'} color={'lime'} onclick={loginBtnHandler}>
-            {'로그인'}
+            {t('로그인')}
           </Button>
           {isSnackbar.open && <Portal type={'SnackBar'} snackBar={'login'} />}
 
@@ -64,7 +80,7 @@ const SignIn: React.FC = () => {
           </TextDiv>
           <TextDiv>
             <p>{'--------------------'}</p>
-            <p>{'SNS로 간편 로그인하기'}</p>
+            <p>{t('SNS로 간편 로그인하기')}</p>
             <p>{'--------------------'}</p>
           </TextDiv>
           <Image width={330} height={55} src={kakaoBtn} />

@@ -432,4 +432,5 @@ const RankingSelectBoxOption = styled.button`
     background-color: ${({ theme }) => theme.gray.DE};
   }
 `
+
 export default Ranking

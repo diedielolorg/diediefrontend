@@ -4,6 +4,10 @@ import { useInputProps } from '../interfaces/CustomTypes'
 const useInput = (initialValue: useInputProps) => {
   const [data, setData] = useState(initialValue)
 
+  const updateConfirmNumber = (value: string) => {
+    setData((prevData) => ({ ...prevData, ConfirmNumber: value }))
+  }
+
   const handler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target
@@ -23,7 +27,7 @@ const useInput = (initialValue: useInputProps) => {
     },
     [data],
   )
-  return [data, handler] as const
+  return [data, handler, updateConfirmNumber] as const
 }
 
 export default useInput
