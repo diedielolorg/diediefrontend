@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import { styled } from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { useRecoilValue } from 'recoil'
 import { pageState } from '../recoil/PageAtom'
 import { Portal, Button, Image, ReportList } from '../components/common'
@@ -15,15 +16,13 @@ import { ChartDataType } from '../interfaces/UserInfoTypes'
 const UserInfo = () => {
   const nickname = useParams().userNickname
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [toggleIngame, setToggleIngame] = useState(false)
   const [sWordData, setSWordData] = useState<ChartDataType>({})
   const [regionData, setRegionData] = useState<ChartDataType>({})
 
   const { page } = useRecoilValue(pageState)
-
-  // * ingame portal 호출
-  const toggleIngameHandler = () => setToggleIngame(!toggleIngame)
 
   // * 유저 정보 조회
   const { data, isLoading } = useQuery({
@@ -36,6 +35,9 @@ const UserInfo = () => {
       }
     },
   })
+
+  // * ingame portal 호출
+  const toggleIngameHandler = () => setToggleIngame(!toggleIngame)
 
   // * 날짜 형식 변환
   const dateFormatHandler = (lastPlayTime: string) => {
@@ -94,7 +96,7 @@ const UserInfo = () => {
                 </UserInfoDiv>
                 <UserBtnDiv>
                   <Button size={'l'} color={'light'} onclick={toggleIngameHandler}>
-                    {'인게임 정보 보기'}
+                    {t('인게임 정보 보기')}
                   </Button>
                   {toggleIngame && <Portal type={'Ingame'} onclick={toggleIngameHandler} nickname={nickname} />}
                   <Button
@@ -111,24 +113,25 @@ const UserInfo = () => {
               <UserRecordDiv>
                 {data.getCussWordData.reportCount ? (
                   <h1>
-                    {'전과'} <strong>{`${data.getCussWordData.reportCount}범`}</strong>
+                    {t('전과')}{' '}
+                    <strong>{t('{{reportCount}}범', { reportCount: data.getCussWordData.reportCount })}</strong>
                   </h1>
                 ) : (
                   <div>
                     <Image height={35} src={exampleUserIcon} />
                     <h1>
-                      <strong>{'모범시민'}</strong>
+                      <strong>{t('모범시민')}</strong>
                     </h1>
                   </div>
                 )}
                 <h3>
-                  {'솔랭 승률'} <strong>{data.winRate}</strong>
+                  {t('솔랭 승률')} <strong>{data.winRate}</strong>
                 </h3>
                 <h3>
-                  {'주 출몰지역'} <strong>{data.mostPlayedGame}</strong>
+                  {t('주 출몰지역')} <strong>{data.mostPlayedGame}</strong>
                 </h3>
                 <h3>
-                  {'마지막 플레이 타임'}
+                  {t('마지막 플레이 타임')}
                   <strong>{dateFormatHandler(data.lastPlayTime)}</strong>
                 </h3>
               </UserRecordDiv>
@@ -136,24 +139,24 @@ const UserInfo = () => {
 
             <ChartSection>
               <SwearWordsDiv>
-                <h2>{'욕 통계'}</h2>
+                <h2>{t('욕 통계')}</h2>
                 <Chart chartData={sWordData} label={'욕 통계'} />
               </SwearWordsDiv>
               <RegionDiv>
-                <h2>{'출몰지역 통계'}</h2>
+                <h2>{t('출몰지역 통계')}</h2>
                 <Chart chartData={regionData} label={'출몰지역 통계'} />
               </RegionDiv>
             </ChartSection>
 
             <ReportSection>
               <ReportCountDiv>
-                <h2>{'등록된 신고'}</h2>
-                <p>{`총 ${data.getCussWordData.reportCount}개`}</p>
+                <h2>{t('등록된 신고')}</h2>
+                <p>{t('총 {{reportCount}}개', { reportCount: data.getCussWordData.reportCount })}</p>
               </ReportCountDiv>
               {data.reportData.length ? (
                 <ReportList reportlist={data.reportData} reportlength={data.getCussWordData.reportCount} />
               ) : (
-                <NoneListDiv>{'등록된 신고가 없습니다.'}</NoneListDiv>
+                <NoneListDiv>{t('등록된 신고가 없습니다.')}</NoneListDiv>
               )}
             </ReportSection>
           </>

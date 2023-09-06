@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { styled } from 'styled-components'
 import { v4 as uuid } from 'uuid'
 import ReactPaginate from 'react-paginate'
+import { useTranslation } from 'react-i18next'
 import { useRecoilState } from 'recoil'
 import { pageState } from '../../recoil/PageAtom'
 import Image from './Image'
@@ -11,6 +12,7 @@ import { ReportListProps, ToggleMoreBtnState, ReportContentProps } from '../../i
 
 const ReportList = ({ reportlist, reportlength }: ReportListProps) => {
   const uniqueId: string = uuid()
+  const { t } = useTranslation()
 
   const [toggleMoreBtn, setToggleMoreBtn] = useState<ToggleMoreBtnState>({
     0: false,
@@ -40,31 +42,31 @@ const ReportList = ({ reportlist, reportlength }: ReportListProps) => {
           <ReportInfoDiv key={list.reportId}>
             <BtnWrapDiv>
               <MoreBtn onClick={() => onMoreClickHandler(idx)}>
-                {'더보기'}
+                {t('더보기')}
                 <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />
               </MoreBtn>
             </BtnWrapDiv>
             <div>
               <span>
-                <strong>{'욕 카테고리'}</strong>
+                <strong>{t('욕 카테고리')}</strong>
               </span>
               <Badge $category={list.category} />
             </div>
             <div>
               <span>
-                <strong>{'욕한 날짜'}</strong>
+                <strong>{t('욕한 날짜')}</strong>
               </span>
               <span>{list.reportDate}</span>
             </div>
             <div>
               <span>
-                <strong>{'신고 내용'}</strong>
+                <strong>{t('신고 내용')}</strong>
               </span>
               <ReportContentP $status={toggleMoreBtn[idx] ? 'true' : 'false'}>{list.reportPayload}</ReportContentP>
               {toggleMoreBtn[idx] && (
                 <>
                   <span>
-                    <strong>{'스크린샷'}</strong>
+                    <strong>{t('스크린샷')}</strong>
                   </span>
                   <ReportImgDiv>
                     {list.reportCapture.map((img) => (

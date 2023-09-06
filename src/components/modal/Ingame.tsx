@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { PotalProps } from '../../interfaces/CommonTypes'
 import { UserListDivProps } from '../../interfaces/ModalTypes'
 import { IngameType } from '../../interfaces/UserInfoTypes'
@@ -8,6 +9,8 @@ import { closeIcon, exampleUserIcon } from '../../assets'
 import { getIngame } from '../../axios/userInfo'
 
 const Ingame = ({ nickname, onclick }: PotalProps) => {
+  const { t } = useTranslation()
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['getIngame'],
     queryFn: () => getIngame(nickname && nickname),
@@ -18,7 +21,7 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
     <>
       <GameInfoSection>
         <div>
-          <h1>{'인게임 정보'}</h1>
+          <h1>{t('인게임 정보')}</h1>
         </div>
         <button type={'button'} onClick={onclick}>
           <Image src={closeIcon} />
@@ -26,32 +29,39 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
       </GameInfoSection>
       <MatchInfoSection>
         <ErrorDiv>
-          <h1>{type === 'loading' ? 'L O A D I N G' : '진행 중인 게임이 없습니다.'}</h1>
+          <h1>{type === 'loading' ? 'L O A D I N G' : t('진행 중인 게임이 없습니다.')}</h1>
         </ErrorDiv>
       </MatchInfoSection>
     </>
   )
 
-  const renderUser = (user: IngameType) => (
-    <div key={user.championId}>
-      <Image width={50} height={50} $border={5} src={user.championImageUrl} />
-      <EachUserDiv>
-        <p>{user.summonerName}</p>
-        {user.reportsData && user.reportsData.reportCount ? (
-          <>
-            <span>{`전과 ${user.reportsData.reportCount}범`}</span>
-            <Badge $category={user.reportsData.mostFrequentWord} />
-          </>
-        ) : (
-          <>
-            <span>{'모범시민'}</span>
-            <Image width={13} height={18} src={exampleUserIcon} />
-          </>
-        )}
-      </EachUserDiv>
-      <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
-    </div>
-  )
+  const renderUser = (user: IngameType) => {
+    const dynamicText =
+      user.reportsData && user.reportsData.reportCount
+        ? t('전과 {{reportCount}}범', { reportCount: user.reportsData.reportCount })
+        : t('모범시민')
+
+    return (
+      <div key={user.championId}>
+        <Image width={50} height={50} $border={5} src={user.championImageUrl} />
+        <EachUserDiv>
+          <p>{user.summonerName}</p>
+          {user.reportsData && user.reportsData.reportCount ? (
+            <>
+              <span>{dynamicText}</span>
+              <Badge $category={user.reportsData.mostFrequentWord} />
+            </>
+          ) : (
+            <>
+              <span>{dynamicText}</span>
+              <Image width={13} height={18} src={exampleUserIcon} />
+            </>
+          )}
+        </EachUserDiv>
+        <Tier $tier={user.tierInfo.tier} $rank={user.tierInfo.rank} />
+      </div>
+    )
+  }
 
   return (
     <BackgroundDiv>
@@ -64,7 +74,7 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
               <>
                 <GameInfoSection>
                   <div>
-                    <h1>{'인게임 정보'}</h1>
+                    <h1>{t('인게임 정보')}</h1>
                     <div>
                       <p>{data.gameMode}</p>
                       <p>{'|'}</p>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { styled } from 'styled-components'
 import { v4 as uuid } from 'uuid'
+import { useTranslation } from 'react-i18next'
 import { BadgeProps } from '../../interfaces/CommonTypes'
 
 // ! [props]
@@ -8,10 +9,11 @@ import { BadgeProps } from '../../interfaces/CommonTypes'
 
 const Badge = ({ $category }: BadgeProps) => {
   const uniqueId: string = uuid()
+  const { t } = useTranslation()
 
   return $category.split(',').map((item) => (
     <CommonBadge key={uniqueId + item} $category={item.replaceAll(',', '')}>
-      {item}
+      {t(item)}
     </CommonBadge>
   ))
 }
