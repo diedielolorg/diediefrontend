@@ -5,7 +5,6 @@ import { UserListDivProps } from '../../interfaces/ModalTypes'
 import { IngameType } from '../../interfaces/UserInfoTypes'
 import { Image, Badge, Tier } from '../common'
 import { closeIcon, exampleUserIcon } from '../../assets'
-import { Loading } from '../../pages/status'
 import { getIngame } from '../../axios/userInfo'
 
 const Ingame = ({ nickname, onclick }: PotalProps) => {
@@ -26,7 +25,9 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
         </button>
       </GameInfoSection>
       <MatchInfoSection>
-        <ErrorDiv>{type === 'loading' ? <Loading /> : <h1>{'진행 중인 게임이 없습니다.'}</h1>}</ErrorDiv>
+        <ErrorDiv>
+          <h1>{type === 'loading' ? 'L O A D I N G' : '진행 중인 게임이 없습니다.'}</h1>
+        </ErrorDiv>
       </MatchInfoSection>
     </>
   )
@@ -36,10 +37,10 @@ const Ingame = ({ nickname, onclick }: PotalProps) => {
       <Image width={50} height={50} $border={5} src={user.championImageUrl} />
       <EachUserDiv>
         <p>{user.summonerName}</p>
-        {user.reportsData ? (
+        {user.reportsData && user.reportsData.reportCount ? (
           <>
             <span>{`전과 ${user.reportsData.reportCount}범`}</span>
-            <Badge $category={user.reportsData.category} />
+            <Badge $category={user.reportsData.mostFrequentWord} />
           </>
         ) : (
           <>

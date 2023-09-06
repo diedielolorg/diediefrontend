@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AxiosError } from 'axios'
 import { styled } from 'styled-components'
@@ -14,7 +14,6 @@ import { ChartDataType } from '../interfaces/UserInfoTypes'
 
 const UserInfo = () => {
   const nickname = useParams().userNickname
-  const queryClient = useQueryClient()
   const navigate = useNavigate()
 
   const [toggleIngame, setToggleIngame] = useState(false)
@@ -28,7 +27,7 @@ const UserInfo = () => {
 
   // * 유저 정보 조회
   const { data, isLoading } = useQuery({
-    queryKey: ['getUserInfo', { nickname, page }],
+    queryKey: ['getUserInfo', { page }],
     queryFn: () => getUserInfo({ nickname, page }),
     retry: 1,
     onError: (error: AxiosError) => {
@@ -76,11 +75,6 @@ const UserInfo = () => {
       }))
     }
   }, [data])
-
-  // * 페이지네이션 set
-  useEffect(() => {
-    queryClient.invalidateQueries(['getUserInfo'])
-  }, [page])
 
   return (
     <WrapDiv>

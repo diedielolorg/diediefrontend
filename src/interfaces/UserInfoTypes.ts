@@ -22,7 +22,7 @@ export interface IngameType {
     tier: string
   }
   reportsData?: {
-    category: string
+    mostFrequentWord: string
     reportCount: number
     summonerName: string
   }

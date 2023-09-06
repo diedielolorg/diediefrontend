@@ -5,7 +5,7 @@ import { loading } from '../../assets'
 const Loading = () => {
   return (
     <LoadingWrap>
-      <Image src={loading} />
+      <Image width={550} src={loading} />
     </LoadingWrap>
   )
 }
