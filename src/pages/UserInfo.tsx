@@ -90,7 +90,7 @@ const UserInfo = () => {
                 <UserInfoDiv>
                   <Image width={100} height={100} $border={5} src={data.profileIconIdUrl} />
                   <div>
-                    <h2>{data.getCussWordData.rank === 0 ? `No Ranking` : `TOP ${data.getCussWordData.rank}`}</h2>
+                    <h2>{data.rank ? `TOP ${data.rank}` : `No Ranking`}</h2>
                     <h1>{data.summonerName}</h1>
                   </div>
                 </UserInfoDiv>
