@@ -11,6 +11,7 @@ import { errorImg } from '../../assets'
 
 const Image = ({ width, height, $border, src, alt, $zoom = 'off' }: ImgProps) => {
   const [toggleZoom, setToggleZoom] = useState(false)
+  const [imgSrc, setImgSrc] = useState(src || errorImg)
 
   const onZoomClickHandler = () => setToggleZoom(!toggleZoom)
 
@@ -20,10 +21,11 @@ const Image = ({ width, height, $border, src, alt, $zoom = 'off' }: ImgProps) =>
         width={width}
         height={height}
         $border={$border}
-        src={src || errorImg}
+        src={imgSrc}
         alt={alt || `${src} image`}
         $zoom={$zoom}
         onClick={$zoom !== 'off' ? onZoomClickHandler : undefined}
+        onError={() => setImgSrc(errorImg)}
       />
       {toggleZoom && <Portal type={'ZoomImg'} onclick={onZoomClickHandler} src={src} />}
     </>

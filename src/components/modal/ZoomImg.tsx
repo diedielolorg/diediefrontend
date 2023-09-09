@@ -16,37 +16,42 @@ const ZoomImg = ({ onclick, src }: PotalProps) => {
     if (imgRef.current) {
       const currentWidth = imgRef.current.naturalWidth
       const currentHeight = imgRef.current.naturalHeight
-      setWidth(currentWidth <= 500 ? 500 : currentWidth >= 1000 ? 1000 : currentWidth)
-      setHeight(currentHeight <= 500 ? 500 : currentHeight >= 700 ? 700 : currentHeight)
+      setWidth(currentWidth >= 1000 ? 1000 : currentWidth)
+      setHeight(currentHeight >= 700 ? 700 : currentHeight)
     }
   }, [width, height])
 
   return (
     <ModalBackgroundDiv>
-      <ZoomInImg ref={imgRef} src={src} alt={src} $width={width} $height={height} />
-      <ZoomBtn type={'button'} onClick={onclick} $width={width} $height={height}>
-        <img src={zoomOut} alt={'zoomIn icon'} />
-      </ZoomBtn>
+      <RelativeDiv>
+        <ZoomInImg ref={imgRef} src={src} alt={src} $width={width} $height={height} />
+        <ZoomBtn type={'button'} onClick={onclick}>
+          <img src={zoomOut} alt={'zoomIn icon'} />
+        </ZoomBtn>
+      </RelativeDiv>
     </ModalBackgroundDiv>
   )
 }
 
 export default ZoomImg
 
+const RelativeDiv = styled.div`
+  position: relative;
+`
+
 const ZoomInImg = styled.img<ZoomImgProps>`
   width: ${({ $width }) => `${$width}px`};
   height: ${({ $height }) => `${$height}px`};
-  position: relative;
   border: 2px solid ${({ theme }) => theme.gray.SF};
   border-radius: 10px;
   object-fit: contain;
 `
 
-export const ZoomBtn = styled.button<ZoomImgProps>`
+export const ZoomBtn = styled.button`
   width: 40px;
   height: 40px;
   position: absolute;
-  bottom: ${({ $width }) => `${($width ?? 0) + 15}px`};
-  right: ${({ $height }) => `${($height ?? 0) + 220}px`};
+  top: 20px;
+  right: 20px;
   background-color: transparent;
 `

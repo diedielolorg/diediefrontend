@@ -12,6 +12,8 @@ export const GlobalStyle = createGlobalStyle`
   *, *:before, *:after { box-sizing: border-box; }
   html { 
     overflow-y: auto;
+    overflow-x: hidden;
+  
     ::-webkit-scrollbar {
       width: 12px;
       height: 125px;
@@ -21,12 +23,15 @@ export const GlobalStyle = createGlobalStyle`
       background-color: ${({ theme }) => theme.gray.SF};
       border-radius: 6px;
     }
-
+  
     ::-webkit-scrollbar-track {
       background-color: ${({ theme }) => theme.gray.TO};
     }
   }
-  body { min-width: 320px; }
+  body { 
+    min-width: 320px;
+  
+  }
   ol, ul, li { list-style: none; }
   a { text-decoration: none; color: inherit; }
   img { border: 0; vertical-align: middle; }
@@ -55,31 +60,4 @@ export const ModalBackgroundDiv = styled.div`
   left: 0;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
-`
-
-// * NoMatch, Error Page
-export const WrapDiv = styled.div`
-  padding-top: 155px;
-  display: flex;
-  section {
-    width: 50%;
-  }
-  p {
-    color: ${({ theme }) => theme.color.white};
-    font-size: 30px;
-    font-weight: 600;
-    line-height: 50px;
-  }
-`
-
-export const ContentSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: 52px;
-`
-
-export const IllustSection = styled.section`
-  img {
-    margin-top: 200px;
-  }
 `

@@ -1,37 +1,77 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
+import { useMutation } from '@tanstack/react-query'
 import { Image } from '../components/common'
 import { logo, searchBtn } from '../assets'
+import { search } from '../axios/main'
 import tips from '../utils/tipsData'
 
 const Main = () => {
+  const navigate = useNavigate()
   // 검색어
   const [searchKeyword, setSearchKeyword] = useState('')
 
   const randomTip = tips[Math.floor(Math.random() * tips.length)]
 
-  // ! 임시 08.21. api 명세에 따른 임시 검색 목록 리스트
-  const [searchSummonerList, setSearchSummonerList] = useState<{ summonerName: string; summonerIcon: string }[]>([
-    {
-      summonerName: '방랑오소리',
-      summonerIcon:
-        'https://github.com/diedielolorg/diediefrontend/assets/58963027/f6b4ca75-dec5-4aea-8d52-7ef9d4179915',
-    },
-    {
-      summonerName: '방배동휴그랜트',
-      summonerIcon:
-        'https://github.com/diedielolorg/diediefrontend/assets/58963027/f6b4ca75-dec5-4aea-8d52-7ef9d4179915',
-    },
-  ])
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null) // 디바운싱 타이머
 
-  // ! 임시 08.21.
-  const [searchSummonerList1, setSearchSummonerList1] = useState<{ summonerName: string; summonerIcon: string }[]>([])
+  const [searchSummonerList, setSearchSummonerList] = useState<
+    {
+      id: string
+      accountId: string
+      puuid: string
+      name: string
+      profileIconId: number
+      revisionDate: number
+      summonerLevel: number
+      profileIconIdUrl: string
+    }[]
+  >([])
+
+  const searchMutation = useMutation(search, {
+    onSuccess: (response) => {
+      setSearchSummonerList([response])
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  useEffect(() => {
+    if (timer) {
+      clearTimeout(timer)
+    }
+    const newTimer = setTimeout(async () => {
+      try {
+        await searchMutationCall()
+      } catch (e) {
+        console.error('error', e)
+      }
+    }, 300)
+
+    setTimer(newTimer)
+
+    // 방 목록 조회
+    const searchMutationCall = () => {
+      if (searchKeyword !== '') {
+        // 뮤테이션 콜
+        searchMutation.mutate({
+          summonername: searchKeyword,
+        })
+      }
+    }
+  }, [searchKeyword])
 
   // 검색 입력 이벤트 핸들러
   const searchKeywordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchKeyword(e.target.value)
   }
 
+  // 선택 유저 페이지로 이동
+  const moveToUserinfoHandler = (name: string) => {
+    navigate(`/userinfo/${name}`)
+  }
   return (
     <WrapMainBoxDiv>
       <Image width={338} height={66} src={logo} alt={'로고'} />
@@ -46,14 +86,19 @@ const Main = () => {
           {searchSummonerList.length > 0 ? (
             searchKeyword &&
             searchSummonerList &&
-            searchSummonerList.map(({ summonerName, summonerIcon }, idx) => {
+            searchSummonerList.map(({ name, profileIconIdUrl }, idx) => {
               const regex = new RegExp(`(${searchKeyword})`, 'gi') // 검색어 일치 정규식
-              const parts = summonerName.split(regex)
+              const parts = name.split(regex)
               return (
                 <SearchSummonerBoxDiv>
                   <SearchSummonerInfoDiv>
-                    <Image width={26} height={26} src={summonerIcon} />
-                    <SearchSummonerNameP isResult>
+                    <Image width={26} height={26} src={profileIconIdUrl} />
+                    <SearchSummonerNameP
+                      isResult
+                      onClick={() => {
+                        moveToUserinfoHandler(name)
+                      }}
+                    >
                       {parts.map((part, idx) =>
                         part.toLowerCase() === searchKeyword.toLowerCase() ? (
                           <HighLightedTextSpan>{part}</HighLightedTextSpan>
@@ -150,6 +195,7 @@ const SearchSummonerNameP = styled.p<{ isResult: boolean }>`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  cursor: ${(props) => (props.isResult ? 'pointer' : 'default')};
 `
 const HighLightedTextSpan = styled.span`
   color: ${({ theme }) => theme.green.dark};

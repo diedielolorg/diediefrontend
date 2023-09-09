@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import Image from './Image'
 import headerLogo from '../../assets/headerLogo.svg'
 import { langKo, langEn } from '../../assets'
 import { Languages, languages } from '../../utils/Locales/i18n'
@@ -12,9 +11,9 @@ const Layout = () => {
 
   const navigate = useNavigate()
   // 로그인 상태
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState<boolean>(false)
   // 언어
-  const [isKorean, setIsKorean] = useState(true)
+  const [isKorean, setIsKorean] = useState<boolean>(true)
 
   // hooks
   useEffect(() => {
@@ -53,7 +52,7 @@ const Layout = () => {
     <BackgroundColor>
       <Header>
         <Logo type={'button'} onClick={moveToMainBtnHandler}>
-          <Image src={headerLogo} alt={'로고'} />
+          {/* <Image src={headerLogo} alt={'로고'} /> */}
         </Logo>
         <Menu>
           <MenuBtn type={'button'} onClick={moveToRankingBtnHandler}>
@@ -73,9 +72,7 @@ const Layout = () => {
               {t('로그인')}
             </MenuBtn>
           )}
-          <MenuBtn type={'button'} onClick={() => translateBtnHandler(isKorean ? 'ko' : 'en')}>
-            <Image src={isKorean ? langKo : langEn} alt={'언어 번역 버튼'} />
-          </MenuBtn>
+          <TransBtn type={'button'} onClick={() => translateBtnHandler(isKorean ? 'ko' : 'en')} isKorean={isKorean} />
         </Menu>
       </Header>
       <MaxWidth>
@@ -114,6 +111,10 @@ const Header = styled.div`
 // 헤더 내 로고
 const Logo = styled.button`
   background-color: transparent;
+  cursor: pointer;
+  background-image: url(${headerLogo});
+  width: 53px;
+  height: 40px;
 `
 // 헤더 내 메뉴 wrap
 const Menu = styled.div`
@@ -130,5 +131,13 @@ const MenuBtn = styled.button`
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
+  cursor: pointer;
+`
+const TransBtn = styled.button<{ isKorean: boolean }>`
+  cursor: pointer;
+  background-image: url(${(props) => (props.isKorean ? langKo : langEn)});
+  width: 55px;
+  height: 32px;
+  background-color: transparent;
 `
 export default Layout
