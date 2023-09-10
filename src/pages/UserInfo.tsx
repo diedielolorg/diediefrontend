@@ -106,7 +106,7 @@ const UserInfo = () => {
                       navigate('/report', { state: { nickname } })
                     }}
                   >
-                    {'신고하기'}
+                    {t('신고하기')}
                   </Button>
                 </UserBtnDiv>
               </div>
