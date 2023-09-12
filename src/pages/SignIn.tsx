@@ -1,11 +1,11 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 import { blackLogo, kakaoBtn } from '../assets'
-import { login } from '../axios/login'
+import { kakaoLogin, login } from '../axios/login/login'
 import { Button, Image, Portal } from '../components/common'
 import SnackBarAtom from '../recoil/SnackBarAtom'
 import * as CSS from '../style/LoginRelevantSt'
@@ -23,6 +23,8 @@ const SignIn = () => {
   })
   const navigate = useNavigate()
 
+  // const { kakaoData } = useQuery(['kakao'], kakaoLogin)
+  // console.log(kakaoData)
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       navigate('/')
@@ -40,6 +42,7 @@ const SignIn = () => {
       password: data.password,
     })
   }
+  const kakaoLoginHandler = () => {}
   return (
     <CSS.BackgroundMain>
       <CSS.OverRaySection size={'login'}>
@@ -83,7 +86,10 @@ const SignIn = () => {
             <p>{t('SNS로 간편 로그인하기')}</p>
             <p>{'--------------------'}</p>
           </TextDiv>
-          <Image width={330} height={55} src={kakaoBtn} />
+          <button type={'button'} onClick={kakaoLoginHandler}>
+            {'카카오로그인'}
+            {/* <Image width={330} height={55} src={kakaoBtn} /> */}
+          </button>
         </LoginBtnBoxDiv>
       </CSS.OverRaySection>
     </CSS.BackgroundMain>
