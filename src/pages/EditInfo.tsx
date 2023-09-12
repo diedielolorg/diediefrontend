@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import * as CSS from '../style/LoginRelevantSt'
 import { Button } from '../components/common'
 import useInput from '../utils/useInput'
+import { nicknameConfirm } from '../axios/login/login'
+import { UserInfoEdit, withdrawal } from '../axios/userService/index'
 
 const EditInfo = () => {
   const { t } = useTranslation()
@@ -17,9 +20,33 @@ const EditInfo = () => {
     nickName: '',
     password: '',
   })
+  const [isNicknameVerified, setIsNicknameVerified] = useState(false)
 
   const navigate = useNavigate()
 
+  const nicknameConfirmMutation = useMutation(nicknameConfirm, {
+    onSuccess: () => {
+      setIsNicknameVerified(true)
+      setHelpMsg((prevState) => ({ ...prevState, nickName: '사용가능한 닉네임입니다.' }))
+    },
+    onError: (error) => {
+      setHelpMsg((prevState) => ({ ...prevState, nickName: '중복된 닉네임 입니다.' }))
+    },
+  })
+  const UserInfoEditMutation = useMutation(UserInfoEdit, {
+    onSuccess: () => {
+      navigate('/mypage')
+    },
+    onError: (error) => {
+      setHelpMsg((prevState) => ({ ...prevState, password: '비밀번호가 일치하지 않습니다.' }))
+    },
+  })
+  const withdrawalMutation = useMutation(withdrawal, {
+    onSuccess: () => {
+      navigate('/withdrawal')
+    },
+    onError: (error) => {},
+  })
   const nickNameConfirm = () => {
     const regex = /^[가-힣a-zA-Z]*$/
     if (!regex.test(data.nickName)) {
@@ -27,13 +54,18 @@ const EditInfo = () => {
         ...prevState,
         nickName: '사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)',
       }))
+      return
     }
+    nicknameConfirmMutation.mutate({ nickname: data.nickName })
   }
   const infoSaveBtnHandler = () => {
-    setHelpMsg((prevState) => ({ ...prevState, password: '비밀번호가 일치하지 않습니다.' }))
+    UserInfoEditMutation.mutate({
+      nickname: data.nickName,
+      password: data.password,
+    })
   }
   const moveToWithdrawalBtnHandler = () => {
-    navigate('/withdrawal')
+    withdrawalMutation.mutate()
   }
 
   return (
@@ -55,7 +87,7 @@ const EditInfo = () => {
             {t('중복확인')}
           </Button>
         </CSS.ConfirmBoxDiv>
-        <CSS.HelpMessageDiv>{t(helpMsg.nickName)}</CSS.HelpMessageDiv>
+        <CSS.HelpMessageDiv color={isNicknameVerified ? 'true' : 'false'}>{t(helpMsg.nickName)}</CSS.HelpMessageDiv>
         <CSS.UserLabel>{t('비밀번호')}</CSS.UserLabel>
         <CSS.ConfirmBoxDiv>
           <CSS.UserInfoInput

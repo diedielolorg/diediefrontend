@@ -33,3 +33,9 @@ export interface LoginProps {
   email: string
   password: string
 }
+
+// 유저정보 변경
+export interface UserInfo {
+  nickname: string
+  password: string
+}
