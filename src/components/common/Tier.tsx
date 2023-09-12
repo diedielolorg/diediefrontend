@@ -1,8 +1,11 @@
 import React from 'react'
 import { styled } from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { TierProps } from '../../interfaces/CommonTypes'
 
 const Tier = ({ $tier, $rank }: TierProps) => {
+  const { t } = useTranslation()
+
   let userTier = $tier === 'GRANDMASTER' ? 'GM' : $tier?.slice(0, 1)
 
   if ($rank === 'I') userTier += '1'
@@ -12,7 +15,7 @@ const Tier = ({ $tier, $rank }: TierProps) => {
 
   return (
     <CommonTier type={'button'} $tier={$tier}>
-      {userTier}
+      {userTier || t('언랭')}
     </CommonTier>
   )
 }
@@ -59,7 +62,7 @@ const CommonTier = styled.button<TierProps>`
         return theme.rank.ch
         break
       default:
-        return ''
+        return theme.gray.SF
     }
   }};
 `

@@ -13,10 +13,10 @@ import illust from './illust.svg'
 import kakaoBtn from './kakaoBtn.svg'
 import langEn from './langEn.svg'
 import langKo from './langKo.svg'
+import loading from './loading.gif'
 import logo from './logo.svg'
 import nextonIcon from './nextonIcon.svg'
 import rankingArrow from './rankingArrow.svg'
-import reportImg from './reportImg.svg'
 import ScreenShot from './ScreenShot.svg'
 import searchBtn from './searchBtn.svg'
 import successIcon from './successIcon.svg'
@@ -40,10 +40,10 @@ export {
   kakaoBtn,
   langEn,
   langKo,
+  loading,
   logo,
   nextonIcon,
   rankingArrow,
-  reportImg,
   ScreenShot,
   searchBtn,
   successIcon,
