@@ -190,11 +190,11 @@ const SignUp: React.FC = () => {
           <CSS.HelpMessageDiv color={isNicknameVerified ? 'true' : 'false'}>{t(helpMsg.nickName)}</CSS.HelpMessageDiv>
           <CSS.UserLabel htmlFor={'email'}>{t('이메일')}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
-            <CSS.UserInfoInput id={'email'} size={167} name={'email'} value={data.email} onChange={onChange} />
+            <CSS.UserInfoInput id={'email'} size={150} name={'email'} value={data.email} onChange={onChange} />
             <p>{'@'}</p>
-            <CSS.UserInfoInput id={'email'} size={238} name={'address'} value={data.address} onChange={onChange} />
+            <CSS.UserInfoInput id={'email'} size={230} name={'address'} value={data.address} onChange={onChange} />
             <Button
-              size={'xs'}
+              size={'s'}
               color={!isBtnOpen ? 'light' : 'lime'}
               onclick={emailAuthenticationBtnHandler}
               disabled={!isBtnOpen}
