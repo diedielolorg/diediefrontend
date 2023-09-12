@@ -8,6 +8,8 @@ export interface SignUpProps {
   nickname: string
   email: string
   password: string
+  emailVerified: boolean
+  nicknameVerified: boolean
 }
 
 // 이메일 인증번호 발송
@@ -17,6 +19,7 @@ export interface AuthCodeProps {
 
 // 인증번호
 export interface ValidationProps {
+  email: string
   code: string
 }
 
