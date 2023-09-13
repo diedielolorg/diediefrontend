@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
-import * as CSS from '../style/LoginRelevantSt'
-import { Button } from '../components/common'
-import useInput from '../utils/useInput'
 import { nicknameConfirm } from '../axios/login/login'
 import { UserInfoEdit, withdrawal } from '../axios/userService/index'
+import { Button } from '../components/common'
+import * as CSS from '../style/LoginRelevantSt'
+import useInput from '../utils/useInput'
 
 const EditInfo = () => {
   const { t } = useTranslation()
