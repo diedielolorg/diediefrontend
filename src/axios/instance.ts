@@ -47,13 +47,6 @@ const getRequest = async (url: string) => {
 
 const postRequest = async (url: string, data: RequestType) => {
   const response = await api.post(url, data)
-  const { accessToken, user } = response.data
-  const { nickname } = user
-  if (accessToken) {
-    Cookies.set('accessToken', accessToken)
-    localStorage.setItem('nickname', nickname)
-  }
-
   return response
 }
 

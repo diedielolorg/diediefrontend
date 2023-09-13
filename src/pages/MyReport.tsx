@@ -23,6 +23,7 @@ const MyReport = () => {
     // DeleteReportMutation.mutate(id)
     alert(`${id}삭제버튼 눌림`)
   }
+  console.log(data?.myReportData.myReportCount)
   return (
     <WrapDiv>
       <TitleDiv>
