@@ -1,18 +1,20 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import ReactPaginate from 'react-paginate'
+import { useLocation } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 import { v4 as uuid } from 'uuid'
-import ReactPaginate from 'react-paginate'
-import { useTranslation } from 'react-i18next'
-import { useRecoilState } from 'recoil'
+import { arrowDown, arrowUp } from '../../assets'
+import { ReportContentProps, ReportListProps, ToggleMoreBtnState } from '../../interfaces/CommonTypes'
 import { pageState } from '../../recoil/PageAtom'
-import Image from './Image'
 import Badge from './Badge'
-import { arrowUp, arrowDown } from '../../assets'
-import { ReportListProps, ToggleMoreBtnState, ReportContentProps } from '../../interfaces/CommonTypes'
+import Image from './Image'
 
-const ReportList = ({ reportlist, reportlength }: ReportListProps) => {
+const ReportList = ({ reportlist, reportlength, onButtonClick }: ReportListProps) => {
   const uniqueId: string = uuid()
   const { t } = useTranslation()
+  const location = useLocation()
 
   const [toggleMoreBtn, setToggleMoreBtn] = useState<ToggleMoreBtnState>({
     0: false,
@@ -21,7 +23,14 @@ const ReportList = ({ reportlist, reportlength }: ReportListProps) => {
     3: false,
     4: false,
   })
+  const [isDelete, setIsDelete] = useState(false)
   const [currentPage, setCurrentPage] = useRecoilState(pageState)
+
+  useEffect(() => {
+    if (location.pathname === '/myReport') {
+      setIsDelete(true)
+    }
+  }, [location])
 
   // * [더보기 버튼] onClick
   const onMoreClickHandler = (idx: number) =>
@@ -41,6 +50,7 @@ const ReportList = ({ reportlist, reportlength }: ReportListProps) => {
         reportlist.map((list, idx) => (
           <ReportInfoDiv key={list.reportId}>
             <BtnWrapDiv>
+              {isDelete && <DeleteBtn onClick={() => onButtonClick?.(list.reportId)}>{t('삭제')}</DeleteBtn>}
               <MoreBtn onClick={() => onMoreClickHandler(idx)}>
                 {t('더보기')}
                 <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />
@@ -134,6 +144,9 @@ const ReportContentP = styled.p<ReportContentProps>`
 const BtnWrapDiv = styled.div`
   position: absolute;
   right: 35px;
+  display: flex;
+  flex-direction: row;
+  gap: 21px;
   button {
     background: transparent;
     font-size: 20px;
@@ -174,4 +187,11 @@ const StPagination = styled(ReactPaginate)`
     color: ${({ theme }) => theme.green.basic};
     font-weight: 900;
   }
+`
+const DeleteBtn = styled.button`
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 18px;
+  color: ${({ theme }) => theme.gray.TF};
 `

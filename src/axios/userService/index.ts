@@ -3,7 +3,7 @@ import { deleteRequest, putRequest } from '../instance'
 
 // 인증번호 재발송
 export const UserInfoEdit = async (props: UserInfo) => {
-  return putRequest('/api/users/mypage/myreport', {
+  return putRequest('/api/users/mypage/myinfo', {
     nickname: props.nickname,
     password: props.password,
   })
