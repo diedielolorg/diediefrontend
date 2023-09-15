@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 import AfterLogin from '../../assets/afterLogin.svg'
 import { Button } from '../../components/common'
 
-const AfterLoginPage = ({ mention }: { mention: string }) => {
+const AfterLoginPage = ({ mention }: { mention?: string }) => {
   const navigate = useNavigate()
 
   const loginPageRouteHandler = () => {
@@ -37,7 +37,6 @@ const AfterLoginWrap = styled.div`
 
   p {
     color: ${({ theme }) => theme.color.white};
-    font-family: SUIT;
     font-size: 30px;
     font-weight: 600;
   }

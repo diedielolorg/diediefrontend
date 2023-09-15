@@ -22,6 +22,8 @@ import searchBtn from './searchBtn.svg'
 import successIcon from './successIcon.svg'
 import zoomIn from './zoomIn.svg'
 import zoomOut from './zoomOut.svg'
+import reportCheckIcon from './reportCheckIcon.svg'
+import fileDeleteBtn from './fileDeleteBtn.svg'
 
 export {
   afterLogin,
@@ -48,4 +50,6 @@ export {
   successIcon,
   zoomIn,
   zoomOut,
+  reportCheckIcon,
+  fileDeleteBtn,
 }
