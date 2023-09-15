@@ -1,17 +1,17 @@
 import { useMutation } from '@tanstack/react-query'
-import React from 'react'
+import Cookies from 'js-cookie'
 import { useTranslation } from 'react-i18next'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
-import { blackLogo, kakaoBtn } from '../assets'
-import { login } from '../axios/login'
+import { blackLogo } from '../assets'
+import { login } from '../axios/login/login'
 import { Button, Image, Portal } from '../components/common'
 import SnackBarAtom from '../recoil/SnackBarAtom'
 import * as CSS from '../style/LoginRelevantSt'
 import useInput from '../utils/useInput'
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
   const { t } = useTranslation()
 
   // ystart5008@naver.com
@@ -23,8 +23,16 @@ const SignIn: React.FC = () => {
   })
   const navigate = useNavigate()
 
+  // const { kakaoData } = useQuery(['kakao'], kakaoLogin)
+  // console.log(kakaoData)
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
+      const { accessToken, user } = data.data
+      const { nickname } = user
+      if (accessToken) {
+        Cookies.set('accessToken', accessToken)
+        localStorage.setItem('nickname', nickname)
+      }
       navigate('/')
     },
     onError: (error) => {
@@ -40,6 +48,7 @@ const SignIn: React.FC = () => {
       password: data.password,
     })
   }
+  const kakaoLoginHandler = () => {}
   return (
     <CSS.BackgroundMain>
       <CSS.OverRaySection size={'login'}>
@@ -83,7 +92,10 @@ const SignIn: React.FC = () => {
             <p>{t('SNS로 간편 로그인하기')}</p>
             <p>{'--------------------'}</p>
           </TextDiv>
-          <Image width={330} height={55} src={kakaoBtn} />
+          <button type={'button'} onClick={kakaoLoginHandler}>
+            {'카카오로그인'}
+            {/* <Image width={330} height={55} src={kakaoBtn} /> */}
+          </button>
         </LoginBtnBoxDiv>
       </CSS.OverRaySection>
     </CSS.BackgroundMain>
