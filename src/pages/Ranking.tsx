@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
 import { rankingArrow } from '../assets'
-import { Badge } from '../components/common'
 import { getRankingInfo } from '../axios/ranking'
 
 const Ranking = () => {
@@ -19,7 +18,7 @@ const Ranking = () => {
   const calendar: CalendarOption[] = [
     { value: '2021-01', label: '2023년 07월' },
     { value: '2021-02', label: '2023년 08월' },
-    { value: '2023-9', label: '2023년 09월' },
+    { value: '2023-09', label: '2023년 09월' },
     { value: '2023-10', label: '2023년 10월' },
     { value: '2023-11', label: '2023년 11월' },
     { value: '2023-12', label: '2023년 12월' },
@@ -257,15 +256,16 @@ const MajorCurseWrap = styled.div`
   }
 `
 
-const MajorCurseCategory = styled.span`
+const MajorCurseCategory = styled.p`
   display: block;
-  font-size: 16px;
-  font-weight: 700;
+  width: fit-content;
+  padding: 1.5px 2px;
   border: 1px solid ${({ theme }) => theme.green.basic};
   color: ${({ theme }) => theme.green.basic};
   text-align: center;
-  padding-block: 1.5px;
   border-radius: 3px;
+  font-size: 16px;
+  font-weight: 700;
 `
 
 const RankingCalendarContainer = styled.div`
@@ -335,10 +335,20 @@ const RankingBodyNumber = styled.h3`
 const RankinBodySummonerWrap = styled.div`
   display: flex;
   justify-content: flex-start;
+  position: relative;
+  img {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: -5px;
+    left: 40px;
+    border-radius: 3px;
+  }
 `
 
 const RankinBodySummoner = styled.p`
   margin-left: 46px;
+  padding-left: 40px;
   font-size: 20px;
   font-weight: 700;
   width: 440px;
