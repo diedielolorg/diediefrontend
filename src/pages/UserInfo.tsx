@@ -103,7 +103,7 @@ const UserInfo = () => {
                     size={'l'}
                     color={'basic'}
                     onclick={() => {
-                      navigate('/report', { state: { nickname } })
+                      navigate('/report', { state: { nickname, summonerIcon: data.profileIconIdUrl } })
                     }}
                   >
                     {t('신고하기')}
