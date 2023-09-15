@@ -1,43 +1,88 @@
-import { useRef, useState, ChangeEvent } from 'react'
+import { useMutation } from '@tanstack/react-query'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
+import { fileDeleteBtn, reportCheckIcon } from '../assets'
 import ScreenShotImg from '../assets/ScreenShot.svg'
-import { reportCheckIcon } from '../assets'
+import { report } from '../axios/report'
+import { Portal } from '../components/common'
+import SnackBarAtom from '../recoil/SnackBarAtom'
 
 const Report = () => {
+  const location = useLocation().state
+  const navigate = useNavigate()
+  const mutation = useMutation(report, {
+    onSuccess: () => {
+      navigate('/')
+    },
+  })
   // date input onChange function
+  const [date, setDate] = useState<string>('')
+  const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
+  const [snackbarType, setSnackbarType] = useState<string>('')
   const DateInput = useRef<HTMLInputElement>(null)
 
   const onChangeDateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value
-    const onlyNumbers = /^[0-9]+$/
+    const onlyNumbers = /^[0-9]{1,8}$/
 
     if (onlyNumbers.test(inputValue) || inputValue === '') {
-      // setDate(inputValue)
+      setDate(inputValue)
+    }
+  }
+  const onBlurDateinput = () => {
+    const newYear = Number(date.slice(0, 4))
+    const newMonth = Number(date.slice(4, 6))
+    const newDate = Number(date.slice(6, 8))
+    if (newYear < 2020 || newYear > 2023) {
+      setIsSnackBar({ open: true })
+      setSnackbarType('incorrectYear')
+    } else if (newMonth < 1 || newMonth > 12) {
+      setIsSnackBar({ open: true })
+      setSnackbarType('incorrectMonth')
+    } else if (newDate < 1 || newDate > 31) {
+      setIsSnackBar({ open: true })
+      setSnackbarType('incorrectDate')
+    } else if (date.length !== 8) {
+      setIsSnackBar({ open: true })
+      setSnackbarType('date')
+    } else {
+      setIsSnackBar({ open: false })
+      setSnackbarType('')
     }
   }
 
   // file input onChange function
   const [fileAttach, setFileAttach] = useState<Array<File>>([])
-  const [fileName, setFileName] = useState<string>('')
   const [preview, setPreview] = useState<string>('')
-  const [date, setDate] = useState<number>(0)
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files && event.target.files[0]
-
     if (selectedFile) {
       setFileAttach((prevArray) => [...prevArray, selectedFile])
-      // const fileName = selectedFile.name
-      // setFileName(fileName)
+
       const objectUrl = fileAttach.length ? URL.createObjectURL(fileAttach[0]) : URL.createObjectURL(selectedFile)
       setPreview(objectUrl)
-      console.log('previewpreview', preview)
     }
   }
 
+  // file delete function
+  const fileDeleteHandler = (name: string) => {
+    setFileAttach((prevFileAttach) => prevFileAttach.filter((item) => item.name !== name))
+  }
+
+  useEffect(() => {
+    if (fileAttach.length) {
+      const objectUrl = URL.createObjectURL(fileAttach[0])
+      setPreview(objectUrl)
+    } else {
+      setPreview('')
+    }
+  }, [fileAttach])
+
   // checkbox input onChange function
   const [selectedCause, setSelectedCause] = useState<string[]>([])
-  const [reportReason, setReportReason] = useState<string | null>('')
   const CheckboxChangehandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.target
 
@@ -51,21 +96,14 @@ const Report = () => {
       setSelectedCause((prevSelectedCause) => prevSelectedCause.filter((item) => item !== id))
     }
   }
-
-  const reportReasonHandler = (id: string) => {
-    if (id === 'commercial') {
-      setReportReason('상업적/홍보성')
-    } else if (id === 'obscene') {
-      setReportReason('음란/선정성')
-    } else if (id === 'illegality') {
-      setReportReason('불법정보')
-    } else if (id === 'abuse') {
-      setReportReason('욕설/인신공격')
-    } else if (id === 'individual') {
-      setReportReason('개인정보노출')
-    } else if (id === 'ETC') {
-      setReportReason('기타')
-    }
+  // 영어에서 한글로 매핑
+  const englishCause = {
+    family: '패드립',
+    disgust: '혐오성 발언',
+    swearWord: '쌍욕',
+    personalAttack: '인신공격',
+    sexualHarassment: '성희롱',
+    etc: '기타',
   }
 
   const [text, setText] = useState('')
@@ -79,9 +117,24 @@ const Report = () => {
       setText(inputValue)
     }
   }
+  const submitButtonHandler = () => {
+    const newList = new FormData()
+    const submitDate = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`
+    const submitCause = selectedCause.map((value) => englishCause[value as keyof typeof englishCause]).join(',')
+    newList.append('summonerName', location.nickname)
+    newList.append('reportPayload', text)
+    newList.append('reportDate', submitDate)
+    newList.append('category', submitCause)
+    fileAttach.forEach((file) => {
+      const blobFile = new Blob([file], { type: file.type })
+      newList.append('reportCapture', blobFile, file.name)
+    })
+    mutation.mutate(newList)
+  }
 
   return (
     <ReportContainer>
+      {isSnackbar.open && <Portal type={'SnackBar'} snackBar={snackbarType} />}
       <ReportTitleWrap>
         <p>{'신고하려는 소환사'}</p>
         <h2>{'방배동 둠피스트'}</h2>
@@ -90,10 +143,12 @@ const Report = () => {
       <ReportDateWrap>
         <ItemTitle>{'욕한 날짜'}</ItemTitle>
         <input
+          value={date}
           type={'text'}
-          placeholder={'yyyy. mm. dd.의 형식으로 적어주세요.'}
+          placeholder={'yyyymmdd의 형식으로 적어주세요.'}
           ref={DateInput}
           onChange={(e) => onChangeDateInput(e)}
+          onBlur={onBlurDateinput}
         />
       </ReportDateWrap>
 
@@ -105,12 +160,23 @@ const Report = () => {
           </ImgWrap>
           <FileWrap>
             <div>
-              <p>{'장 당10MB 이하의 jpg, jpeg, png 파일을 업로드 해주세요. (최대 3장)'}</p>
+              <FileUploadGuide>{'장 당10MB 이하의 jpg, jpeg, png 파일을 업로드 해주세요. (최대 3장)'}</FileUploadGuide>
               <span>{'스크린샷에서 개인정보가 드러나지 않게 주의해주세요.'}</span>
             </div>
+            <FileNameWrap>
+              {fileAttach &&
+                fileAttach.map((item) => {
+                  return (
+                    <FileNameBox>
+                      <FileName>{item.name}</FileName>
+                      <FileDeleteBtn backgroundImage={fileDeleteBtn} onClick={() => fileDeleteHandler(item.name)} />
+                    </FileNameBox>
+                  )
+                })}
+            </FileNameWrap>
             <div>
               <FileButton htmlFor={'file'}>{'파일 선택'}</FileButton>
-              <FileInput type={'file'} id={'file'} onChange={handleFileChange} />
+              <FileInput type={'file'} id={'file'} onChange={handleFileChange} multiple />
             </div>
           </FileWrap>
         </FileContainer>
@@ -200,8 +266,14 @@ const Report = () => {
           onChange={handleTextChange}
           placeholder={`욕설을 들은 당시의 상황이나, 자세한 내용을 설명해주세요. ${'\n'}신고 내용을 허위로 작성하지 말아 주세요.`}
         />
+        <LetterWrap>
+          <span>{text.length}</span>
+          <p>{'/600'}</p>
+        </LetterWrap>
       </ReportBody>
-      <ReportPostBtn>{'등록'}</ReportPostBtn>
+      <ReportPostBtn onClick={submitButtonHandler} disabled>
+        {'등록'}
+      </ReportPostBtn>
     </ReportContainer>
   )
 }
@@ -294,19 +366,19 @@ const FileWrap = styled.div`
   flex-direction: column;
   justify-content: space-between;
 
-  p {
-    font-size: 15px;
-    font-weight: 700;
-    color: ${({ theme }) => theme.color.white};
-    letter-spacing: -0.225px;
-    margin-bottom: 11px;
-  }
-
   span {
     font-size: 15px;
     font-weight: 400;
     color: ${({ theme }) => theme.green.basic};
   }
+`
+
+const FileUploadGuide = styled.p`
+  font-size: 15px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.color.white};
+  letter-spacing: -0.225px;
+  margin-bottom: 11px;
 `
 
 const FileInput = styled.input.attrs({ type: 'file' })`
@@ -330,6 +402,34 @@ const FileButton = styled.label`
   background-color: ${({ theme }) => theme.green.basic};
   cursor: pointer;
   border-radius: 10px;
+`
+
+const FileNameWrap = styled.div`
+  display: flex;
+  gap: 37px;
+  margin-top: 30px;
+`
+
+const FileNameBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`
+
+const FileName = styled.p`
+  color: ${({ theme }) => theme.gray.AE};
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+`
+
+const FileDeleteBtn = styled.div<{ backgroundImage: string }>`
+  width: 8px;
+  height: 8px;
+  background-image: ${(props) => `url(${props.backgroundImage})`};
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
 `
 
 const CategoryWrap = styled.div`
@@ -398,6 +498,7 @@ const InputCheckbox = styled.input<{ backgroundImage: string }>`
 `
 
 const ReportBody = styled.div`
+  position: relative;
   margin-top: 47px;
 `
 
@@ -422,6 +523,22 @@ const ReportPostBtn = styled.button`
   font-size: 25px;
   font-weight: 700;
   margin: 47px auto 0 auto;
+`
+
+const LetterWrap = styled.div`
+  position: absolute;
+  right: 22px;
+  bottom: 16px;
+  display: flex;
+
+  span {
+    color: ${({ theme }) => theme.color.black};
+    font-weight: 700;
+  }
+
+  p {
+    color: ${({ theme }) => theme.gray.SF};
+  }
 `
 
 export default Report
