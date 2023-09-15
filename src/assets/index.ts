@@ -22,6 +22,7 @@ import searchBtn from './searchBtn.svg'
 import successIcon from './successIcon.svg'
 import zoomIn from './zoomIn.svg'
 import zoomOut from './zoomOut.svg'
+import topicon from './topIcon.svg'
 import reportCheckIcon from './reportCheckIcon.svg'
 import fileDeleteBtn from './fileDeleteBtn.svg'
 
@@ -50,6 +51,7 @@ export {
   successIcon,
   zoomIn,
   zoomOut,
+  topicon,
   reportCheckIcon,
   fileDeleteBtn,
 }

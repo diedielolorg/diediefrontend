@@ -41,6 +41,7 @@ api.interceptors.response.use(
 )
 
 const getRequest = async (url: string) => {
+  console.log(url)
   const response = await api.get(url)
   return response.data
 }
