@@ -2,10 +2,11 @@
 import { useMutation } from '@tanstack/react-query'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 import { blackLogo } from '../assets'
-import { authCode, signUp, validation } from '../axios/login'
+import { authCode, authCodeResend, nicknameConfirm, signUp, validation } from '../axios/login/login'
 import Timer from '../components/Timer'
 import { Button, Image, Portal } from '../components/common'
 import SnackBarAtom from '../recoil/SnackBarAtom'
@@ -31,42 +32,68 @@ const SignUp: React.FC = () => {
     password: '',
     passwordConfirm: '',
   })
+
+  const [timer, setTimer] = useState(180)
   const [isCertified, setIsCertified] = useState(false)
-  const [isNickNameSuccess, setIsNickNameSuccess] = useState(false)
-  const [timer, setTimer] = useState(10)
+  const [isNicknameVerified, setIsNicknameVerified] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
   const [isBtnOpen, setIsBtnOpen] = useState(false)
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
 
+  const navigate = useNavigate()
+  console.log('data', data)
+  console.log('isNicknameVerified', isNicknameVerified)
+  console.log('isEmailVerified', isEmailVerified)
+  const nicknameConfirmMutation = useMutation(nicknameConfirm, {
+    onSuccess: () => {
+      setIsNicknameVerified(true)
+      setHelpMsg((prevState) => ({ ...prevState, nickName: '사용가능한 닉네임입니다.' }))
+    },
+    onError: (error) => {
+      setHelpMsg((prevState) => ({ ...prevState, nickName: '중복된 닉네임 입니다.' }))
+    },
+  })
   const authCodeMutation = useMutation(authCode, {
     onSuccess: () => {
+      setIsEmailVerified(false)
       setIsCertified(true)
       setIsBtnOpen(false)
+      setHelpMsg((prevState) => ({ ...prevState, email: '' }))
     },
     onError: (error) => {
       setHelpMsg((prevState) => ({ ...prevState, email: '이미 등록된 이메일 입니다.' }))
+    },
+  })
+  const authCodeResendMutation = useMutation(authCodeResend, {
+    onSuccess: () => {
+      setTimer(180)
+    },
+    onError: (error) => {
+      console.log(error)
     },
   })
   const validationMutation = useMutation(validation, {
     onSuccess: () => {
       setIsCertified(false)
       setIsSnackBar({ open: true })
-      updateConfirmNumber('')
+      setIsEmailVerified(true)
     },
     onError: (error) => {
       setHelpMsg((prevState) => ({ ...prevState, certified: '인증번호가 일치하지 않습니다.' }))
     },
   })
   const signUpMutation = useMutation(signUp, {
-    onSuccess: () => {},
+    onSuccess: () => {
+      navigate('/completed', { state: data.nickName })
+    },
     onError: (error) => {
       setHelpMsg((prevState) => ({ ...prevState, password: '사용할 수 없는 비밀번호 입니다.' }))
     },
   })
-  const FullEmail = `${data.email}@${data.address}`
 
   const apiData = {
-    nickname: data.nickname,
-    email: FullEmail,
+    nickname: data.nickName,
+    email: `${data.email}@${data.address}`,
     code: data.ConfirmNumber,
     password: data.password,
   }
@@ -76,11 +103,12 @@ const SignUp: React.FC = () => {
       .slice(1)
       .every((value) => value.length !== 0)
 
-    setIsSignUp(isNickNameValid && areFieldsFilled)
-  }, [data])
+    setIsSignUp(isNickNameValid && areFieldsFilled && isNicknameVerified && isEmailVerified)
+  }, [data, isNicknameVerified, isEmailVerified])
 
   useEffect(() => {
     setIsBtnOpen(true)
+    setIsEmailVerified(false)
   }, [data.email, data.address])
 
   const nickNameConfirm = () => {
@@ -90,13 +118,16 @@ const SignUp: React.FC = () => {
         ...prevState,
         nickName: '사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)',
       }))
+      return
     }
     if (data.nickName.length < 2) {
       setHelpMsg((prevState) => ({
         ...prevState,
         nickName: '닉네임을 입력해주세요',
       }))
+      return
     }
+    nicknameConfirmMutation.mutate({ nickname: apiData.nickname })
   }
 
   const emailAuthenticationBtnHandler = () => {
@@ -107,24 +138,30 @@ const SignUp: React.FC = () => {
     }
     authCodeMutation.mutate({ email: apiData.email })
     if (!isCertified) {
-      setTimer(10)
-    }
-  }
-
-  const certifiedBtnHandler = () => {
-    validationMutation.mutate({ code: apiData.code })
-  }
-
-  const signUpBtnHandler = () => {
-    if (data.password !== data.passwordConfirm) {
-      setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '비밀번호가 일치하지 않습니다.' }))
-    } else {
-      setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '' }))
+      setTimer(180)
     }
   }
   const RetransmissionBtnHandler = () => {
-    setTimer(10)
+    authCodeResendMutation.mutate({ email: apiData.email })
   }
+  const certifiedBtnHandler = () => {
+    validationMutation.mutate({ code: apiData.code, email: apiData.email })
+  }
+  const signUpBtnHandler = () => {
+    if (data.password !== data.passwordConfirm) {
+      setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '비밀번호가 일치하지 않습니다.' }))
+      return
+    }
+    setHelpMsg((prevState) => ({ ...prevState, passwordConfirm: '' }))
+    signUpMutation.mutate({
+      nickname: apiData.nickname,
+      email: apiData.email,
+      password: apiData.password,
+      emailVerified: isEmailVerified,
+      nicknameVerified: isNicknameVerified,
+    })
+  }
+
   const memoizedTimer = useMemo(
     () => <Timer isBtnOpen={isBtnOpen} timeLimit={timer} onTimerEnd={() => setTimer(0)} />,
     [timer, isBtnOpen],
@@ -150,19 +187,19 @@ const SignUp: React.FC = () => {
               {t('중복확인')}
             </Button>
           </CSS.ConfirmBoxDiv>
-          <CSS.HelpMessageDiv color={isNickNameSuccess ? 'true' : 'false'}>{t(helpMsg.nickName)}</CSS.HelpMessageDiv>
+          <CSS.HelpMessageDiv color={isNicknameVerified ? 'true' : 'false'}>{t(helpMsg.nickName)}</CSS.HelpMessageDiv>
           <CSS.UserLabel htmlFor={'email'}>{t('이메일')}</CSS.UserLabel>
           <CSS.ConfirmBoxDiv>
-            <CSS.UserInfoInput id={'email'} size={167} name={'email'} value={data.email} onChange={onChange} />
+            <CSS.UserInfoInput id={'email'} size={150} name={'email'} value={data.email} onChange={onChange} />
             <p>{'@'}</p>
-            <CSS.UserInfoInput id={'email'} size={238} name={'address'} value={data.address} onChange={onChange} />
+            <CSS.UserInfoInput id={'email'} size={230} name={'address'} value={data.address} onChange={onChange} />
             <Button
-              size={'xs'}
+              size={'s'}
               color={!isBtnOpen ? 'light' : 'lime'}
               onclick={emailAuthenticationBtnHandler}
               disabled={!isBtnOpen}
             >
-              {t('인증')}
+              {isEmailVerified ? '✔️' : t('인증')}
             </Button>
           </CSS.ConfirmBoxDiv>
           <CSS.HelpMessageDiv>{t(helpMsg.email)}</CSS.HelpMessageDiv>
@@ -186,7 +223,7 @@ const SignUp: React.FC = () => {
                     {memoizedTimer}
                   </TimerP>
                 </InputBoxDiv>
-                <Button size={'s'} color={'gray'} onclick={RetransmissionBtnHandler}>
+                <Button size={'s'} color={'gray'} onclick={RetransmissionBtnHandler} disabled={timer !== 0}>
                   {t('재전송')}
                 </Button>
                 <Button

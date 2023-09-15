@@ -1,28 +1,33 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
 import * as CSS from '../style/LoginRelevantSt'
 import { nextonIcon } from '../assets'
 import { Image } from '../components/common'
+import { getMyReport } from '../axios/reportService'
 
 const MyPage = () => {
   const navigate = useNavigate()
-  const movoToEditMyInfoBtnHandler = () => {
+  const moveToEditMyInfoBtnHandler = () => {
     navigate('/editinfo')
   }
-
+  const moveToMyReportBtnHandler = () => {
+    navigate('/myReport')
+  }
+  const nickname = localStorage.getItem('nickname')
   return (
     <CSS.BackgroundMain>
       <Section>
         <NameBoxDiv>
-          <TextP color={'name'}>{'방배동둠피스트'}</TextP>
+          <TextP color={'name'}>{nickname}</TextP>
           <TextP>{'님, 안녕하세요!'}</TextP>
         </NameBoxDiv>
-        <MoveToBtnDiv onClick={movoToEditMyInfoBtnHandler}>
+        <MoveToBtnDiv onClick={moveToEditMyInfoBtnHandler}>
           <p>{'내 정보 수정'}</p>
           <Image width={9} height={18} src={nextonIcon} />
         </MoveToBtnDiv>
-        <MoveToBtnDiv>
+        <MoveToBtnDiv onClick={moveToMyReportBtnHandler}>
           <p>{'내가 등록한 신고'}</p>
           <Image width={9} height={18} src={nextonIcon} />
         </MoveToBtnDiv>

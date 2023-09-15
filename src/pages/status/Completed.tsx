@@ -1,12 +1,12 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { BackgroundMain } from '../../style/LoginRelevantSt'
 import { Button } from '../../components/common'
 
 const Completed = () => {
   const navigate = useNavigate()
-
+  const location = useLocation()
   const moveToLoginPageBtnHandler = () => {
     navigate('/signin')
   }
@@ -15,7 +15,7 @@ const Completed = () => {
       <OverRaySection>
         <div>
           <NickNameBoxDiv>
-            <TextP color={'name'}>{'방배동둠피스트방배동둠피'}</TextP>
+            <TextP color={'name'}>{location.state}</TextP>
             <TextP>{'님,'}</TextP>
           </NickNameBoxDiv>
           <TextP>{'가입을 축하합니다!'}</TextP>
@@ -53,6 +53,7 @@ const TextP = styled.p`
 
 const NickNameBoxDiv = styled.div`
   display: flex;
+  justify-content: center;
   flex-direction: row;
   gap: 10px;
   margin-bottom: 12px;

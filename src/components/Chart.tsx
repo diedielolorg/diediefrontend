@@ -1,5 +1,6 @@
 import { ChartOptions, Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { Doughnut } from 'react-chartjs-2'
+import { useTranslation } from 'react-i18next'
 import { styled, useTheme } from 'styled-components'
 import { ChartProps } from '../interfaces/UserInfoTypes'
 
@@ -7,6 +8,7 @@ const Chart = ({ chartData, label }: ChartProps) => {
   ChartJS.register(ArcElement, Tooltip, Legend)
 
   const theme = useTheme()
+  const { t } = useTranslation()
 
   const LabelArr = Object.keys(chartData)
   const dataArr = Object.values(chartData)
@@ -62,7 +64,7 @@ const Chart = ({ chartData, label }: ChartProps) => {
     <div>
       {dataArr.every((value) => !value) ? (
         <NoneDataDiv>
-          <h3>{'등록된 통계 데이터가 없습니다.'}</h3>
+          <h3>{t('등록된 통계 데이터가 없습니다.')}</h3>
         </NoneDataDiv>
       ) : (
         <StyledChart data={data} options={options} width={400} height={400} />
