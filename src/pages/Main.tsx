@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { useMutation } from '@tanstack/react-query'
 import { Image } from '../components/common'
-import { logo, searchBtn } from '../assets'
+import { logo, searchBtn, mainBg } from '../assets'
 import { search } from '../axios/main'
 import tips from '../utils/tipsData'
 
@@ -120,6 +120,9 @@ const Main = () => {
           )}
         </SearchResultBoxDiv>
         <TipBoxDiv>{randomTip}</TipBoxDiv>
+        <BgBoxDiv>
+          <Image src={mainBg} alt={'메인화면 배경 이미지'} />
+        </BgBoxDiv>
       </SearchBoxDiv>
     </WrapMainBoxDiv>
   )
@@ -210,4 +213,11 @@ const TipBoxDiv = styled.div`
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
+`
+const BgBoxDiv = styled.div`
+  z-index: 0;
+  position: absolute;
+  top: 86px;
+  opacity: 0.8;
+  mix-blend-mode: lighten;
 `

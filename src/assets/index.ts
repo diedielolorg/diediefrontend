@@ -14,6 +14,7 @@ import kakaoBtn from './kakaoBtn.svg'
 import langEn from './langEn.svg'
 import langKo from './langKo.svg'
 import loading from './loading.gif'
+import mainBg from './mainBg.png'
 import logo from './logo.svg'
 import nextonIcon from './nextonIcon.svg'
 import rankingArrow from './rankingArrow.svg'
@@ -43,6 +44,7 @@ export {
   langEn,
   langKo,
   loading,
+  mainBg,
   logo,
   nextonIcon,
   rankingArrow,
