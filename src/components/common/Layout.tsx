@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Cookies from 'js-cookie'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -18,7 +19,11 @@ const Layout = () => {
   // hooks
   useEffect(() => {
     const checkLoginStatusHandler = () => {
-      // ! 임시 로그인 여부 확인 로직 추가
+      if (Cookies.get('accessToken')) {
+        setIsLogin(true)
+      } else {
+        setIsLogin(false)
+      }
     }
     checkLoginStatusHandler()
   })
@@ -40,7 +45,9 @@ const Layout = () => {
     navigate('/signin')
   }
   const moveToSignOutBtnHandler = () => {
-    // 로그아웃
+    // 로그아웃 처리, 네비게이터 쿠키 및 로컬 스토리지 삭제
+    Cookies.remove('accessToken')
+    localStorage.removeItem('nickname')
     navigate('/')
   }
   // 언어 상태 변환 핸들러
