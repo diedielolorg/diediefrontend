@@ -14,6 +14,7 @@ import kakaoBtn from './kakaoBtn.svg'
 import langEn from './langEn.svg'
 import langKo from './langKo.svg'
 import loading from './loading.gif'
+import mainBg from './mainBg.png'
 import logo from './logo.svg'
 import nextonIcon from './nextonIcon.svg'
 import rankingArrow from './rankingArrow.svg'
@@ -22,6 +23,9 @@ import searchBtn from './searchBtn.svg'
 import successIcon from './successIcon.svg'
 import zoomIn from './zoomIn.svg'
 import zoomOut from './zoomOut.svg'
+import topicon from './topIcon.svg'
+import reportCheckIcon from './reportCheckIcon.svg'
+import fileDeleteBtn from './fileDeleteBtn.svg'
 
 export {
   afterLogin,
@@ -40,6 +44,7 @@ export {
   langEn,
   langKo,
   loading,
+  mainBg,
   logo,
   nextonIcon,
   rankingArrow,
@@ -48,4 +53,7 @@ export {
   successIcon,
   zoomIn,
   zoomOut,
+  topicon,
+  reportCheckIcon,
+  fileDeleteBtn,
 }

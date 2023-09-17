@@ -49,7 +49,10 @@ export interface ReportListProps {
     reportId: number
     reportPayload: string
     summonerName: string
+    summonerPhoto: string
+    createdAt: string
   }[]
+  onButtonClick?: (id: number) => void
 }
 
 // ReportList.tsx

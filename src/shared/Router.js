@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Main, MyPage, Ranking, Report, SignIn, SignUp, UserInfo, EditInfo } from '../pages'
+import { Main, MyPage, Ranking, Report, SignIn, SignUp, UserInfo, EditInfo, MyReport } from '../pages'
 import { ErrorPage, Completed, Withdrawal, AfterLoginPage } from '../pages/status'
 import { Layout } from '../components/common'
 
@@ -20,6 +20,7 @@ const Router = () => {
           <Route path={'completed'} element={<Completed />} />
           <Route path={'editinfo'} element={<EditInfo />} />
           <Route path={'withdrawal'} element={<Withdrawal />} />
+          <Route path={'myReport'} element={<MyReport />} />
           <Route path={'afterlogin'} element={<AfterLoginPage />} />
           <Route path={'*'} element={<ErrorPage type={'noMatch'} />} />
         </Route>

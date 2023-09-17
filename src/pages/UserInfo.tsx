@@ -103,10 +103,10 @@ const UserInfo = () => {
                     size={'l'}
                     color={'basic'}
                     onclick={() => {
-                      navigate('/report', { state: { nickname } })
+                      navigate('/report', { state: { nickname, summonerIcon: data.profileIconIdUrl } })
                     }}
                   >
-                    {'신고하기'}
+                    {t('신고하기')}
                   </Button>
                 </UserBtnDiv>
               </div>

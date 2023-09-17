@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import Cookies from 'js-cookie'
 import { RequestType } from '../interfaces/axiosTypes'
 
@@ -10,16 +10,14 @@ const api = axios.create({
 api.interceptors.request.use(
   // 요청을 보내기 전 수행되는 함수
   (config) => {
-    const accessToken = Cookies.get('access_token')
-    const headers = { ...config.headers }
+    const accessToken = Cookies.get('accessToken')
     if (accessToken) {
-      headers.authorization = `${accessToken}`
-    } else {
-      headers.authorization = ''
+      const modifiedConfig = { ...config }
+      modifiedConfig.headers.authorization = accessToken
+      return modifiedConfig
     }
     return config
   },
-
   // 오류요청을 보내기 전 수행되는 함수
   (error: AxiosError) => {
     return Promise.reject(error)
@@ -43,16 +41,13 @@ api.interceptors.response.use(
 )
 
 const getRequest = async (url: string) => {
+  console.log(url)
   const response = await api.get(url)
   return response.data
 }
 
 const postRequest = async (url: string, data: RequestType) => {
   const response = await api.post(url, data)
-  const token: string = response.data.authorization
-  if (token) {
-    Cookies.set('accessToken', token)
-  }
   return response
 }
 
