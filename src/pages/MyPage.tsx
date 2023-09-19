@@ -1,11 +1,8 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
-import * as CSS from '../style/LoginRelevantSt'
 import { nextonIcon } from '../assets'
 import { Image } from '../components/common'
-import { getMyReport } from '../axios/reportService'
+import * as CSS from '../style/LoginRelevantSt'
 
 const MyPage = () => {
   const navigate = useNavigate()

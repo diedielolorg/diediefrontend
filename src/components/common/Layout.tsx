@@ -79,7 +79,7 @@ const Layout = () => {
               {t('로그인')}
             </MenuBtn>
           )}
-          <TransBtn type={'button'} onClick={() => translateBtnHandler(isKorean ? 'ko' : 'en')} isKorean={isKorean} />
+          <TransBtn type={'button'} onClick={() => translateBtnHandler(isKorean ? 'en' : 'ko')} isKorean={isKorean} />
         </Menu>
       </Header>
       <MaxWidth>
