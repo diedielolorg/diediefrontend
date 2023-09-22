@@ -26,6 +26,7 @@ import zoomOut from './zoomOut.svg'
 import topicon from './topIcon.svg'
 import reportCheckIcon from './reportCheckIcon.svg'
 import fileDeleteBtn from './fileDeleteBtn.svg'
+import keepOut from './keepOut.svg'
 
 export {
   afterLogin,
@@ -56,4 +57,5 @@ export {
   topicon,
   reportCheckIcon,
   fileDeleteBtn,
+  keepOut,
 }

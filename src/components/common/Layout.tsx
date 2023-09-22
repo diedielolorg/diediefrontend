@@ -14,7 +14,7 @@ const Layout = () => {
   // 로그인 상태
   const [isLogin, setIsLogin] = useState<boolean>(false)
   // 언어
-  const [isKorean, setIsKorean] = useState<boolean>(true)
+  const [isEnglish, setIsEnglish] = useState<boolean>(true)
 
   // hooks
   useEffect(() => {
@@ -52,7 +52,7 @@ const Layout = () => {
   }
   // 언어 상태 변환 핸들러
   const translateBtnHandler = (lang: Languages) => {
-    setIsKorean((prevState) => !prevState)
+    setIsEnglish((prevState) => !prevState)
     i18n.changeLanguage(lang)
   }
   return (
@@ -79,7 +79,11 @@ const Layout = () => {
               {t('로그인')}
             </MenuBtn>
           )}
-          <TransBtn type={'button'} onClick={() => translateBtnHandler(isKorean ? 'en' : 'ko')} isKorean={isKorean} />
+          <TransBtn
+            type={'button'}
+            onClick={() => translateBtnHandler(isEnglish ? 'en' : 'ko')}
+            isEnglish={isEnglish}
+          />
         </Menu>
       </Header>
       <MaxWidth>
@@ -140,9 +144,9 @@ const MenuBtn = styled.button`
   font-weight: 600;
   cursor: pointer;
 `
-const TransBtn = styled.button<{ isKorean: boolean }>`
+const TransBtn = styled.button<{ isEnglish: boolean }>`
   cursor: pointer;
-  background-image: url(${(props) => (props.isKorean ? langKo : langEn)});
+  background-image: url(${(props) => (props.isEnglish ? langKo : langEn)});
   width: 55px;
   height: 32px;
   background-color: transparent;
