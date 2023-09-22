@@ -19,43 +19,57 @@ const Modal = ({ type, title, subTitle, placeholder, maxLen, primaryBtn, seconda
     setTextLen(e.currentTarget.textLength)
   }
   return (
-    <ModalLayout>
-      {type === 'confirm' ? (
-        <ModalIconDiv>
-          <Image width={100} height={100} src={keepOut} alt={'모달아이콘'} />
-        </ModalIconDiv>
-      ) : null}
-      <ModalTitleDiv type={type}>
-        <Title type={type}>{title}</Title>
-        {subTitle ? <SubTitle>{subTitle}</SubTitle> : null}
-      </ModalTitleDiv>
-      {type === 'input' ? (
-        <ModalInputWrap>
-          <ModalInput placeholder={placeholder} onKeyUp={textLenChkHandler} maxLength={maxLen} />
-          <InputLenChk>
-            <InputCurSpan>{textLen}</InputCurSpan>
-            <InputMaxSpan>{`/${maxLen}`}</InputMaxSpan>
-          </InputLenChk>
-        </ModalInputWrap>
-      ) : null}
-      <ModalBtnsDiv>
-        {secondaryBtn ? (
-          <ModalBtn type={'button'} onClick={secondaryBtn.onClick} isPrimary={false}>
-            {secondaryBtn.children}
-          </ModalBtn>
+    <ModalOutlet>
+      <ModalLayout>
+        {type === 'confirm' ? (
+          <ModalIconDiv>
+            <Image width={100} height={100} src={keepOut} alt={'모달아이콘'} />
+          </ModalIconDiv>
         ) : null}
-        {primaryBtn ? (
-          <ModalBtn type={'button'} onClick={primaryBtn.onClick} isPrimary>
-            {primaryBtn.children}
-          </ModalBtn>
+        <ModalTitleDiv type={type}>
+          <Title type={type}>{title}</Title>
+          {subTitle ? <SubTitle>{subTitle}</SubTitle> : null}
+        </ModalTitleDiv>
+        {type === 'input' ? (
+          <ModalInputWrap>
+            <ModalInput placeholder={placeholder} onKeyUp={textLenChkHandler} maxLength={maxLen} />
+            <InputLenChk>
+              <InputCurSpan>{textLen}</InputCurSpan>
+              <InputMaxSpan>{`/${maxLen}`}</InputMaxSpan>
+            </InputLenChk>
+          </ModalInputWrap>
         ) : null}
-      </ModalBtnsDiv>
-    </ModalLayout>
+        <ModalBtnsDiv>
+          {secondaryBtn ? (
+            <ModalBtn type={'button'} onClick={secondaryBtn.onClick} isPrimary={false}>
+              {secondaryBtn.children}
+            </ModalBtn>
+          ) : null}
+          {primaryBtn ? (
+            <ModalBtn type={'button'} onClick={primaryBtn.onClick} isPrimary>
+              {primaryBtn.children}
+            </ModalBtn>
+          ) : null}
+        </ModalBtnsDiv>
+      </ModalLayout>
+    </ModalOutlet>
   )
 }
 
 export default Modal
 
+const ModalOutlet = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.5);
+`
 const ModalLayout = styled.div`
   width: 506px;
   height: 501px;
