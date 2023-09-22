@@ -118,7 +118,7 @@ const OverRaySection = styled.section<{ size?: 'login' }>`
   padding-left: 97px;
   padding-right: 97px;
   padding-bottom: 63px;
-  margin-top: ${(props) => (props.size === 'login' ? '40px' : '23px')};
+  margin-top: 78px;
 
   border-radius: 20px;
   background: ${({ theme }) => theme.color.white};

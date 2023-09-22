@@ -6,6 +6,7 @@ import { Image } from '../components/common'
 import { logo, searchBtn, mainBg } from '../assets'
 import { search } from '../axios/main'
 import tips from '../utils/tipsData'
+import { Modal } from '../components/modal'
 
 const Main = () => {
   const navigate = useNavigate()
@@ -38,30 +39,51 @@ const Main = () => {
     },
   })
 
-  useEffect(() => {
-    if (timer) {
-      clearTimeout(timer)
-    }
-    const newTimer = setTimeout(async () => {
-      try {
-        await searchMutationCall()
-      } catch (e) {
-        console.error('error', e)
-      }
-    }, 300)
+  // 엔터 및 클릭 이벤트로 변경으로 인한 기존 코드 주석 처리 23.09.22.
+  // useEffect(() => {
+  //   if (timer) {
+  //     clearTimeout(timer)
+  //   }
+  //   const newTimer = setTimeout(async () => {
+  //     try {
+  //       await searchMutationCall()
+  //     } catch (e) {
+  //       console.error('error', e)
+  //     }
+  //   }, 300)
 
-    setTimer(newTimer)
+  //   setTimer(newTimer)
 
-    // 방 목록 조회
-    const searchMutationCall = () => {
-      if (searchKeyword !== '') {
-        // 뮤테이션 콜
-        searchMutation.mutate({
-          summonername: searchKeyword,
-        })
-      }
+  //   // 방 목록 조회
+  //   const searchMutationCall = () => {
+  //     if (searchKeyword !== '') {
+  //       // 뮤테이션 콜
+  //       searchMutation.mutate({
+  //         summonername: searchKeyword,
+  //       })
+  //     }
+  //   }
+  // }, [searchKeyword])
+  // 뮤테이션 콜
+  const searchMutationCall = () => {
+    if (searchKeyword !== '') {
+      searchMutation.mutate({
+        summonername: searchKeyword,
+      })
     }
-  }, [searchKeyword])
+  }
+
+  // 검색 엔터 핸들러
+  const onKeyUpSearchKeywordHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === 'Enter') {
+      searchMutationCall()
+    }
+  }
+
+  // 검색 버튼 핸들러
+  const onClickSearchKeywordHandler = () => {
+    searchMutationCall()
+  }
 
   // 검색 입력 이벤트 핸들러
   const searchKeywordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,11 +96,52 @@ const Main = () => {
   }
   return (
     <WrapMainBoxDiv>
+      {/* <Modal
+        type={'confirm'}
+        title={'정말 탈퇴할까요?'}
+        subTitle={'탈퇴 후에는 정보를 복구할 수 없어요.'}
+        primaryBtn={{
+          children: '첫번째',
+          onClick: () => {
+            alert('test')
+          },
+        }}
+        secondaryBtn={{
+          children: '두번째',
+          onClick: () => {
+            alert('test2')
+          },
+        }}
+      /> */}
+      {/* <Modal
+        type={'input'}
+        title={'삭제 사유를 적어주세요.'}
+        subTitle={null}
+        placeholder={'최소 5자 이상 적어주세요.'}
+        maxLen={230}
+        primaryBtn={{
+          children: '첫번째',
+          onClick: () => {
+            alert('test')
+          },
+        }}
+        secondaryBtn={{
+          children: '두번째',
+          onClick: () => {
+            alert('test2')
+          },
+        }}
+      /> */}
       <Image width={338} height={66} src={logo} alt={'로고'} />
       <SearchBoxDiv>
         <SearchInputBoxDiv>
-          <SearchInput type={'text'} placeholder={'소환사명을 검색하세요.'} onChange={searchKeywordHandler} />
-          <SearchBtn type={'button'}>
+          <SearchInput
+            type={'text'}
+            placeholder={'소환사명을 검색하세요.'}
+            onChange={searchKeywordHandler}
+            onKeyUp={onKeyUpSearchKeywordHandler}
+          />
+          <SearchBtn type={'button'} onClick={onClickSearchKeywordHandler}>
             <Image src={searchBtn} alt={'검색창 아이콘'} />
           </SearchBtn>
         </SearchInputBoxDiv>

@@ -13,3 +13,20 @@ export interface ZoomImgProps {
 export interface snackBar {
   type?: string
 }
+
+// Modal.ts
+export interface ModalProps {
+  type?: 'input' | 'confirm'
+  title?: string
+  subTitle?: string | null
+  placeholder?: string
+  maxLen?: number
+  primaryBtn?: {
+    children: string
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  } | null
+  secondaryBtn?: {
+    children: string
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  } | null
+}
