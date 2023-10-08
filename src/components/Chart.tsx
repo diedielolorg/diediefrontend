@@ -67,7 +67,9 @@ const Chart = ({ chartData, label }: ChartProps) => {
           <h3>{t('등록된 통계 데이터가 없습니다.')}</h3>
         </NoneDataDiv>
       ) : (
-        <StyledChart data={data} options={options} width={400} height={400} />
+        <WrapChart>
+          <Doughnut data={data} options={options} width={400} height={400} />
+        </WrapChart>
       )}
     </div>
   )
@@ -82,6 +84,7 @@ const NoneDataDiv = styled.div`
   justify-content: center;
 `
 
-const StyledChart = styled(Doughnut)`
+const WrapChart = styled.div`
   height: 350px;
+  margin-top: -10px;
 `
