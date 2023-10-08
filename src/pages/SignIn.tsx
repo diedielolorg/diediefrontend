@@ -14,8 +14,6 @@ import useInput from '../utils/useInput'
 const SignIn = () => {
   const { t } = useTranslation()
 
-  // ystart5008@naver.com
-  // fdsafawe
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
   const [data, onChange] = useInput({
     email: '',
@@ -24,7 +22,6 @@ const SignIn = () => {
   const navigate = useNavigate()
 
   // const { kakaoData } = useQuery(['kakao'], kakaoLogin)
-  // console.log(kakaoData)
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
       // const { accessToken, user } = data.data
