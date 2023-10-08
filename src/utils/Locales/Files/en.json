@@ -68,5 +68,6 @@
   "등록된 신고가 없습니다.": "No report data",
   "전과 {{reportCount}}범": "{{reportCount}} Criminal conviction",
   "전과": " ",
-  "{{reportCount}}범": "{{reportCount}} Offender"
+  "{{reportCount}}범": "{{reportCount}} Offender",
+  "성공적으로 삭제됐어요.": "I successfully deleted it."
 }

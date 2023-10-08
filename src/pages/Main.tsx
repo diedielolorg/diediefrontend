@@ -229,6 +229,7 @@ const SearchInput = styled.input`
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  outline: none;
 `
 const SearchBtn = styled.button`
   width: 95px;

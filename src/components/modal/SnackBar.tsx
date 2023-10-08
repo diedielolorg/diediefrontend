@@ -53,15 +53,15 @@ const SnackBar = ({ type }: snackBar) => {
 
           {type === 'incorrectDate' && (
             <div>
-              <OneLineTextP>{'날짜 형식을 확인해주세요.'}</OneLineTextP>
-              <DateP>{'입력 일의 형식이 맞지 않습니다.'}</DateP>
+              <OneLineTextP>{t('날짜 형식을 확인해주세요.')}</OneLineTextP>
+              <DateP>{t('입력 일의 형식이 맞지 않습니다.')}</DateP>
             </div>
           )}
 
           {type === 'success' && (
             <LogoSnackBarDiv>
               <Image width={45} height={45} src={successIcon} />
-              <OneLineTextP>{'성공적으로 삭제됐어요.'}</OneLineTextP>
+              <OneLineTextP>{t('성공적으로 삭제됐어요.')}</OneLineTextP>
             </LogoSnackBarDiv>
           )}
           <CloseBtn onClick={snackBarCloseBtnHandler} />
