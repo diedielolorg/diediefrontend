@@ -31,7 +31,12 @@ const SnackBar = ({ type }: snackBar) => {
               <DateP>{t('yyyy. mm. dd.로 적어주세요.')}</DateP>
             </div>
           )}
-
+          {type === 'login' && (
+            <div>
+              <OneLineTextP>{t('등록된 회원정보가 없습니다.')}</OneLineTextP>
+              <DateP>{t('이메일 혹은 비밀번호를 확인해주세요.')}</DateP>
+            </div>
+          )}
           {type === 'incorrectYear' && (
             <div>
               <OneLineTextP>{t('날짜 형식을 확인해주세요.')}</OneLineTextP>
@@ -53,7 +58,7 @@ const SnackBar = ({ type }: snackBar) => {
             </div>
           )}
 
-          {type === 'logo' && (
+          {type === 'success' && (
             <LogoSnackBarDiv>
               <Image width={45} height={45} src={successIcon} />
               <OneLineTextP>{'성공적으로 삭제됐어요.'}</OneLineTextP>

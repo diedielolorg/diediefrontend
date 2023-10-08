@@ -41,9 +41,6 @@ const SignUp: React.FC = () => {
   const [isEmailVerified, setIsEmailVerified] = useState(false)
 
   const navigate = useNavigate()
-  console.log('data', data)
-  console.log('isNicknameVerified', isNicknameVerified)
-  console.log('isEmailVerified', isEmailVerified)
   const nicknameConfirmMutation = useMutation(nicknameConfirm, {
     onSuccess: () => {
       setIsNicknameVerified(true)
@@ -109,7 +106,8 @@ const SignUp: React.FC = () => {
   useEffect(() => {
     setIsBtnOpen(true)
     setIsEmailVerified(false)
-  }, [data.email, data.address])
+    setIsNicknameVerified(false)
+  }, [data.email, data.address, data.nickName])
 
   const nickNameConfirm = () => {
     const regex = /^[가-힣a-zA-Z]*$/

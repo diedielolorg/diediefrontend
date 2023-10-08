@@ -27,12 +27,14 @@ const SignIn = () => {
   // console.log(kakaoData)
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
-      const { accessToken, user } = data.data
-      const { nickname } = user
-      if (accessToken) {
-        Cookies.set('accessToken', accessToken)
-        localStorage.setItem('nickname', nickname)
-      }
+      // const { accessToken, user } = data.data
+      // const { nickname } = user
+      // if (accessToken) {
+      //   Cookies.set('accessToken', accessToken)
+      //   localStorage.setItem('nickname', nickname)
+      // }
+      Cookies.set('accessToken', `bearer ${data.data}`)
+
       navigate('/')
     },
     onError: (error) => {

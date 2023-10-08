@@ -23,12 +23,12 @@ const ReportList = ({ reportlist, reportlength, onButtonClick }: ReportListProps
     3: false,
     4: false,
   })
-  const [isDelete, setIsDelete] = useState(false)
+  const [isMyReport, setIsMyReport] = useState(false)
   const [currentPage, setCurrentPage] = useRecoilState(pageState)
 
   useEffect(() => {
     if (location.pathname === '/myReport') {
-      setIsDelete(true)
+      setIsMyReport(true)
     }
   }, [location])
 
@@ -48,45 +48,53 @@ const ReportList = ({ reportlist, reportlength, onButtonClick }: ReportListProps
     <>
       {reportlist &&
         reportlist.map((list, idx) => (
-          <ReportInfoDiv key={list.reportId}>
-            <BtnWrapDiv>
-              {isDelete && <DeleteBtn onClick={() => onButtonClick?.(list.reportId)}>{t('삭제')}</DeleteBtn>}
-              <MoreBtn onClick={() => onMoreClickHandler(idx)}>
-                {t('더보기')}
-                <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />
-              </MoreBtn>
-            </BtnWrapDiv>
-            <div>
-              <span>
-                <strong>{t('욕 카테고리')}</strong>
-              </span>
-              <Badge $category={list.category} />
-            </div>
-            <div>
-              <span>
-                <strong>{t('욕한 날짜')}</strong>
-              </span>
-              <span>{list.reportDate}</span>
-            </div>
-            <div>
-              <span>
-                <strong>{t('신고 내용')}</strong>
-              </span>
-              <ReportContentP $status={toggleMoreBtn[idx] ? 'true' : 'false'}>{list.reportPayload}</ReportContentP>
-              {toggleMoreBtn[idx] && (
-                <>
-                  <span>
-                    <strong>{t('스크린샷')}</strong>
-                  </span>
-                  <ReportImgDiv>
-                    {list.reportCapture.map((img) => (
-                      <Image key={uniqueId + img} width={400} height={285} $border={5} src={img} $zoom={'on'} />
-                    ))}
-                  </ReportImgDiv>
-                </>
-              )}
-            </div>
-          </ReportInfoDiv>
+          <div key={list.reportId}>
+            {isMyReport && (
+              <NicknameDiv>
+                <Image width={25} height={25} src={list.summonerPhoto} alt={'summonerPhotoImg'} />
+                <p>{list.summonerName}</p>
+              </NicknameDiv>
+            )}
+            <ReportInfoDiv>
+              <BtnWrapDiv>
+                {isMyReport && <DeleteBtn onClick={() => onButtonClick?.(list.reportId)}>{t('삭제')}</DeleteBtn>}
+                <MoreBtn onClick={() => onMoreClickHandler(idx)}>
+                  {t('더보기')}
+                  <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />
+                </MoreBtn>
+              </BtnWrapDiv>
+              <div>
+                <span>
+                  <strong>{t('욕 카테고리')}</strong>
+                </span>
+                <Badge $category={list.category} />
+              </div>
+              <div>
+                <span>
+                  <strong>{t('욕한 날짜')}</strong>
+                </span>
+                <span>{list.reportDate}</span>
+              </div>
+              <div>
+                <span>
+                  <strong>{t('신고 내용')}</strong>
+                </span>
+                <ReportContentP $status={toggleMoreBtn[idx] ? 'true' : 'false'}>{list.reportPayload}</ReportContentP>
+                {toggleMoreBtn[idx] && (
+                  <>
+                    <span>
+                      <strong>{t('스크린샷')}</strong>
+                    </span>
+                    <ReportImgDiv>
+                      {list.reportCapture.map((img) => (
+                        <Image key={uniqueId + img} width={400} height={285} $border={5} src={img} $zoom={'on'} />
+                      ))}
+                    </ReportImgDiv>
+                  </>
+                )}
+              </div>
+            </ReportInfoDiv>
+          </div>
         ))}
       <PaginationDiv>
         <StPagination
@@ -194,4 +202,20 @@ const DeleteBtn = styled.button`
   font-weight: 600;
   line-height: 18px;
   color: ${({ theme }) => theme.gray.TF};
+  &:hover {
+    color: ${({ theme }) => theme.color.white};
+  }
+`
+const NicknameDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 28.5px;
+  margin-left: 10px;
+  gap: 9px;
+  p {
+    color: ${({ theme }) => theme.color.white};
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 25px;
+  }
 `
