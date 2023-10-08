@@ -16,6 +16,10 @@ import langKo from './langKo.svg'
 import loading from './loading.gif'
 import mainBg from './mainBg.png'
 import logo from './logo.svg'
+import neonHeaderLogo from './neonHeaderLogo.svg'
+import neonLangEn from './neonLangEn.svg'
+import neonLangKo from './neonLangKo.svg'
+import neonLogo from './neonLogo.svg'
 import nextonIcon from './nextonIcon.svg'
 import rankingArrow from './rankingArrow.svg'
 import ScreenShot from './ScreenShot.svg'
@@ -47,6 +51,10 @@ export {
   loading,
   mainBg,
   logo,
+  neonHeaderLogo,
+  neonLangEn,
+  neonLangKo,
+  neonLogo,
   nextonIcon,
   rankingArrow,
   ScreenShot,
