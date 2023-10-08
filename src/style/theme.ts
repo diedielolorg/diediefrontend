@@ -17,11 +17,13 @@ const theme = {
     dark: '#94AC00',
     lime: '#D2F400',
     neon: '#77FFA5',
+    turquoise: '#36FF9F',
   },
 
   // ${({ theme }) => theme.gray.keyname};
   gray: {
     OS: '#171717',
+    color: '#060606',
     TO: '#212121',
     TT: '#323232',
     TF: '#3F3F3F',

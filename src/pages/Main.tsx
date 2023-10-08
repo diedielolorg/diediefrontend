@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { useMutation } from '@tanstack/react-query'
 import { Image } from '../components/common'
-import { logo, searchBtn, mainBg } from '../assets'
+import { neonLogo, searchBtn, mainBg } from '../assets'
 import { search } from '../axios/main'
 import tips from '../utils/tipsData'
-import { Modal } from '../components/modal'
 
 const Main = () => {
   const navigate = useNavigate()
@@ -68,7 +67,7 @@ const Main = () => {
   }
   return (
     <WrapMainBoxDiv>
-      <Image width={338} height={66} src={logo} alt={'로고'} />
+      <Image width={370} height={80} src={neonLogo} alt={'로고'} />
       <SearchBoxDiv>
         <SearchInputBoxDiv>
           <SearchInput
@@ -119,9 +118,7 @@ const Main = () => {
           )}
         </SearchResultBoxDiv>
         <TipBoxDiv>{randomTip}</TipBoxDiv>
-        <BgBoxDiv>
-          <Image src={mainBg} alt={'메인화면 배경 이미지'} />
-        </BgBoxDiv>
+        <BgBoxDiv />
       </SearchBoxDiv>
     </WrapMainBoxDiv>
   )
@@ -135,8 +132,14 @@ const WrapMainBoxDiv = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 54px;
-  margin-top: 143px;
-  /* TODO 반응형 추가해야함 */
+  margin-top: 140px;
+`
+const SearchBoxDiv = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 `
 const SearchInputBoxDiv = styled.div`
   display: flex;
@@ -145,22 +148,11 @@ const SearchInputBoxDiv = styled.div`
   border-radius: 10px;
   background: ${({ theme }) => theme.color.white};
 `
-const SearchBoxDiv = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-`
 const SearchInput = styled.input`
-  flex: 1;
   width: calc(856px - 95px);
   padding: 30px 36px;
-  height: 100%;
-  border: 0;
-  background: none;
-  /* ! 임시 0821 추후 테마.js에 추가할 것 */
-  color: #060606;
+  border-radius: 10px;
+  color: ${({ theme }) => theme.gray.OS};
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
@@ -171,7 +163,7 @@ const SearchBtn = styled.button`
   width: 95px;
   height: 86px;
   border-radius: 0px 10px 10px 0px;
-  background: ${({ theme }) => theme.green.basic};
+  background: ${({ theme }) => theme.green.turquoise};
 `
 const SearchResultBoxDiv = styled.div<{ searchKeyword: string }>`
   z-index: 1;
@@ -201,7 +193,7 @@ const SearchSummonerNameP = styled.p<{ isResult: boolean }>`
   cursor: ${(props) => (props.isResult ? 'pointer' : 'default')};
 `
 const HighLightedTextSpan = styled.span`
-  color: ${({ theme }) => theme.green.dark};
+  color: #12b768;
 `
 const TipBoxDiv = styled.div`
   position: absolute;
@@ -211,13 +203,17 @@ const TipBoxDiv = styled.div`
   text-align: center;
   text-shadow: 0px 0px 10px ${({ theme }) => theme.color.black};
   font-size: 20px;
-  font-style: normal;
   font-weight: 600;
 `
 const BgBoxDiv = styled.div`
-  z-index: 0;
   position: absolute;
   top: 86px;
-  opacity: 0.8;
+  z-index: 0;
+  width: 100%;
+  height: calc(955px - 448px);
+  background-image: url(${mainBg});
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  opacity: 0.9;
   mix-blend-mode: lighten;
 `
