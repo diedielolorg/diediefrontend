@@ -106,7 +106,7 @@ const SignUp: React.FC = () => {
   useEffect(() => {
     setIsBtnOpen(true)
     setIsEmailVerified(false)
-    setIsNicknameVerified(false)
+    // setIsNicknameVerified(false)
   }, [data.email, data.address, data.nickName])
 
   const nickNameConfirm = () => {
