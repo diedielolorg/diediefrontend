@@ -127,7 +127,7 @@ const Report = () => {
     newList.append('category', submitCause)
     fileAttach.forEach((file) => {
       const blobFile = new Blob([file], { type: file.type })
-      newList.append('reportCapture', blobFile, file.name)
+      newList.append('file', blobFile, file.name)
     })
     mutation.mutate(newList)
   }
@@ -271,9 +271,7 @@ const Report = () => {
           <p>{'/600'}</p>
         </LetterWrap>
       </ReportBody>
-      <ReportPostBtn onClick={submitButtonHandler} disabled>
-        {'등록'}
-      </ReportPostBtn>
+      <ReportPostBtn onClick={submitButtonHandler}>{'등록'}</ReportPostBtn>
     </ReportContainer>
   )
 }
