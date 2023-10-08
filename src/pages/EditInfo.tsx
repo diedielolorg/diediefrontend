@@ -35,8 +35,6 @@ const EditInfo = () => {
   })
   const UserInfoEditMutation = useMutation(UserInfoEdit, {
     onSuccess: () => {
-      Cookies.remove('accessToken')
-      localStorage.removeItem('nickname')
       navigate('/mypage')
     },
     onError: (error) => {
@@ -45,6 +43,8 @@ const EditInfo = () => {
   })
   const withdrawalMutation = useMutation(withdrawal, {
     onSuccess: () => {
+      Cookies.remove('accessToken')
+      localStorage.removeItem('nickname')
       navigate('/withdrawal')
     },
     onError: (error) => {},
