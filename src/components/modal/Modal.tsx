@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
-import { Image } from '../common'
 import { keepOut } from '../../assets'
 import { ModalProps } from '../../interfaces/ModalTypes'
+import ModalAtom from '../../recoil/ModalAtom'
+import { Button, Image } from '../common'
 
 // ! [props]
 // * type : 모달 타입
@@ -11,9 +13,16 @@ import { ModalProps } from '../../interfaces/ModalTypes'
 // * placeholder : 플레이스 홀더 내용 없으면 null 기재
 // * primaryBtn : 버튼 상세 { children : 버튼 텍스트, onClick : onClick 이벤트 }
 // * secondaryBtn : 버튼 상세 { children : 버튼 텍스트, onClick : onClick 이벤트 }
-const Modal = ({ type, title, subTitle, placeholder, maxLen, primaryBtn, secondaryBtn }: ModalProps) => {
+const Modal = ({ type }: ModalProps) => {
+  const [modal, setModal] = useRecoilState(ModalAtom)
   // 입력 글자수
   const [textLen, setTextLen] = useState(0)
+  const [isOpenBtn, setIsOpenBtn] = useState(false)
+  useEffect(() => {
+    if (textLen >= 5) {
+      setIsOpenBtn(true)
+    }
+  }, [textLen])
   // 입력값 이벤트
   const textLenChkHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     setTextLen(e.currentTarget.textLength)
@@ -27,28 +36,33 @@ const Modal = ({ type, title, subTitle, placeholder, maxLen, primaryBtn, seconda
           </ModalIconDiv>
         ) : null}
         <ModalTitleDiv type={type}>
-          <Title type={type}>{title}</Title>
-          {subTitle ? <SubTitle>{subTitle}</SubTitle> : null}
+          <Title type={type}>{modal.title}</Title>
+          {modal.subTitle ? <SubTitle>{modal.subTitle}</SubTitle> : null}
         </ModalTitleDiv>
         {type === 'input' ? (
           <ModalInputWrap>
-            <ModalInput placeholder={placeholder} onKeyUp={textLenChkHandler} maxLength={maxLen} />
+            <ModalInput placeholder={modal.placeholder} onKeyUp={textLenChkHandler} maxLength={modal.maxLen} />
             <InputLenChk>
               <InputCurSpan>{textLen}</InputCurSpan>
-              <InputMaxSpan>{`/${maxLen}`}</InputMaxSpan>
+              <InputMaxSpan>{`/${modal.maxLen}`}</InputMaxSpan>
             </InputLenChk>
           </ModalInputWrap>
         ) : null}
         <ModalBtnsDiv>
-          {secondaryBtn ? (
-            <ModalBtn type={'button'} onClick={secondaryBtn.onClick} isPrimary={false}>
-              {secondaryBtn.children}
-            </ModalBtn>
+          {modal.secondaryBtn ? (
+            <Button size={'l'} onclick={modal.secondaryBtn.onClick} color={'gray'}>
+              {modal.secondaryBtn.children}
+            </Button>
           ) : null}
-          {primaryBtn ? (
-            <ModalBtn type={'button'} onClick={primaryBtn.onClick} isPrimary>
-              {primaryBtn.children}
-            </ModalBtn>
+          {modal.primaryBtn ? (
+            <Button
+              size={'l'}
+              color={type === 'confirm' || isOpenBtn ? 'lime' : 'light'}
+              onclick={modal.primaryBtn.onClick}
+              disabled={type !== 'confirm' && !isOpenBtn}
+            >
+              {modal.primaryBtn.children}
+            </Button>
           ) : null}
         </ModalBtnsDiv>
       </ModalLayout>
@@ -61,12 +75,13 @@ export default Modal
 const ModalOutlet = styled.div`
   width: 100vw;
   height: 100vh;
-  position: absolute;
+  position: fixed;
+  top: 0;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  z-index: 1;
+  z-index: 99;
   backdrop-filter: blur(5px);
   background: rgba(0, 0, 0, 0.5);
 `
@@ -108,6 +123,7 @@ const ModalInput = styled.textarea`
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  outline: none;
   /* padding: 18px 19px 47px 19px; */
   ::placeholder {
     color: #7d7d7d;
@@ -145,15 +161,4 @@ const ModalBtnsDiv = styled.div`
   justify-content: center;
   gap: 15px;
   flex-direction: row;
-`
-const ModalBtn = styled.button<{ isPrimary: boolean }>`
-  width: 177px;
-  height: 55px;
-  border-radius: 10px;
-  color: #000000;
-  text-align: center;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  background: ${(props) => (props.isPrimary ? '#D2F400' : '#DEDEDE')};
 `
