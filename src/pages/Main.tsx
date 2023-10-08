@@ -10,13 +10,8 @@ import { Modal } from '../components/modal'
 
 const Main = () => {
   const navigate = useNavigate()
-  // 검색어
+
   const [searchKeyword, setSearchKeyword] = useState('')
-
-  const randomTip = tips[Math.floor(Math.random() * tips.length)]
-
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null) // 디바운싱 타이머
-
   const [searchSummonerList, setSearchSummonerList] = useState<
     {
       id: string
@@ -30,6 +25,8 @@ const Main = () => {
     }[]
   >([])
 
+  const randomTip = tips[Math.floor(Math.random() * tips.length)]
+
   const searchMutation = useMutation(search, {
     onSuccess: (response) => {
       setSearchSummonerList([response])
@@ -39,31 +36,6 @@ const Main = () => {
     },
   })
 
-  // 엔터 및 클릭 이벤트로 변경으로 인한 기존 코드 주석 처리 23.09.22.
-  // useEffect(() => {
-  //   if (timer) {
-  //     clearTimeout(timer)
-  //   }
-  //   const newTimer = setTimeout(async () => {
-  //     try {
-  //       await searchMutationCall()
-  //     } catch (e) {
-  //       console.error('error', e)
-  //     }
-  //   }, 300)
-
-  //   setTimer(newTimer)
-
-  //   // 방 목록 조회
-  //   const searchMutationCall = () => {
-  //     if (searchKeyword !== '') {
-  //       // 뮤테이션 콜
-  //       searchMutation.mutate({
-  //         summonername: searchKeyword,
-  //       })
-  //     }
-  //   }
-  // }, [searchKeyword])
   // 뮤테이션 콜
   const searchMutationCall = () => {
     if (searchKeyword !== '') {
@@ -96,42 +68,6 @@ const Main = () => {
   }
   return (
     <WrapMainBoxDiv>
-      {/* <Modal
-        type={'confirm'}
-        title={'정말 탈퇴할까요?'}
-        subTitle={'탈퇴 후에는 정보를 복구할 수 없어요.'}
-        primaryBtn={{
-          children: '첫번째',
-          onClick: () => {
-            alert('test')
-          },
-        }}
-        secondaryBtn={{
-          children: '두번째',
-          onClick: () => {
-            alert('test2')
-          },
-        }}
-      /> */}
-      {/* <Modal
-        type={'input'}
-        title={'삭제 사유를 적어주세요.'}
-        subTitle={null}
-        placeholder={'최소 5자 이상 적어주세요.'}
-        maxLen={230}
-        primaryBtn={{
-          children: '첫번째',
-          onClick: () => {
-            alert('test')
-          },
-        }}
-        secondaryBtn={{
-          children: '두번째',
-          onClick: () => {
-            alert('test2')
-          },
-        }}
-      /> */}
       <Image width={338} height={66} src={logo} alt={'로고'} />
       <SearchBoxDiv>
         <SearchInputBoxDiv>
@@ -150,7 +86,7 @@ const Main = () => {
             searchKeyword &&
             searchSummonerList &&
             searchSummonerList.map(({ name, profileIconIdUrl }, idx) => {
-              const regex = new RegExp(`(${searchKeyword})`, 'gi') // 검색어 일치 정규식
+              const regex = new RegExp(`(${searchKeyword})`, 'gi')
               const parts = name.split(regex)
               return (
                 <SearchSummonerBoxDiv>
