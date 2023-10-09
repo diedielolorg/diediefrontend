@@ -1,14 +1,16 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import AfterLogin from '../../assets/afterLogin.svg'
 import { Button } from '../../components/common'
 
-const AfterLoginPage = ({ mention }: { mention?: string }) => {
+const AfterLoginPage = () => {
   const navigate = useNavigate()
+  const { mention } = useLocation().state
 
   const loginPageRouteHandler = () => {
     navigate('/signin')
   }
+
   return (
     <AfterLoginWrap>
       <ImgWrap>

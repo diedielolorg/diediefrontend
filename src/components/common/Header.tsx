@@ -11,24 +11,24 @@ const Header = () => {
   const navigate = useNavigate()
   const path = useLocation().pathname
 
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(!!Cookies.get('accessToken'))
   const [isKorean, setIsKorean] = useState(currentLang.includes('ko'))
 
+  const isLoginChkHandler = () => setIsLogin(!!Cookies.get('accessToken'))
+
   useEffect(() => {
-    const checkLoginStatusHandler = () => {
-      if (Cookies.get('accessToken')) {
-        setIsLogin(true)
-      } else {
-        setIsLogin(false)
-      }
+    isLoginChkHandler()
+    if (!isLogin && path === '/report') {
+      navigate('/afterlogin', { state: { mention: '신고하기' }, replace: true })
+    } else if (!isLogin && (path === '/mypage' || path === '/editinfo' || path === '/myReport')) {
+      navigate('/afterlogin', { state: { mention: '마이페이지' }, replace: true })
     }
-    checkLoginStatusHandler()
   })
 
   const moveToSignOutBtnHandler = () => {
     Cookies.remove('accessToken')
     localStorage.removeItem('nickname')
-    navigate('/')
+    isLoginChkHandler()
   }
 
   const translateBtnHandler = () => {

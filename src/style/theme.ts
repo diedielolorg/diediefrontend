@@ -23,7 +23,6 @@ const theme = {
   // ${({ theme }) => theme.gray.keyname};
   gray: {
     OS: '#171717',
-    color: '#060606',
     TO: '#212121',
     TT: '#323232',
     TF: '#3F3F3F',
