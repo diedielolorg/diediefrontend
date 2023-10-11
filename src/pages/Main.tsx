@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
@@ -11,7 +11,7 @@ import tips from '../utils/tipsData'
 const Main = () => {
   const navigate = useNavigate()
   const { t } = useTranslation()
-
+  const [isSearchResultBox, setIsSearchResultBox] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [searchSummonerList, setSearchSummonerList] = useState<
     {
@@ -26,16 +26,34 @@ const Main = () => {
     }[]
   >([])
 
-  const randomTip = tips[Math.floor(Math.random() * tips.length)]
+  const [randomTip, setRandomTip] = useState(tips[Math.floor(Math.random() * tips.length)])
+
+  const changeRandomTip = () => {
+    const newRandomTip = tips[Math.floor(Math.random() * tips.length)]
+    setRandomTip(newRandomTip)
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(changeRandomTip, 5000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [])
 
   const searchMutation = useMutation(search, {
     onSuccess: (response) => {
       setSearchSummonerList([response])
+      setIsSearchResultBox(true)
     },
     onError: (error) => {
       console.log(error)
     },
   })
+
+  useEffect(() => {
+    setIsSearchResultBox(false)
+  }, [searchKeyword])
 
   // 뮤테이션 콜
   const searchMutationCall = () => {
@@ -82,43 +100,46 @@ const Main = () => {
             <Image src={searchBtn} alt={'검색창 아이콘'} />
           </SearchBtn>
         </SearchInputBoxDiv>
-        <SearchResultBoxDiv searchKeyword={searchKeyword}>
-          {searchSummonerList.length > 0 ? (
-            searchKeyword &&
-            searchSummonerList &&
-            searchSummonerList.map(({ name, profileIconIdUrl }, idx) => {
-              const regex = new RegExp(`(${searchKeyword})`, 'gi')
-              const parts = name.split(regex)
-              return (
-                <SearchSummonerBoxDiv>
-                  <SearchSummonerInfoDiv>
-                    <Image width={26} height={26} src={profileIconIdUrl} />
-                    <SearchSummonerNameP
-                      isResult
-                      onClick={() => {
-                        moveToUserinfoHandler(name)
-                      }}
-                    >
-                      {parts.map((part, idx) =>
-                        part.toLowerCase() === searchKeyword.toLowerCase() ? (
-                          <HighLightedTextSpan>{part}</HighLightedTextSpan>
-                        ) : (
-                          <span>{part}</span>
-                        ),
-                      )}
-                    </SearchSummonerNameP>
-                  </SearchSummonerInfoDiv>
-                </SearchSummonerBoxDiv>
-              )
-            })
-          ) : (
-            <SearchSummonerBoxDiv>
-              <SearchSummonerInfoDiv>
-                <SearchSummonerNameP isResult={false}>{t('검색된 소환사가 없습니다.')}</SearchSummonerNameP>
-              </SearchSummonerInfoDiv>
-            </SearchSummonerBoxDiv>
-          )}
-        </SearchResultBoxDiv>
+
+        {isSearchResultBox && (
+          <SearchResultBoxDiv searchKeyword={searchKeyword}>
+            {searchSummonerList.length > 0 ? (
+              searchKeyword &&
+              searchSummonerList &&
+              searchSummonerList.map(({ name, profileIconIdUrl }, idx) => {
+                const regex = new RegExp(`(${searchKeyword})`, 'gi')
+                const parts = name.split(regex)
+                return (
+                  <SearchSummonerBoxDiv>
+                    <SearchSummonerInfoDiv>
+                      <Image width={26} height={26} src={profileIconIdUrl} />
+                      <SearchSummonerNameP
+                        isResult
+                        onClick={() => {
+                          moveToUserinfoHandler(name)
+                        }}
+                      >
+                        {parts.map((part, idx) =>
+                          part.toLowerCase() === searchKeyword.toLowerCase() ? (
+                            <HighLightedTextSpan>{part}</HighLightedTextSpan>
+                          ) : (
+                            <span>{part}</span>
+                          ),
+                        )}
+                      </SearchSummonerNameP>
+                    </SearchSummonerInfoDiv>
+                  </SearchSummonerBoxDiv>
+                )
+              })
+            ) : (
+              <SearchSummonerBoxDiv>
+                <SearchSummonerInfoDiv>
+                  <SearchSummonerNameP isResult={false}>{t('검색된 소환사가 없습니다.')}</SearchSummonerNameP>
+                </SearchSummonerInfoDiv>
+              </SearchSummonerBoxDiv>
+            )}
+          </SearchResultBoxDiv>
+        )}
         <TipBoxDiv>{t(randomTip)}</TipBoxDiv>
         <BgBoxDiv />
       </SearchBoxDiv>
