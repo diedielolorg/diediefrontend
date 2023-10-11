@@ -47,6 +47,8 @@ const SignUp: React.FC = () => {
       setHelpMsg((prevState) => ({ ...prevState, nickName: '사용가능한 닉네임입니다.' }))
     },
     onError: (error) => {
+      setIsNicknameVerified(false)
+
       setHelpMsg((prevState) => ({ ...prevState, nickName: '중복된 닉네임 입니다.' }))
     },
   })
@@ -112,6 +114,8 @@ const SignUp: React.FC = () => {
   const nickNameConfirm = () => {
     const regex = /^[가-힣a-zA-Z]*$/
     if (!regex.test(data.nickName)) {
+      setIsNicknameVerified(false)
+
       setHelpMsg((prevState) => ({
         ...prevState,
         nickName: '사용할 수 없는 닉네임입니다. (특수문자, 띄어쓰기 불가능)',
@@ -180,7 +184,6 @@ const SignUp: React.FC = () => {
               onChange={onChange}
               placeholder={t('2자 이상 12자 이하의 닉네임을 입력해주세요.')}
             />
-            {/* 회의할때 얘기해봐야함 20자는 너무 길어서 일단 12자 해놓음 */}
             <Button size={'s'} color={'lime'} onclick={nickNameConfirm}>
               {t('중복확인')}
             </Button>
