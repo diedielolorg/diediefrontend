@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 import { keepOut } from '../../assets'
@@ -14,6 +15,8 @@ import { Button, Image } from '../common'
 // * primaryBtn : 버튼 상세 { children : 버튼 텍스트, onClick : onClick 이벤트 }
 // * secondaryBtn : 버튼 상세 { children : 버튼 텍스트, onClick : onClick 이벤트 }
 const Modal = ({ type }: ModalProps) => {
+  const { t } = useTranslation()
+
   const [modal, setModal] = useRecoilState(ModalAtom)
   // 입력 글자수
   const [textLen, setTextLen] = useState(0)
@@ -36,12 +39,12 @@ const Modal = ({ type }: ModalProps) => {
           </ModalIconDiv>
         ) : null}
         <ModalTitleDiv type={type}>
-          <Title type={type}>{modal.title}</Title>
-          {modal.subTitle ? <SubTitle>{modal.subTitle}</SubTitle> : null}
+          <Title type={type}>{t(modal.title)}</Title>
+          {modal.subTitle ? <SubTitle>{t(modal.subTitle)}</SubTitle> : null}
         </ModalTitleDiv>
         {type === 'input' ? (
           <ModalInputWrap>
-            <ModalInput placeholder={modal.placeholder} onKeyUp={textLenChkHandler} maxLength={modal.maxLen} />
+            <ModalInput placeholder={t(modal.placeholder)} onKeyUp={textLenChkHandler} maxLength={modal.maxLen} />
             <InputLenChk>
               <InputCurSpan>{textLen}</InputCurSpan>
               <InputMaxSpan>{`/${modal.maxLen}`}</InputMaxSpan>
@@ -51,7 +54,7 @@ const Modal = ({ type }: ModalProps) => {
         <ModalBtnsDiv>
           {modal.secondaryBtn ? (
             <Button size={'l'} onclick={modal.secondaryBtn.onClick} color={'gray'}>
-              {modal.secondaryBtn.children}
+              {t(modal.secondaryBtn.children)}
             </Button>
           ) : null}
           {modal.primaryBtn ? (
@@ -61,7 +64,7 @@ const Modal = ({ type }: ModalProps) => {
               onclick={modal.primaryBtn.onClick}
               disabled={type !== 'confirm' && !isOpenBtn}
             >
-              {modal.primaryBtn.children}
+              {t(modal.primaryBtn.children)}
             </Button>
           ) : null}
         </ModalBtnsDiv>
