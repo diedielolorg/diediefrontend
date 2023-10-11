@@ -57,7 +57,7 @@ const ReportList = ({ reportlist, reportlength, onButtonClick }: ReportListProps
             )}
             <ReportInfoDiv>
               <BtnWrapDiv>
-                {isMyReport && <DeleteBtn onClick={() => onButtonClick?.(list.reportId)}>{t('삭제')}</DeleteBtn>}
+                {isMyReport && <DeleteBtn onClick={() => onButtonClick?.(list.reportId)}>{t(t('삭제'))}</DeleteBtn>}
                 <MoreBtn onClick={() => onMoreClickHandler(idx)}>
                   {t('더보기')}
                   <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />

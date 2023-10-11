@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import AfterLogin from '../../assets/afterLogin.svg'
 import { Button } from '../../components/common'
 
 const AfterLoginPage = () => {
+  const { t } = useTranslation()
+
   const navigate = useNavigate()
   const { mention } = useLocation().state
 
@@ -17,13 +20,13 @@ const AfterLoginPage = () => {
         <img src={AfterLogin} alt={'엑스아이콘'} />
       </ImgWrap>
       <p>
-        {mention}
-        {'는'}
+        {t(mention)}
+        {t('는')}
       </p>
-      <p>{'로그인 후 이용할 수 있어요.'}</p>
+      <p>{t('로그인 후 이용할 수 있어요.')}</p>
       <BtnWrap>
         <Button size={'xl'} color={'basic'} onclick={loginPageRouteHandler}>
-          {'로그인하러가기'}
+          {t('로그인하러가기')}
         </Button>
       </BtnWrap>
     </AfterLoginWrap>
