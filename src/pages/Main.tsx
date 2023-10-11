@@ -1,14 +1,16 @@
+import { useMutation } from '@tanstack/react-query'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
-import { useMutation } from '@tanstack/react-query'
-import { Image } from '../components/common'
-import { neonLogo, searchBtn, mainBg } from '../assets'
+import { mainBg, neonLogo, searchBtn } from '../assets'
 import { search } from '../axios/main'
+import { Image } from '../components/common'
 import tips from '../utils/tipsData'
 
 const Main = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [searchKeyword, setSearchKeyword] = useState('')
   const [searchSummonerList, setSearchSummonerList] = useState<
@@ -72,7 +74,7 @@ const Main = () => {
         <SearchInputBoxDiv>
           <SearchInput
             type={'text'}
-            placeholder={'소환사명을 검색하세요.'}
+            placeholder={t('소환사명을 검색하세요.')}
             onChange={searchKeywordHandler}
             onKeyUp={onKeyUpSearchKeywordHandler}
           />
@@ -112,12 +114,12 @@ const Main = () => {
           ) : (
             <SearchSummonerBoxDiv>
               <SearchSummonerInfoDiv>
-                <SearchSummonerNameP isResult={false}>{'검색된 소환사가 없습니다.'}</SearchSummonerNameP>
+                <SearchSummonerNameP isResult={false}>{t('검색된 소환사가 없습니다.')}</SearchSummonerNameP>
               </SearchSummonerInfoDiv>
             </SearchSummonerBoxDiv>
           )}
         </SearchResultBoxDiv>
-        <TipBoxDiv>{randomTip}</TipBoxDiv>
+        <TipBoxDiv>{t(randomTip)}</TipBoxDiv>
         <BgBoxDiv />
       </SearchBoxDiv>
     </WrapMainBoxDiv>
