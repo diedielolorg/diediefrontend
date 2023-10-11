@@ -26,7 +26,20 @@ const Main = () => {
     }[]
   >([])
 
-  const randomTip = tips[Math.floor(Math.random() * tips.length)]
+  const [randomTip, setRandomTip] = useState(tips[Math.floor(Math.random() * tips.length)])
+
+  const changeRandomTip = () => {
+    const newRandomTip = tips[Math.floor(Math.random() * tips.length)]
+    setRandomTip(newRandomTip)
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(changeRandomTip, 5000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [])
 
   const searchMutation = useMutation(search, {
     onSuccess: (response) => {
