@@ -17,6 +17,8 @@ const Report = () => {
       navigate('/')
     },
   })
+
+  console.log('닉네임', location.nickname)
   // date input onChange function
   const [date, setDate] = useState<string>('')
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
@@ -129,7 +131,28 @@ const Report = () => {
       const blobFile = new Blob([file], { type: file.type })
       newList.append('file', blobFile, file.name)
     })
-    mutation.mutate(newList)
+    if (fileAttach) {
+      mutation.mutate(newList)
+    } else {
+      setIsSnackBar({ open: true })
+      setSnackbarType('noFile')
+    }
+
+    if (fileAttach.length === 0) {
+      setIsSnackBar({ open: true })
+      setSnackbarType('noFile')
+    } else if (!submitDate) {
+      setIsSnackBar({ open: true })
+      setSnackbarType('noFile')
+    } else if (!submitCause) {
+      setIsSnackBar({ open: true })
+      setSnackbarType('noFile')
+    } else if (text.length === 0) {
+      setIsSnackBar({ open: true })
+      setSnackbarType('noFile')
+    } else {
+      mutation.mutate(newList)
+    }
   }
 
   return (
@@ -137,7 +160,7 @@ const Report = () => {
       {isSnackbar.open && <Portal type={'SnackBar'} snackBar={snackbarType} />}
       <ReportTitleWrap>
         <p>{'신고하려는 소환사'}</p>
-        <h2>{'방배동 둠피스트'}</h2>
+        <h2>{location.nickname}</h2>
       </ReportTitleWrap>
 
       <ReportDateWrap>
@@ -276,7 +299,9 @@ const Report = () => {
   )
 }
 
-const ReportContainer = styled.div``
+const ReportContainer = styled.div`
+  padding-bottom: 40px;
+`
 
 const ReportTitleWrap = styled.div`
   width: 1280px;
