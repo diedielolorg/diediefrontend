@@ -1,27 +1,27 @@
 import { useMutation } from '@tanstack/react-query'
+import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 import { nicknameConfirm } from '../axios/login/login'
 import { UserInfoEdit, withdrawal } from '../axios/userService/index'
-import { Button } from '../components/common'
+import { Button, Portal } from '../components/common'
+import ModalAtom from '../recoil/ModalAtom'
 import * as CSS from '../style/LoginRelevantSt'
 import useInput from '../utils/useInput'
 
 const EditInfo = () => {
   const { t } = useTranslation()
-
+  const [modal, setModal] = useRecoilState(ModalAtom)
   const [data, onChange] = useInput({
     nickName: '',
-    password: '',
   })
   const [helpMsg, setHelpMsg] = useState({
     nickName: '',
-    password: '',
   })
   const [isNicknameVerified, setIsNicknameVerified] = useState(false)
-
   const navigate = useNavigate()
 
   const nicknameConfirmMutation = useMutation(nicknameConfirm, {
@@ -43,6 +43,8 @@ const EditInfo = () => {
   })
   const withdrawalMutation = useMutation(withdrawal, {
     onSuccess: () => {
+      Cookies.remove('accessToken')
+      localStorage.removeItem('nickname')
       navigate('/withdrawal')
     },
     onError: (error) => {},
@@ -65,9 +67,25 @@ const EditInfo = () => {
     })
   }
   const moveToWithdrawalBtnHandler = () => {
-    withdrawalMutation.mutate()
+    setModal({
+      ...modal,
+      open: true,
+      title: '정말 탈퇴할까요?',
+      subTitle: '탈퇴 후에는 정보를 복구할 수 없어요.',
+      primaryBtn: {
+        children: '탈퇴하기',
+        onClick: () => {
+          withdrawalMutation.mutate()
+        },
+      },
+      secondaryBtn: {
+        children: '취소',
+        onClick: () => {
+          setModal({ ...modal, open: false })
+        },
+      },
+    })
   }
-
   return (
     <CSS.BackgroundMain>
       <OverRaySection>
@@ -88,23 +106,11 @@ const EditInfo = () => {
           </Button>
         </CSS.ConfirmBoxDiv>
         <CSS.HelpMessageDiv color={isNicknameVerified ? 'true' : 'false'}>{t(helpMsg.nickName)}</CSS.HelpMessageDiv>
-        <CSS.UserLabel>{t('비밀번호')}</CSS.UserLabel>
-        <CSS.ConfirmBoxDiv>
-          <CSS.UserInfoInput
-            id={'password'}
-            type={'password'}
-            name={'password'}
-            value={data.password}
-            onChange={onChange}
-            size={660}
-            placeholder={t('닉네임 변경을 위해 비밀번호를 입력해주세요.')}
-          />
-        </CSS.ConfirmBoxDiv>
-        <CSS.HelpMessageDiv>{t(helpMsg.password)}</CSS.HelpMessageDiv>
         <Button size={'xxxl'} color={'lime'} onclick={infoSaveBtnHandler}>
           {t('저장하기')}
         </Button>
         <WithdrawalDiv onClick={moveToWithdrawalBtnHandler}>{t('회원탈퇴')}</WithdrawalDiv>
+        {modal.open && <Portal type={'modal'} modal={'confirm'} />}
       </OverRaySection>
     </CSS.BackgroundMain>
   )
@@ -118,7 +124,7 @@ const OverRaySection = styled.section<{ size?: 'login' }>`
   padding-left: 97px;
   padding-right: 97px;
   padding-bottom: 63px;
-  margin-top: ${(props) => (props.size === 'login' ? '40px' : '23px')};
+  margin-top: 78px;
 
   border-radius: 20px;
   background: ${({ theme }) => theme.color.white};

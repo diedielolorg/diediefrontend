@@ -17,6 +17,7 @@ const theme = {
     dark: '#94AC00',
     lime: '#D2F400',
     neon: '#77FFA5',
+    turquoise: '#36FF9F',
   },
 
   // ${({ theme }) => theme.gray.keyname};

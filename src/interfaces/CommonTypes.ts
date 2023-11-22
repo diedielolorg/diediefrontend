@@ -4,6 +4,7 @@ export interface PotalProps {
   src?: string
   snackBar?: string
   nickname?: string
+  modal?: 'input' | 'confirm' | undefined
   onclick?: (
     event: React.MouseEvent<HTMLDivElement, MouseEvent> | React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void

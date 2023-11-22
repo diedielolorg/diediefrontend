@@ -15,7 +15,7 @@ const Tier = ({ $tier, $rank }: TierProps) => {
 
   return (
     <CommonTier type={'button'} $tier={$tier}>
-      {userTier || t('언랭')}
+      {userTier || '-'}
     </CommonTier>
   )
 }

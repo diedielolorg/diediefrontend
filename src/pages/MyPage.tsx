@@ -1,14 +1,16 @@
-import React from 'react'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
-import * as CSS from '../style/LoginRelevantSt'
 import { nextonIcon } from '../assets'
 import { Image } from '../components/common'
-import { getMyReport } from '../axios/reportService'
+import * as CSS from '../style/LoginRelevantSt'
 
 const MyPage = () => {
   const navigate = useNavigate()
+  const { t, i18n } = useTranslation()
+  const currentLanguage = i18n.language
+
   const moveToEditMyInfoBtnHandler = () => {
     navigate('/editinfo')
   }
@@ -16,19 +18,32 @@ const MyPage = () => {
     navigate('/myReport')
   }
   const nickname = localStorage.getItem('nickname')
+  useEffect(() => {
+    console.log(currentLanguage)
+  })
+
   return (
     <CSS.BackgroundMain>
       <Section>
         <NameBoxDiv>
-          <TextP color={'name'}>{nickname}</TextP>
-          <TextP>{'님, 안녕하세요!'}</TextP>
+          {currentLanguage === 'ko-KR' || currentLanguage === 'ko' ? (
+            <>
+              <TextP color={'name'}>{nickname}</TextP>
+              <TextP>{t('님, 안녕하세요!')}</TextP>
+            </>
+          ) : (
+            <>
+              <TextP>{t('님, 안녕하세요!')}</TextP>
+              <TextP color={'name'}>{nickname}</TextP>
+            </>
+          )}
         </NameBoxDiv>
         <MoveToBtnDiv onClick={moveToEditMyInfoBtnHandler}>
-          <p>{'내 정보 수정'}</p>
+          <p>{t('내 정보 수정')}</p>
           <Image width={9} height={18} src={nextonIcon} />
         </MoveToBtnDiv>
         <MoveToBtnDiv onClick={moveToMyReportBtnHandler}>
-          <p>{'내가 등록한 신고'}</p>
+          <p>{t('내가 등록한 신고')}</p>
           <Image width={9} height={18} src={nextonIcon} />
         </MoveToBtnDiv>
       </Section>

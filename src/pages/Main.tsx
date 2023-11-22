@@ -1,21 +1,18 @@
+import { useMutation } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
-import { useMutation } from '@tanstack/react-query'
-import { Image } from '../components/common'
-import { logo, searchBtn } from '../assets'
+import { mainBg, neonLogo, searchBtn } from '../assets'
 import { search } from '../axios/main'
+import { Image } from '../components/common'
 import tips from '../utils/tipsData'
 
 const Main = () => {
   const navigate = useNavigate()
-  // 검색어
+  const { t } = useTranslation()
+  const [isSearchResultBox, setIsSearchResultBox] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
-
-  const randomTip = tips[Math.floor(Math.random() * tips.length)]
-
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null) // 디바운싱 타이머
-
   const [searchSummonerList, setSearchSummonerList] = useState<
     {
       id: string
@@ -29,9 +26,25 @@ const Main = () => {
     }[]
   >([])
 
+  const [randomTip, setRandomTip] = useState(tips[Math.floor(Math.random() * tips.length)])
+
+  const changeRandomTip = () => {
+    const newRandomTip = tips[Math.floor(Math.random() * tips.length)]
+    setRandomTip(newRandomTip)
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(changeRandomTip, 5000)
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [])
+
   const searchMutation = useMutation(search, {
     onSuccess: (response) => {
       setSearchSummonerList([response])
+      setIsSearchResultBox(true)
     },
     onError: (error) => {
       console.log(error)
@@ -39,29 +52,29 @@ const Main = () => {
   })
 
   useEffect(() => {
-    if (timer) {
-      clearTimeout(timer)
-    }
-    const newTimer = setTimeout(async () => {
-      try {
-        await searchMutationCall()
-      } catch (e) {
-        console.error('error', e)
-      }
-    }, 300)
-
-    setTimer(newTimer)
-
-    // 방 목록 조회
-    const searchMutationCall = () => {
-      if (searchKeyword !== '') {
-        // 뮤테이션 콜
-        searchMutation.mutate({
-          summonername: searchKeyword,
-        })
-      }
-    }
+    setIsSearchResultBox(false)
   }, [searchKeyword])
+
+  // 뮤테이션 콜
+  const searchMutationCall = () => {
+    if (searchKeyword !== '') {
+      searchMutation.mutate({
+        summonername: searchKeyword,
+      })
+    }
+  }
+
+  // 검색 엔터 핸들러
+  const onKeyUpSearchKeywordHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.code === 'Enter') {
+      searchMutationCall()
+    }
+  }
+
+  // 검색 버튼 핸들러
+  const onClickSearchKeywordHandler = () => {
+    searchMutationCall()
+  }
 
   // 검색 입력 이벤트 핸들러
   const searchKeywordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,52 +87,61 @@ const Main = () => {
   }
   return (
     <WrapMainBoxDiv>
-      <Image width={338} height={66} src={logo} alt={'로고'} />
+      <Image width={370} height={80} src={neonLogo} alt={'로고'} />
       <SearchBoxDiv>
         <SearchInputBoxDiv>
-          <SearchInput type={'text'} placeholder={'소환사명을 검색하세요.'} onChange={searchKeywordHandler} />
-          <SearchBtn type={'button'}>
+          <SearchInput
+            type={'text'}
+            placeholder={t('소환사명을 검색하세요.')}
+            onChange={searchKeywordHandler}
+            onKeyUp={onKeyUpSearchKeywordHandler}
+          />
+          <SearchBtn type={'button'} onClick={onClickSearchKeywordHandler}>
             <Image src={searchBtn} alt={'검색창 아이콘'} />
           </SearchBtn>
         </SearchInputBoxDiv>
-        <SearchResultBoxDiv searchKeyword={searchKeyword}>
-          {searchSummonerList.length > 0 ? (
-            searchKeyword &&
-            searchSummonerList &&
-            searchSummonerList.map(({ name, profileIconIdUrl }, idx) => {
-              const regex = new RegExp(`(${searchKeyword})`, 'gi') // 검색어 일치 정규식
-              const parts = name.split(regex)
-              return (
-                <SearchSummonerBoxDiv>
-                  <SearchSummonerInfoDiv>
-                    <Image width={26} height={26} src={profileIconIdUrl} />
-                    <SearchSummonerNameP
-                      isResult
-                      onClick={() => {
-                        moveToUserinfoHandler(name)
-                      }}
-                    >
-                      {parts.map((part, idx) =>
-                        part.toLowerCase() === searchKeyword.toLowerCase() ? (
-                          <HighLightedTextSpan>{part}</HighLightedTextSpan>
-                        ) : (
-                          <span>{part}</span>
-                        ),
-                      )}
-                    </SearchSummonerNameP>
-                  </SearchSummonerInfoDiv>
-                </SearchSummonerBoxDiv>
-              )
-            })
-          ) : (
-            <SearchSummonerBoxDiv>
-              <SearchSummonerInfoDiv>
-                <SearchSummonerNameP isResult={false}>{'검색된 소환사가 없습니다.'}</SearchSummonerNameP>
-              </SearchSummonerInfoDiv>
-            </SearchSummonerBoxDiv>
-          )}
-        </SearchResultBoxDiv>
-        <TipBoxDiv>{randomTip}</TipBoxDiv>
+
+        {isSearchResultBox && (
+          <SearchResultBoxDiv searchKeyword={searchKeyword}>
+            {searchSummonerList.length > 0 ? (
+              searchKeyword &&
+              searchSummonerList &&
+              searchSummonerList.map(({ name, profileIconIdUrl }, idx) => {
+                const regex = new RegExp(`(${searchKeyword})`, 'gi')
+                const parts = name.split(regex)
+                return (
+                  <SearchSummonerBoxDiv>
+                    <SearchSummonerInfoDiv>
+                      <Image width={26} height={26} src={profileIconIdUrl} />
+                      <SearchSummonerNameP
+                        isResult
+                        onClick={() => {
+                          moveToUserinfoHandler(name)
+                        }}
+                      >
+                        {parts.map((part, idx) =>
+                          part.toLowerCase() === searchKeyword.toLowerCase() ? (
+                            <HighLightedTextSpan>{part}</HighLightedTextSpan>
+                          ) : (
+                            <span>{part}</span>
+                          ),
+                        )}
+                      </SearchSummonerNameP>
+                    </SearchSummonerInfoDiv>
+                  </SearchSummonerBoxDiv>
+                )
+              })
+            ) : (
+              <SearchSummonerBoxDiv>
+                <SearchSummonerInfoDiv>
+                  <SearchSummonerNameP isResult={false}>{t('검색된 소환사가 없습니다.')}</SearchSummonerNameP>
+                </SearchSummonerInfoDiv>
+              </SearchSummonerBoxDiv>
+            )}
+          </SearchResultBoxDiv>
+        )}
+        <TipBoxDiv>{t(randomTip)}</TipBoxDiv>
+        <BgBoxDiv />
       </SearchBoxDiv>
     </WrapMainBoxDiv>
   )
@@ -133,8 +155,14 @@ const WrapMainBoxDiv = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 54px;
-  margin-top: 143px;
-  /* TODO 반응형 추가해야함 */
+  margin-top: 140px;
+`
+const SearchBoxDiv = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 `
 const SearchInputBoxDiv = styled.div`
   display: flex;
@@ -143,32 +171,22 @@ const SearchInputBoxDiv = styled.div`
   border-radius: 10px;
   background: ${({ theme }) => theme.color.white};
 `
-const SearchBoxDiv = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-`
 const SearchInput = styled.input`
-  flex: 1;
   width: calc(856px - 95px);
   padding: 30px 36px;
-  height: 100%;
-  border: 0;
-  background: none;
-  /* ! 임시 0821 추후 테마.js에 추가할 것 */
-  color: #060606;
+  border-radius: 10px;
+  color: ${({ theme }) => theme.gray.OS};
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  outline: none;
 `
 const SearchBtn = styled.button`
   width: 95px;
   height: 86px;
   border-radius: 0px 10px 10px 0px;
-  background: ${({ theme }) => theme.green.basic};
+  background: ${({ theme }) => theme.green.turquoise};
 `
 const SearchResultBoxDiv = styled.div<{ searchKeyword: string }>`
   z-index: 1;
@@ -198,7 +216,7 @@ const SearchSummonerNameP = styled.p<{ isResult: boolean }>`
   cursor: ${(props) => (props.isResult ? 'pointer' : 'default')};
 `
 const HighLightedTextSpan = styled.span`
-  color: ${({ theme }) => theme.green.dark};
+  color: #12b768;
 `
 const TipBoxDiv = styled.div`
   position: absolute;
@@ -208,6 +226,17 @@ const TipBoxDiv = styled.div`
   text-align: center;
   text-shadow: 0px 0px 10px ${({ theme }) => theme.color.black};
   font-size: 20px;
-  font-style: normal;
   font-weight: 600;
+`
+const BgBoxDiv = styled.div`
+  position: absolute;
+  top: 86px;
+  z-index: 0;
+  width: 100%;
+  height: calc(955px - 448px);
+  background-image: url(${mainBg});
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  opacity: 0.9;
+  mix-blend-mode: lighten;
 `

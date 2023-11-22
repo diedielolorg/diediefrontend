@@ -3,14 +3,14 @@ import { styled } from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { Image, Button } from '../../components/common'
-import { errorPageIcon, errorName, logo, illust } from '../../assets'
+import { errorPageIcon, errorName, logo, mainBg } from '../../assets'
 
 const ErrorPage = ({ type }: { type: string }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
 
   return (
-    <WrapDiv>
+    <WrapError>
       <ContentSection>
         <Image width={175} height={105} src={errorPageIcon} />
         <Image width={type === 'error' ? 470 : 350} height={65} src={type === 'error' ? errorName : logo} />
@@ -29,26 +29,28 @@ const ErrorPage = ({ type }: { type: string }) => {
           {t('메인화면으로 돌아가기')}
         </Button>
       </ContentSection>
-      <IllustSection>
-        <Image width={800} height={453} src={illust} />
-      </IllustSection>
-    </WrapDiv>
+    </WrapError>
   )
 }
 
 export default ErrorPage
 
-const WrapDiv = styled.div`
-  padding-top: 155px;
-  display: flex;
-  section {
-    width: 50%;
-  }
+const WrapError = styled.div`
+  height: 865px;
+  margin: 0 -320px;
+  background-image: url(${mainBg});
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-size: 70% 100%;
+  mix-blend-mode: lighten;
 `
 
 const ContentSection = styled.section`
+  margin-left: 320px;
+  height: inherit;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 52px;
   div {
     display: flex;
@@ -57,11 +59,5 @@ const ContentSection = styled.section`
     color: ${({ theme }) => theme.color.white};
     font-size: 30px;
     font-weight: 600;
-  }
-`
-
-const IllustSection = styled.section`
-  img {
-    margin-top: 200px;
   }
 `

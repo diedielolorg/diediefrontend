@@ -60,9 +60,7 @@ const Ranking = () => {
       },
     },
   )
-  useEffect(() => {
-    console.log('rankingList', rankingList)
-  }, [rankingList])
+
   return (
     <RankingContainer>
       <RankinTitleWrap>
@@ -431,7 +429,6 @@ const RankingSelectBoxLabel = styled.button`
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.white};
   color: ${({ theme }) => theme.color.black};
-  font-family: SUIT;
   font-size: 15px;
   font-weight: 700;
   padding-inline: 13px;
@@ -456,7 +453,6 @@ const RankingSelectBoxOption = styled.button`
   display: flex;
   align-items: center;
   padding-left: 14px;
-  font-family: SUIT;
   font-size: 15px;
   &:hover {
     transition: all 0.4s;
