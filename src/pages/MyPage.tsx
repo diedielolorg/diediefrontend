@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 import { nextonIcon } from '../assets'
 import { Image } from '../components/common'
@@ -17,11 +18,15 @@ const MyPage = () => {
     navigate('/myReport')
   }
   const nickname = localStorage.getItem('nickname')
+  useEffect(() => {
+    console.log(currentLanguage)
+  })
+
   return (
     <CSS.BackgroundMain>
       <Section>
         <NameBoxDiv>
-          {currentLanguage === 'ko' ? (
+          {currentLanguage === 'ko-KR' || currentLanguage === 'ko' ? (
             <>
               <TextP color={'name'}>{nickname}</TextP>
               <TextP>{t('님, 안녕하세요!')}</TextP>

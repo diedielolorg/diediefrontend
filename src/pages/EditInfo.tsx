@@ -35,6 +35,7 @@ const EditInfo = () => {
   })
   const UserInfoEditMutation = useMutation(UserInfoEdit, {
     onSuccess: () => {
+      localStorage.setItem('nickname', data.nickName)
       navigate('/mypage')
     },
     onError: (error) => {

@@ -6,7 +6,7 @@ import { getRankingInfo } from '../axios/ranking'
 
 const Ranking = () => {
   const [selectBox, setSelectBox] = useState(false)
-
+  const [top1Date, setTop1Date] = useState('2023년 07월')
   const onSelectBoxOptionHandler = () => {
     setSelectBox(!selectBox)
   }
@@ -36,8 +36,23 @@ const Ranking = () => {
     lastAccessTime: string
     mostFrequentWord: string
   }
+
+  type RankingTopType = {
+    count: number
+    lastAccessTime: string
+    losses: number
+    mostFrequentWord: string
+    rank: number
+    summonerName: string
+    summonerPhoto: string
+    winRate: number
+    wins: number
+  }
+
   const [selectedOption, setSelectedOption] = useState<CalendarOption | null>(calendar[0])
   const [rankingList, setRankingList] = useState<RankingDataType[]>([])
+  const [rankingTopList, setRankingTopList] = useState<RankingTopType[]>([])
+  // const [rankingTopList, setRankingTopList] = useState()
   const handleSelectChange = (value: string) => {
     const selectedOption = calendar.find((option) => option.value === value) || null
     setSelectedOption(selectedOption)
@@ -51,8 +66,10 @@ const Ranking = () => {
       return {}
     },
     {
-      onSuccess: (response: { data: RankingDataType[] }) => {
-        const summonerData: RankingDataType[] = response.data
+      onSuccess: (response: { data: { data: RankingDataType[]; top1: RankingTopType[] } }) => {
+        const summonerData: RankingDataType[] = response.data.data
+        const topData: RankingTopType[] = response.data.top1
+        setRankingTopList(topData)
         setRankingList(summonerData)
       },
       onError: (error) => {
@@ -61,29 +78,42 @@ const Ranking = () => {
     },
   )
 
+  useEffect(() => {
+    console.log('ggg', rankingTopList)
+  }, [rankingTopList])
+
   return (
     <RankingContainer>
       <RankinTitleWrap>
         <RankingTitleTopItemWrap>
-          <p>{'2023년 7월'}</p>
+          <p>{top1Date}</p>
           <span>{'TOP 1'}</span>
         </RankingTitleTopItemWrap>
-        <RankingTitleBottomWrap>
-          <h2>{'방배동둠피스트'}</h2>
-          <ReportAccruedCountWrap>
-            <h3>{'누적 신고 횟수'}</h3>
-            <p>{'전과 724범'}</p>
-          </ReportAccruedCountWrap>
-          <ReportThisMonthCountWrap>
-            <h3>{'이번 달 신고 횟수'}</h3>
-            <p>{'25회'}</p>
-          </ReportThisMonthCountWrap>
-          <MajorCurseWrap>
-            <h3>{'주요 욕 카테고리'}</h3>
-            <MajorCurseCategory>{'성희롱'}</MajorCurseCategory>
-            {/* <Badge category={'aversion'} /> */}
-          </MajorCurseWrap>
-        </RankingTitleBottomWrap>
+        {rankingTopList &&
+          rankingTopList.map((item) => {
+            return (
+              <RankingTitleBottomWrap>
+                <RankingTitleBox>
+                  <img src={item.summonerPhoto} alt={'소환사아이콘'} />
+                  <h2>{item.summonerName}</h2>
+                </RankingTitleBox>
+                {/* <h2>{rankingTopList && rankingTopList.summonerName}</h2> */}
+                <ReportAccruedCountWrap>
+                  <h3>{'누적 신고 횟수'}</h3>
+                  <p>{'전과 724범'}</p>
+                </ReportAccruedCountWrap>
+                <ReportThisMonthCountWrap>
+                  <h3>{'이번 달 신고 횟수'}</h3>
+                  <p>{item.count}</p>
+                </ReportThisMonthCountWrap>
+                <MajorCurseWrap>
+                  <h3>{'주요 욕 카테고리'}</h3>
+                  <MajorCurseCategory>{item.mostFrequentWord}</MajorCurseCategory>
+                  {/* <Badge category={'aversion'} /> */}
+                </MajorCurseWrap>
+              </RankingTitleBottomWrap>
+            )
+          })}
       </RankinTitleWrap>
 
       <RankingCalendarContainer>
@@ -111,6 +141,7 @@ const Ranking = () => {
                   onClick={() => {
                     handleSelectChange(option.value)
                     onSelectBoxOptionHandler()
+                    setTop1Date(option.label)
                   }}
                 >
                   <p>{option.label}</p>
@@ -194,18 +225,26 @@ const RankingTitleBottomWrap = styled.div`
   position: relative;
   color: ${({ theme }) => theme.color.white};
 
-  &::before {
+  /* &::before {
     content: '';
     position: absolute;
     left: 556px;
     width: 2px;
     height: 68px;
     background-color: #5e5e5e;
-  }
+  } */
 
   h2 {
     font-size: 40px;
     font-weight: 700;
+  }
+`
+
+const RankingTitleBox = styled.div`
+  display: flex;
+  gap: 15px;
+  img {
+    width: 50px;
   }
 `
 

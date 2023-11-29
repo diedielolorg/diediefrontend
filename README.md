@@ -93,17 +93,23 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
 
 ### 📌 로그인
 
-<img src="https://github.com/diedielolorg/diediefrontend/assets/84097192/ce04297d-8c28-49b7-9361-87b2b598def8" alt="로그인" width="800" />
+<img src="https://blog.kakaocdn.net/dn/bQZUxa/btsBbMYT5ub/kTB0hxArMLIfW8wGAVQC01/img.gif" alt="로그인" width="800" />
 
-- 현재 기능 구현 중이며 구현 완료 시 세부 기능 안내 작성 예정입니다!
+- 로그인시 이메일 비밀번호 둘중에 하나라도 일치하지 않으면 스낵바로 안내가 됩니다.
+- 로그인이 완료되면 메인페이지로 이동됩니다.
 
 <br/>
 
 ### 📌 회원가입
 
-<img src="https://github.com/diedielolorg/diediefrontend/assets/84097192/9ef251cc-9dac-4857-8715-540ebfce6aa3" alt="회원가입" width="800" />
+<img src="https://blog.kakaocdn.net/dn/bB9zpn/btsBaYrK78v/mrLu5TpkZecNuDUirnjynK/img.gif" alt="회원가입" width="800" />
 
-- 현재 기능 구현 중이며 구현 완료 시 세부 기능 안내 작성 예정입니다!
+- 고유한 닉네임을 위해 회원가입시 닉네임 중복검사를 합니다.
+- 이메일 인증시 이미 가입된 이메일이라면 헬프메세지로 닉네임 중복안내가 됩니다.
+- 닉네임 중복이 아니라면 입력한 이메일로 인증번호가 보내지고 3분 타이머가 시작됩니다.
+- 타이머 3분동안은 동일한 이메일로 인증번호 재발송이 어려우며 이메일 수정시 타이머가 멈추고 수정된 이메일로 메일 재발송시 타이머가 3분으로 초기화 되도록 하여 여러 상황에 따라 타이머가 멈추고 동작하도록 구현하였습니다.
+- 닉네임, 이메일 중복확인, 이메일 인증, 비밀번호 일치여부 확인이 전부 이루어져야 회원가입 버튼이 활성화도되록 하였습니다.
+- 회원가입이 완료되면 로그인 페이지로 이동됩니다.
 
   <br/>
 </details>
@@ -184,9 +190,11 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
 
 ### 📌 닉네임 수정
 
-<img src="https://github.com/diedielolorg/diediefrontend/assets/84097192/8fc0de43-c09a-4807-a940-9f137ad4d59d" alt="닉네임 수정" width="800" />
+<img src="https://blog.kakaocdn.net/dn/ctBq45/btsA3YNy9Vj/l8pbLdeTmgZKonejqK6yx1/img.gif" alt="닉네임 수정" width="800" />
 
-- 현재 기능 구현 중이며 구현 완료 시 세부 기능 안내 작성 예정입니다!
+- 고유한 닉네임을 위해 변경하고자 하는 닉네임이 중복되지 않았는지 확인합니다.
+- 닉네임 저장하기를 누르면 마이페이지로 이동합니다.
+- 저장이 완료되면 로컬스토리지에 변경된 닉네임으로 등록되고 마이페이지에 변경된 닉네임이 표시됩니다.
 
   <br/>
 </details>

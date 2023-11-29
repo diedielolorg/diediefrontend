@@ -24,13 +24,13 @@ const SignIn = () => {
   // const { kakaoData } = useQuery(['kakao'], kakaoLogin)
   const loginMutation = useMutation(login, {
     onSuccess: (data) => {
-      // const { accessToken, user } = data.data
-      // const { nickname } = user
-      // if (accessToken) {
-      //   Cookies.set('accessToken', accessToken)
-      //   localStorage.setItem('nickname', nickname)
-      // }
-      Cookies.set('accessToken', `bearer ${data.data}`)
+      const { accessToken, nickname } = data.data
+
+      if (accessToken) {
+        Cookies.set('accessToken', accessToken)
+        localStorage.setItem('nickname', nickname)
+      }
+      // Cookies.set('accessToken', `bearer ${data.data}`)
 
       navigate('/')
     },
@@ -86,15 +86,15 @@ const SignIn = () => {
               {t('회원가입')}
             </button>
           </TextDiv>
-          <TextDiv>
+          {/* <TextDiv>
             <p>{'--------------------'}</p>
             <p>{t('SNS로 간편 로그인하기')}</p>
             <p>{'--------------------'}</p>
           </TextDiv>
           <button type={'button'} onClick={kakaoLoginHandler}>
             {'카카오로그인'}
-            {/* <Image width={330} height={55} src={kakaoBtn} /> */}
-          </button>
+            <Image width={330} height={55} src={kakaoBtn} />
+          </button> */}
         </LoginBtnBoxDiv>
       </CSS.OverRaySection>
     </CSS.BackgroundMain>
