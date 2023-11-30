@@ -44,6 +44,13 @@ const SnackBar = ({ type }: snackBar) => {
             </div>
           )}
 
+          {type === 'noFile' && (
+            <div>
+              <OneLineTextP>{t('스크린샷을 등록해주세요.')}</OneLineTextP>
+              <DateP>{t('최대 3장까지 등록 가능합니다.')}</DateP>
+            </div>
+          )}
+
           {type === 'incorrectMonth' && (
             <div>
               <OneLineTextP>{t('날짜 형식을 확인해주세요.')}</OneLineTextP>
