@@ -11,7 +11,8 @@ import { Portal } from '../components/common'
 import SnackBarAtom from '../recoil/SnackBarAtom'
 
 const Report = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const currentLang = i18n.language
 
   const location = useLocation().state
   const navigate = useNavigate()
@@ -21,7 +22,6 @@ const Report = () => {
     },
   })
 
-  console.log('닉네임', location.nickname)
   // date input onChange function
   const [date, setDate] = useState<string>('')
   const [isSnackbar, setIsSnackBar] = useRecoilState(SnackBarAtom)
@@ -158,20 +158,22 @@ const Report = () => {
     }
   }
 
+  const commonText = '욕설을 들은 당시의 상황이나, 자세한 내용을 설명해주세요.'
+  const reportingText = '신고 내용을 허위로 작성하지 말아 주세요.'
   return (
     <ReportContainer>
       {isSnackbar.open && <Portal type={'SnackBar'} snackBar={snackbarType} />}
       <ReportTitleWrap>
-        <p>{'신고하려는 소환사'}</p>
+        <p>{t('신고하려는 소환사')}</p>
         <h2>{location.nickname}</h2>
       </ReportTitleWrap>
 
       <ReportDateWrap>
-        <ItemTitle>{'욕한 날짜'}</ItemTitle>
+        <ItemTitle>{t('욕한 날짜')}</ItemTitle>
         <input
           value={date}
           type={'text'}
-          placeholder={'yyyymmdd의 형식으로 적어주세요.'}
+          placeholder={t('yyyymmdd의 형식으로 적어주세요.')}
           ref={DateInput}
           onChange={(e) => onChangeDateInput(e)}
           onBlur={onBlurDateinput}
@@ -179,15 +181,17 @@ const Report = () => {
       </ReportDateWrap>
 
       <ScreenShotWrap method={'post'} encType={'multipart/form-data'} onSubmit={(e) => e.preventDefault()}>
-        <ItemTitle>{'스크린샷'}</ItemTitle>
+        <ItemTitle>{t('스크린샷')}</ItemTitle>
         <FileContainer>
           <ImgWrap>
             <img src={preview || ScreenShotImg} alt={'추가한 이미지'} />
           </ImgWrap>
           <FileWrap>
             <div>
-              <FileUploadGuide>{'장 당10MB 이하의 jpg, jpeg, png 파일을 업로드 해주세요. (최대 3장)'}</FileUploadGuide>
-              <span>{'스크린샷에서 개인정보가 드러나지 않게 주의해주세요.'}</span>
+              <FileUploadGuide>
+                {t('장 당10MB 이하의 jpg, jpeg, png 파일을 업로드 해주세요. (최대 3장)')}
+              </FileUploadGuide>
+              <span>{t('스크린샷에서 개인정보가 드러나지 않게 주의해주세요.')}</span>
             </div>
             <FileNameWrap>
               {fileAttach &&
@@ -201,7 +205,7 @@ const Report = () => {
                 })}
             </FileNameWrap>
             <div>
-              <FileButton htmlFor={'file'}>{'파일 선택'}</FileButton>
+              <FileButton htmlFor={'file'}>{t('파일 선택')}</FileButton>
               <FileInput type={'file'} id={'file'} onChange={handleFileChange} multiple />
             </div>
           </FileWrap>
@@ -210,11 +214,11 @@ const Report = () => {
 
       <CategoryWrap>
         <ItemTitle>
-          {'욕 카테고리'} <span>{'중복 체크 3개 가능'}</span>
+          {t('욕 카테고리')} <span>{t('중복 체크 3개 가능')}</span>
         </ItemTitle>
         <ReportCauseContainer>
           <ReportItemWrap>
-            <ReportCause>
+            <ReportCause leng={currentLang}>
               <InputCheckbox
                 type={'checkbox'}
                 id={'family'}
@@ -222,10 +226,10 @@ const Report = () => {
                 backgroundImage={reportCheckIcon}
                 checked={selectedCause.includes('family')}
               />
-              <label htmlFor={'family'}>{'패드립'}</label>
+              <label htmlFor={'family'}>{t('패드립')}</label>
             </ReportCause>
 
-            <ReportCause>
+            <ReportCause leng={currentLang}>
               <InputCheckbox
                 type={'checkbox'}
                 id={'disgust'}
@@ -233,10 +237,10 @@ const Report = () => {
                 backgroundImage={reportCheckIcon}
                 checked={selectedCause.includes('disgust')}
               />
-              <label htmlFor={'disgust'}>{'혐오성 발언'}</label>
+              <label htmlFor={'disgust'}>{t('혐오성 발언')}</label>
             </ReportCause>
 
-            <ReportCause>
+            <ReportCause leng={currentLang}>
               <InputCheckbox
                 type={'checkbox'}
                 id={'swearWord'}
@@ -244,12 +248,12 @@ const Report = () => {
                 backgroundImage={reportCheckIcon}
                 checked={selectedCause.includes('swearWord')}
               />
-              <label htmlFor={'swearWord'}>{'쌍욕'}</label>
+              <label htmlFor={'swearWord'}>{t('쌍욕')}</label>
             </ReportCause>
           </ReportItemWrap>
 
           <ReportItemWrap>
-            <ReportCause>
+            <ReportCause leng={currentLang}>
               <InputCheckbox
                 type={'checkbox'}
                 id={'personalAttack'}
@@ -257,10 +261,10 @@ const Report = () => {
                 backgroundImage={reportCheckIcon}
                 checked={selectedCause.includes('personalAttack')}
               />
-              <label htmlFor={'personalAttack'}>{'인신공격'}</label>
+              <label htmlFor={'personalAttack'}>{t('인신공격')}</label>
             </ReportCause>
 
-            <ReportCause>
+            <ReportCause leng={currentLang}>
               <InputCheckbox
                 type={'checkbox'}
                 id={'sexualHarassment'}
@@ -268,10 +272,10 @@ const Report = () => {
                 backgroundImage={reportCheckIcon}
                 checked={selectedCause.includes('sexualHarassment')}
               />
-              <label htmlFor={'sexualHarassment'}>{'성희롱'}</label>
+              <label htmlFor={'sexualHarassment'}>{t('성희롱')}</label>
             </ReportCause>
 
-            <ReportCause>
+            <ReportCause leng={currentLang}>
               <InputCheckbox
                 type={'checkbox'}
                 id={'etc'}
@@ -279,25 +283,25 @@ const Report = () => {
                 backgroundImage={reportCheckIcon}
                 checked={selectedCause.includes('etc')}
               />
-              <label htmlFor={'etc'}>{'기타'}</label>
+              <label htmlFor={'etc'}>{t('기타')}</label>
             </ReportCause>
           </ReportItemWrap>
         </ReportCauseContainer>
       </CategoryWrap>
 
       <ReportBody>
-        <ItemTitle>{'신고내용'}</ItemTitle>
+        <ItemTitle>{t('신고내용')}</ItemTitle>
         <ReportBodyInput
           value={text}
           onChange={handleTextChange}
-          placeholder={`욕설을 들은 당시의 상황이나, 자세한 내용을 설명해주세요. ${'\n'}신고 내용을 허위로 작성하지 말아 주세요.`}
+          placeholder={`${t(commonText)}${'\n'}${t(reportingText)}`}
         />
         <LetterWrap>
           <span>{text.length}</span>
           <p>{'/600'}</p>
         </LetterWrap>
       </ReportBody>
-      <ReportPostBtn onClick={submitButtonHandler}>{'등록'}</ReportPostBtn>
+      <ReportPostBtn onClick={submitButtonHandler}>{t('등록')}</ReportPostBtn>
     </ReportContainer>
   )
 }
@@ -473,9 +477,12 @@ const ReportItemWrap = styled.div`
   justify-content: flex-start;
   gap: 20px;
 `
-
-const ReportCause = styled.div`
-  width: 115px;
+interface ReportCauseProps {
+  leng: string
+}
+const ReportCause = styled.div<ReportCauseProps>`
+  width: ${(props) => (props.leng === 'ko' ? '115px' : 'none')};
+  /* width: 115px; */
   height: 18px;
   display: flex;
   align-items: center;

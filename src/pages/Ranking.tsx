@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { styled } from 'styled-components'
 import { rankingArrow } from '../assets'
 import { getRankingInfo } from '../axios/ranking'
 import { Image } from '../components/common'
 
 const Ranking = () => {
+  const { t, i18n } = useTranslation()
+  const currentLang = i18n.language
+
   const [selectBox, setSelectBox] = useState(false)
-  const [top1Date, setTop1Date] = useState('2023년 07월')
+  const [top1Date, setTop1Date] = useState('2023년 11월')
   const onSelectBoxOptionHandler = () => {
     setSelectBox(!selectBox)
   }
@@ -83,6 +87,8 @@ const Ranking = () => {
     console.log('ggg', rankingTopList)
   }, [rankingTopList])
 
+  const 전과 = '전과'
+  const 범 = '범'
   return (
     <RankingContainer>
       <RankinTitleWrap>
@@ -96,21 +102,20 @@ const Ranking = () => {
               <RankingTitleBottomWrap>
                 <RankingTitleBox>
                   <Image width={40} height={40} src={item.summonerPhoto} />
-                  {/* <img src={item.summonerPhoto} alt={'소환사아이콘'} /> */}
                   <h2>{item.summonerName}</h2>
                 </RankingTitleBox>
                 {/* <h2>{rankingTopList && rankingTopList.summonerName}</h2> */}
                 <ReportAccruedCountWrap>
-                  <h3>{'누적 신고 횟수'}</h3>
-                  <p>{'전과 724범'}</p>
+                  <h3>{t('누적 신고 횟수')}</h3>
+                  <p>{t('전과 724범')}</p>
                 </ReportAccruedCountWrap>
                 <ReportThisMonthCountWrap>
-                  <h3>{'이번 달 신고 횟수'}</h3>
+                  <h3>{t('이번 달 신고 횟수')}</h3>
                   <p>{item.count}</p>
                 </ReportThisMonthCountWrap>
                 <MajorCurseWrap>
-                  <h3>{'주요 욕 카테고리'}</h3>
-                  <MajorCurseCategory>{item.mostFrequentWord}</MajorCurseCategory>
+                  <h3>{t('주요 욕 카테고리')}</h3>
+                  <MajorCurseCategory>{t(item.mostFrequentWord)}</MajorCurseCategory>
                   {/* <Badge category={'aversion'} /> */}
                 </MajorCurseWrap>
               </RankingTitleBottomWrap>
@@ -156,11 +161,11 @@ const Ranking = () => {
 
       <RankingBodyHeader>
         <p>{'#'}</p>
-        <Summoner>{'소환사'}</Summoner>
-        <ReportsNumber>{'신고 횟수'}</ReportsNumber>
-        <LatestTime>{'최근 접속 시간'}</LatestTime>
-        <WinningRate>{'승률'}</WinningRate>
-        <MajorDesire>{'주요 욕'}</MajorDesire>
+        <Summoner leng={currentLang}>{t('소환사')}</Summoner>
+        <ReportsNumber leng={currentLang}>{t('신고 횟수')}</ReportsNumber>
+        <LatestTime leng={currentLang}>{t('최근 접속 시간')}</LatestTime>
+        <WinningRate leng={currentLang}>{t('승률')}</WinningRate>
+        <MajorDesire leng={currentLang}>{t('주요 욕')}</MajorDesire>
       </RankingBodyHeader>
 
       {rankingList &&
@@ -174,14 +179,14 @@ const Ranking = () => {
                 {/* <img src={item.summonerPhoto} alt={'인게임 아이콘'} /> */}
                 <RankinBodySummoner>{item.summonerName}</RankinBodySummoner>
               </RankinBodySummonerWrap>
-              <RankingReportsNumber>{`전과 ${item.count}범`}</RankingReportsNumber>
+              <RankingReportsNumber>{`${t('전과')} ${item.count}${t('범')}`}</RankingReportsNumber>
               <RankingLatestTime>{item.lastAccessTime}</RankingLatestTime>
               <ProgressContainer>
                 <Progress width={item.winRate} />
                 <p>{`${item.winRate}%`}</p>
               </ProgressContainer>
               <RankingMajorDesire>
-                <MajorCurseCategory>{item.mostFrequentWord}</MajorCurseCategory>
+                <MajorCurseCategory>{t(item.mostFrequentWord)}</MajorCurseCategory>
               </RankingMajorDesire>
             </RankinBodyItem>
           )
@@ -253,7 +258,7 @@ const RankingTitleBox = styled.div`
 `
 
 const ReportAccruedCountWrap = styled.div`
-  margin-left: 348px;
+  margin-left: 200px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -338,25 +343,27 @@ const RankingBodyHeader = styled.div`
   color: ${({ theme }) => theme.color.white};
   font-weight: 400;
 `
-
-const Summoner = styled.p`
-  margin-left: 45px;
+interface ReportCauseProps {
+  leng: string
+}
+const Summoner = styled.p<ReportCauseProps>`
+  margin-left: ${(props) => (props.leng === 'ko' ? '45px' : '45px')};
 `
 
-const ReportsNumber = styled.p`
-  margin-left: 417px;
+const ReportsNumber = styled.p<ReportCauseProps>`
+  margin-left: ${(props) => (props.leng === 'ko' || props.leng === 'ko-KR' ? '417px' : '375px')};
 `
 
-const LatestTime = styled.p`
-  margin-left: 93px;
+const LatestTime = styled.p<ReportCauseProps>`
+  margin-left: ${(props) => (props.leng === 'ko' || props.leng === 'ko-KR' ? '93px' : '30px')};
 `
 
-const WinningRate = styled.p`
-  margin-left: 120px;
+const WinningRate = styled.p<ReportCauseProps>`
+  margin-left: ${(props) => (props.leng === 'ko' || props.leng === 'ko-KR' ? '120px' : '100px')};
 `
 
-const MajorDesire = styled.p`
-  margin-left: 254px;
+const MajorDesire = styled.p<ReportCauseProps>`
+  margin-left: ${(props) => (props.leng === 'ko' || props.leng === 'ko-KR' ? '240px' : '200px')};
 `
 
 const RankinBodyItem = styled.div`
@@ -454,7 +461,7 @@ const Progress = styled.div<{ width: number }>`
 
 const RankingMajorDesire = styled.div`
   width: 85px;
-  margin-left: 128px;
+  margin-left: 110px;
   font-size: 20px;
   font-weight: 500;
 `
