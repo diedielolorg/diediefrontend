@@ -75,14 +75,14 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
 
 ### 📌 유저 검색
 
-<img src="https://github.com/diedielolorg/diediefrontend/assets/84097192/47a3ab11-28d0-4d97-8b73-b2f8f00448b8" alt="메인페이지" width="800" />
+<img src="https://blog.kakaocdn.net/dn/Zk6qi/btsA4WI5U5w/W44gd82CjlAkNKGKuIHfp1/img.gif" alt="메인페이지" width="800" />
 
   <br/>
 
-- 현재 기능 구현 중이며 구현 완료 시 세부 기능 안내 작성 예정입니다!
-
-  <br/>
-</details>
+- 소환사명을 입력하고 엔터 및 돋보기 클릭으로 검색이 가능합니다.
+- 하단에 TIP은 일정시간 간격으로 랜덤하게 보여집니다.
+-   <br/>
+  </details>
 
 <br/>
 
@@ -180,11 +180,12 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
     &nbsp;&nbsp;<b>🔍 마이페이지</b>
   </summary>
 
-### 📌 마이 페이지
+### 📌 내가 등록한 신고 목록
 
-<img src="https://github.com/diedielolorg/diediefrontend/assets/84097192/f5bc6e26-1715-4d59-88e2-cc7369b6e8df" alt="마이페이지 리스트" width="800" />
+<img src="https://blog.kakaocdn.net/dn/Ow2LM/btsA9UJXNWi/RJunk2KAv2aV2JE7B4iE8k/img.gif" alt="마이페이지 리스트" width="800" />
 
-- 현재 기능 구현 중이며 구현 완료 시 세부 기능 안내 작성 예정입니다!
+- 내가 신고한 내역만 모아서 확인이 가능합니다.
+- 삭제가 가능하며 신고 사유를 5글자 이내 입력하지 않으면 삭제버튼이 눌리지 않습니다.
 
 <br/>
 
