@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
@@ -10,6 +11,8 @@ import { Portal } from '../components/common'
 import SnackBarAtom from '../recoil/SnackBarAtom'
 
 const Report = () => {
+  const { t } = useTranslation()
+
   const location = useLocation().state
   const navigate = useNavigate()
   const mutation = useMutation(report, {

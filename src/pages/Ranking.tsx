@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { styled } from 'styled-components'
 import { rankingArrow } from '../assets'
 import { getRankingInfo } from '../axios/ranking'
+import { Image } from '../components/common'
 
 const Ranking = () => {
   const [selectBox, setSelectBox] = useState(false)
@@ -94,7 +95,8 @@ const Ranking = () => {
             return (
               <RankingTitleBottomWrap>
                 <RankingTitleBox>
-                  <img src={item.summonerPhoto} alt={'소환사아이콘'} />
+                  <Image width={40} height={40} src={item.summonerPhoto} />
+                  {/* <img src={item.summonerPhoto} alt={'소환사아이콘'} /> */}
                   <h2>{item.summonerName}</h2>
                 </RankingTitleBox>
                 {/* <h2>{rankingTopList && rankingTopList.summonerName}</h2> */}
@@ -167,7 +169,9 @@ const Ranking = () => {
             <RankinBodyItem>
               <RankingBodyNumber>{item.rank}</RankingBodyNumber>
               <RankinBodySummonerWrap>
-                <img src={item.summonerPhoto} alt={'인게임 아이콘'} />
+                <Image width={35} height={35} src={item.summonerPhoto} />
+
+                {/* <img src={item.summonerPhoto} alt={'인게임 아이콘'} /> */}
                 <RankinBodySummoner>{item.summonerName}</RankinBodySummoner>
               </RankinBodySummonerWrap>
               <RankingReportsNumber>{`전과 ${item.count}범`}</RankingReportsNumber>
