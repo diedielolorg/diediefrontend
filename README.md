@@ -2,55 +2,38 @@
 
 <div align="center"><img width="600" src="https://github.com/diedielolorg/diediefrontend/assets/84097192/3d46a4d7-e263-41f6-ae1d-85b0a2c616ab" alt="main page"></div>
 
-_<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃</p>_
-
 <br/><br/>
 
 # **🔗 배포 주소**
 
 <table>
-  <tr align="center">
-    <td><b>구분</ㅠ></td>
-    <td><b>링크 바로가기</b></td>
-    <td><b>구분</b></td>
-    <td><b>링크 바로가기</b></td>
-  </tr>
-  <tr align="center">
-    <td>
-      <img src="https://github.com/diedielolorg/diediefrontend/assets/84097192/e3af4b12-ebc1-4cf2-8760-c9dba5d978ec" alt="다이다이 로고" style="width: 20px; height: 20px; padding-top: 10px;">
-    </td>
-    <td>
-      <a target="_blank" rel="noopener noreferrer nofollow" href="https://diediefrontend.vercel.app/">
-        DIEDIE.gg
-      </a>
-    </td>
-    <td>
-      <img src="https://github.com/dawhisky/dawhisky-FE/assets/84097192/ad8ad10c-7bce-4157-bf21-238d672086c9" alt="노션 아이콘" style="width: 20px; height: 20px; padding-top: 10px;">
-    </td>
-    <td>
-      <a target="_blank" rel="noopener noreferrer nofollow" href="https://diedie.notion.site/DIEDIE-gg-13f2db91627e49cf8cc31c2242e191e6?pvs=4">
-        Team Notion
-      </a>
-    </td>
-  </tr>
-  <tr align="center">
-    <td>
-      <img src="https://github.com/dawhisky/dawhisky-FE/assets/84097192/54e001c4-5d51-4cba-b988-f3802b16df50" alt="리액트 아이콘" style="width: 25px; height: 20px; padding-top: 10px;">
-    </td>
-    <td>
-      <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/diedielolorg/diediefrontend">
-        FE GitHub
-      </a>
-    </td>
-    <td>
-      <img src="https://github.com/dawhisky/dawhisky-FE/assets/84097192/b8326c42-4cea-4e84-96ab-b87c260de006" alt="노드 아이콘" style="width: 20px; height: 20px; padding-top: 10px;">
-    </td>
-    <td>
-      <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/diedielolorg/diediebackend">
-        BE GitHub
-      </a>
-    </td>
-  </tr>
+  <thead>
+    <tr align="center">
+      <td><b>Notion 바로가기</b></td>
+      <td><b>FE GitHUb 바로가기</b></td>
+      <td><b>BE GitHUb 바로가기</b></td>
+  </thead>
+  <tbody>
+    </tr>
+    <tr align="center">
+      <td>
+        <a target="_blank" rel="noopener noreferrer nofollow" href="https://diedie.notion.site/DIEDIE-gg-13f2db91627e49cf8cc31c2242e191e6?pvs=4">
+          <img src="https://github.com/dawhisky/dawhisky-FE/assets/84097192/ad8ad10c-7bce-4157-bf21-238d672086c9" alt="노션 아이콘" style="width: 20px; height: 20px; padding-top: 10px;">
+        </a>
+      </td>
+      </td>
+      <td>
+        <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/diedielolorg/diediefrontend">
+          <img src="https://github.com/dawhisky/dawhisky-FE/assets/84097192/54e001c4-5d51-4cba-b988-f3802b16df50" alt="리액트 아이콘" style="width: 25px; height: 20px; padding-top: 10px;">
+        </a>
+      </td>
+      <td>
+        <a target="_blank" rel="noopener noreferrer nofollow" href="https://github.com/diedielolorg/diediebackend">
+          <img src="https://github.com/dawhisky/dawhisky-FE/assets/84097192/b8326c42-4cea-4e84-96ab-b87c260de006" alt="노드 아이콘" style="width: 20px; height: 20px; padding-top: 10px;">
+        </a>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <br/><br/>
@@ -61,8 +44,7 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
     DIEDIE.gg는 리그 오브 레전드 유저 정보 조회 및 악성 유저 신고 커뮤니티입니다.
     익명 뒤에 숨어서 욕을 하는 유저들을 신고하고, 유저의 신고 내역을 조회할 수 있습니다!
 
-- `개발 기간` : 2023.08 ~ 2023.09
-- `1차 배포 예정일` : 2023.09.18
+- _`개발 기간` : 2023.08 ~ 2023.10_
 
 <br/><br/>
 
@@ -79,9 +61,10 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
 
   <br/>
 
-- 소환사명을 입력하고 엔터 및 돋보기 클릭으로 검색이 가능합니다.
-- 하단에 TIP은 일정시간 간격으로 랜덤하게 보여집니다.
--   <br/>
+- 소환사명 입력 후 엔터 또는 돋보기 아이콘을 클릭해 리그 오브 레전드 유저 검색이 가능합니다.
+- 검색창 하단의 TIP 문구는 일정 시간 간격으로 랜덤하게 보여집니다.
+  <br/>
+
   </details>
 
 <br/>
@@ -104,14 +87,15 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
 
 <img src="https://blog.kakaocdn.net/dn/bB9zpn/btsBaYrK78v/mrLu5TpkZecNuDUirnjynK/img.gif" alt="회원가입" width="800" />
 
-- 고유한 닉네임을 위해 회원가입시 닉네임 중복검사를 합니다.
-- 이메일 인증시 이미 가입된 이메일이라면 헬프메세지로 닉네임 중복안내가 됩니다.
+- 고유한 닉네임값을 위해 회원가입 시 닉네임 중복검사를 진행합니다.
+- 이메일 인증시 이미 가입된 이메일이라면 헬프메세지로 중복 닉네임 스낵바를 띄웁니다.
 - 닉네임 중복이 아니라면 입력한 이메일로 인증번호가 보내지고 3분 타이머가 시작됩니다.
 - 타이머 3분동안은 동일한 이메일로 인증번호 재발송이 어려우며 이메일 수정시 타이머가 멈추고 수정된 이메일로 메일 재발송시 타이머가 3분으로 초기화 되도록 하여 여러 상황에 따라 타이머가 멈추고 동작하도록 구현하였습니다.
 - 닉네임, 이메일 중복확인, 이메일 인증, 비밀번호 일치여부 확인이 전부 이루어져야 회원가입 버튼이 활성화도되록 하였습니다.
 - 회원가입이 완료되면 로그인 페이지로 이동됩니다.
 
   <br/>
+
 </details>
 
 <br/>
@@ -270,13 +254,6 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
 
 <br/><br/>
 
-# **📊 업데이트 내역**
-
-- 0.0.1
-  - 작업 진행 중
-
-<br/><br/>
-
 # **👪 개발팀 소개**
 
 <table>
@@ -329,8 +306,8 @@ _<p align="center">🏃 DIEDIE.gg는 현재 열심히 구현 중입니다! 🏃<
     </tr>
     <tr>
       <td align="center"><a href="https://github.com/ParkBrianJunSoo">박준수 (L)</a></td>
-      <td align="center"><a href="https://github.com/dhtjddls">김용식</a></td>
-      <td align="center"><a href="https://github.com/ystar5008">오성인</a></td>
+      <td align="center"><a href="https://github.com/ystar5008">김용식</a></td>
+      <td align="center"><a href="https://github.com/dhtjddls">오성인</a></td>
       <td align="center">최혜민</td>
     </tr>
   </tbody>
