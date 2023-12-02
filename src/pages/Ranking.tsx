@@ -82,11 +82,6 @@ const Ranking = () => {
     },
   )
 
-  useEffect(() => {
-    console.log('rankingTopList', rankingTopList)
-    console.log('rankingList', rankingList)
-  }, [rankingTopList, rankingList])
-
   return (
     <RankingContainer>
       {isLoading ? (
