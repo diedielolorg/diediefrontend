@@ -17,9 +17,7 @@ const Report = () => {
   const location = useLocation().state
   const navigate = useNavigate()
   const mutation = useMutation(report, {
-    onSuccess: () => {
-      navigate('/')
-    },
+    onSuccess: () => navigate(`/userInfo/${location.nickname}`),
   })
 
   // date input onChange function
@@ -101,6 +99,7 @@ const Report = () => {
       setSelectedCause((prevSelectedCause) => prevSelectedCause.filter((item) => item !== id))
     }
   }
+
   // 영어에서 한글로 매핑
   const englishCause = {
     family: '패드립',
@@ -122,6 +121,12 @@ const Report = () => {
       setText(inputValue)
     }
   }
+
+  const setSnackBarText = (type: string) => {
+    setIsSnackBar({ open: true })
+    setSnackbarType(type)
+  }
+
   const submitButtonHandler = () => {
     const newList = new FormData()
     const submitDate = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`
@@ -134,32 +139,16 @@ const Report = () => {
       const blobFile = new Blob([file], { type: file.type })
       newList.append('file', blobFile, file.name)
     })
-    if (fileAttach) {
-      mutation.mutate(newList)
-    } else {
-      setIsSnackBar({ open: true })
-      setSnackbarType('noFile')
-    }
 
-    if (fileAttach.length === 0) {
-      setIsSnackBar({ open: true })
-      setSnackbarType('noFile')
-    } else if (!submitDate) {
-      setIsSnackBar({ open: true })
-      setSnackbarType('noFile')
-    } else if (!submitCause) {
-      setIsSnackBar({ open: true })
-      setSnackbarType('noFile')
-    } else if (text.length === 0) {
-      setIsSnackBar({ open: true })
-      setSnackbarType('noFile')
+    if (!fileAttach.length) {
+      setSnackBarText('noFile')
+    } else if (!submitDate || !submitCause || !text.length) {
+      setSnackBarText('noFormData')
     } else {
       mutation.mutate(newList)
     }
   }
 
-  const commonText = '욕설을 들은 당시의 상황이나, 자세한 내용을 설명해주세요.'
-  const reportingText = '신고 내용을 허위로 작성하지 말아 주세요.'
   return (
     <ReportContainer>
       {isSnackbar.open && <Portal type={'SnackBar'} snackBar={snackbarType} />}
@@ -294,7 +283,9 @@ const Report = () => {
         <ReportBodyInput
           value={text}
           onChange={handleTextChange}
-          placeholder={`${t(commonText)}${'\n'}${t(reportingText)}`}
+          placeholder={`${t('욕설을 들은 당시의 상황이나, 자세한 내용을 설명해주세요.')}${'\n'}${t(
+            '신고 내용을 허위로 작성하지 말아 주세요.',
+          )}`}
         />
         <LetterWrap>
           <span>{text.length}</span>

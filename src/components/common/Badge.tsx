@@ -21,8 +21,9 @@ const Badge = ({ $category }: BadgeProps) => {
 export default Badge
 
 const CommonBadge = styled.button<BadgeProps>`
+  width: fit-content;
   margin-right: 8px;
-  padding: 1px 4px;
+  padding: 2px 6px;
   background: transparent;
   font-weight: 700;
   border-radius: 3px;

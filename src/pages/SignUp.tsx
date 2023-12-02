@@ -67,9 +67,6 @@ const SignUp: React.FC = () => {
     onSuccess: () => {
       setTimer(180)
     },
-    onError: (error) => {
-      console.log(error)
-    },
   })
   const validationMutation = useMutation(validation, {
     onSuccess: () => {

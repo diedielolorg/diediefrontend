@@ -18,9 +18,6 @@ const MyPage = () => {
     navigate('/myReport')
   }
   const nickname = localStorage.getItem('nickname')
-  useEffect(() => {
-    console.log(currentLanguage)
-  })
 
   return (
     <CSS.BackgroundMain>

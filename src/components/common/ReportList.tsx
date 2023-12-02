@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactPaginate from 'react-paginate'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { styled } from 'styled-components'
 import { v4 as uuid } from 'uuid'
@@ -15,6 +15,7 @@ const ReportList = ({ reportlist, reportlength, onButtonClick }: ReportListProps
   const uniqueId: string = uuid()
   const { t } = useTranslation()
   const location = useLocation()
+  const navigate = useNavigate()
 
   const [toggleMoreBtn, setToggleMoreBtn] = useState<ToggleMoreBtnState>({
     0: false,
@@ -50,14 +51,13 @@ const ReportList = ({ reportlist, reportlength, onButtonClick }: ReportListProps
         reportlist.map((list, idx) => (
           <div key={list.reportId}>
             {isMyReport && (
-              <NicknameDiv>
+              <NicknameButton onClick={() => navigate(`/userInfo/${list.summonerName}`)}>
                 <Image width={25} height={25} src={list.summonerPhoto} alt={'summonerPhotoImg'} />
-                <p>{list.summonerName}</p>
-              </NicknameDiv>
+                <span>{list.summonerName}</span>
+              </NicknameButton>
             )}
             <ReportInfoDiv>
               <BtnWrapDiv>
-                {isMyReport && <DeleteBtn onClick={() => onButtonClick?.(list.reportId)}>{t(t('삭제'))}</DeleteBtn>}
                 <MoreBtn onClick={() => onMoreClickHandler(idx)}>
                   {t('더보기')}
                   <Image width={15} height={8} src={!toggleMoreBtn[idx] ? arrowDown : arrowUp} />
@@ -206,16 +206,17 @@ const DeleteBtn = styled.button`
     color: ${({ theme }) => theme.color.white};
   }
 `
-const NicknameDiv = styled.div`
+const NicknameButton = styled.button`
   display: flex;
   flex-direction: row;
+  gap: 9px;
   margin-bottom: 28.5px;
   margin-left: 10px;
-  gap: 9px;
-  p {
-    color: ${({ theme }) => theme.color.white};
+  background-color: transparent;
+  span {
     font-size: 28px;
     font-weight: 700;
     line-height: 25px;
+    color: ${({ theme }) => theme.color.white};
   }
 `
