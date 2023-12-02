@@ -65,6 +65,13 @@ const SnackBar = ({ type }: snackBar) => {
             </div>
           )}
 
+          {type === 'noFormData' && (
+            <div>
+              <OneLineTextP>{t('입력한 데이터를 확인해주세요.')}</OneLineTextP>
+              <DateP>{t('입력되지 않은 신고 양식이 있습니다.')}</DateP>
+            </div>
+          )}
+
           {type === 'success' && (
             <LogoSnackBarDiv>
               <Image width={45} height={45} src={successIcon} />
