@@ -1,20 +1,23 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
+import { v4 as uuid } from 'uuid'
 import { rankingArrow } from '../assets'
 import { getRankingInfo } from '../axios/ranking'
-import { Image } from '../components/common'
+import { Badge, Image } from '../components/common'
+import { Loading, ErrorPage } from './status'
 
 const Ranking = () => {
   const { t, i18n } = useTranslation()
   const currentLang = i18n.language
+  const uniqueId: string = uuid()
+  const navigate = useNavigate()
 
   const [selectBox, setSelectBox] = useState(false)
   const [top1Date, setTop1Date] = useState('2023년 11월')
-  const onSelectBoxOptionHandler = () => {
-    setSelectBox(!selectBox)
-  }
+  const onSelectBoxOptionHandler = () => setSelectBox(!selectBox)
   interface CalendarOption {
     value: string
     label: string
@@ -54,10 +57,9 @@ const Ranking = () => {
     wins: number
   }
 
-  const [selectedOption, setSelectedOption] = useState<CalendarOption | null>(calendar[0])
+  const [selectedOption, setSelectedOption] = useState<CalendarOption | null>(calendar[4]) // default 23년 11월 설정
   const [rankingList, setRankingList] = useState<RankingDataType[]>([])
   const [rankingTopList, setRankingTopList] = useState<RankingTopType[]>([])
-  // const [rankingTopList, setRankingTopList] = useState()
   const handleSelectChange = (value: string) => {
     const selectedOption = calendar.find((option) => option.value === value) || null
     setSelectedOption(selectedOption)
@@ -77,120 +79,127 @@ const Ranking = () => {
         setRankingTopList(topData)
         setRankingList(summonerData)
       },
-      onError: (error) => {
-        console.log('error', error)
-      },
     },
   )
 
   useEffect(() => {
-    console.log('ggg', rankingTopList)
-  }, [rankingTopList])
+    console.log('rankingList', rankingList)
+  }, [rankingList])
 
-  const 전과 = '전과'
-  const 범 = '범'
   return (
     <RankingContainer>
-      <RankinTitleWrap>
-        <RankingTitleTopItemWrap>
-          <p>{top1Date}</p>
-          <span>{'TOP 1'}</span>
-        </RankingTitleTopItemWrap>
-        {rankingTopList &&
-          rankingTopList.map((item) => {
-            return (
-              <RankingTitleBottomWrap>
+      {isLoading ? (
+        <Loading />
+      ) : isError ? (
+        <ErrorPage type={'error'} />
+      ) : (
+        data && (
+          <>
+            <RankinTitleWrap>
+              <RankingTitleTopItemWrap>
+                <p>{top1Date}</p>
+                <span>{'TOP 1'}</span>
+              </RankingTitleTopItemWrap>
+
+              <RankingTitleBottomWrap key={uniqueId}>
                 <RankingTitleBox>
-                  <Image width={40} height={40} src={item.summonerPhoto} />
-                  <h2>{item.summonerName}</h2>
+                  <Image width={40} height={40} src={!rankingTopList[0] ? '' : rankingTopList[0].summonerPhoto} />
+                  <h2>{!rankingTopList[0] ? '-' : rankingTopList[0].summonerName}</h2>
                 </RankingTitleBox>
-                {/* <h2>{rankingTopList && rankingTopList.summonerName}</h2> */}
                 <ReportAccruedCountWrap>
                   <h3>{t('누적 신고 횟수')}</h3>
-                  <p>{t('전과 724범')}</p>
+                  <p>
+                    {t('전과')} {t('{{reportCount}}범', { reportCount: rankingTopList[0]?.count || 0 })}
+                  </p>
                 </ReportAccruedCountWrap>
                 <ReportThisMonthCountWrap>
                   <h3>{t('이번 달 신고 횟수')}</h3>
-                  <p>{item.count}</p>
+                  <p>{'0'}</p>
                 </ReportThisMonthCountWrap>
                 <MajorCurseWrap>
                   <h3>{t('주요 욕 카테고리')}</h3>
-                  <MajorCurseCategory>{t(item.mostFrequentWord)}</MajorCurseCategory>
-                  {/* <Badge category={'aversion'} /> */}
+                  <Badge $category={!rankingTopList[0] ? '없음' : rankingTopList[0].mostFrequentWord} />
                 </MajorCurseWrap>
               </RankingTitleBottomWrap>
-            )
-          })}
-      </RankinTitleWrap>
+            </RankinTitleWrap>
 
-      <RankingCalendarContainer>
-        <RankingH2Wrap>
-          <h2>{'TOP'}</h2>
-          <p>{'100'}</p>
-        </RankingH2Wrap>
-        <RankingSelectBoxWrap>
-          <RankingSelectBoxLabel
-            type={'button'}
-            onClick={() => {
-              handleSelectChange(selectedOption?.value || '')
-              onSelectBoxOptionHandler()
-            }}
-          >
-            {selectedOption?.label}
-            <img src={rankingArrow} alt={'화살표 아이콘'} />
-          </RankingSelectBoxLabel>
-          {selectBox && (
-            <RankingSelectBoxOptionWrap>
-              {calendar.map((option) => (
-                <RankingSelectBoxOption
+            <RankingCalendarContainer>
+              <RankingH2Wrap>
+                <h2>{'TOP'}</h2>
+                <p>{'100'}</p>
+              </RankingH2Wrap>
+              <RankingSelectBoxWrap>
+                <RankingSelectBoxLabel
                   type={'button'}
-                  key={option.value}
                   onClick={() => {
-                    handleSelectChange(option.value)
+                    handleSelectChange(selectedOption?.value || '')
                     onSelectBoxOptionHandler()
-                    setTop1Date(option.label)
                   }}
                 >
-                  <p>{option.label}</p>
-                </RankingSelectBoxOption>
-              ))}
-            </RankingSelectBoxOptionWrap>
-          )}
-        </RankingSelectBoxWrap>
-      </RankingCalendarContainer>
+                  {selectedOption?.label}
+                  <img src={rankingArrow} alt={'화살표 아이콘'} />
+                </RankingSelectBoxLabel>
+                {selectBox && (
+                  <RankingSelectBoxOptionWrap>
+                    {calendar.map((option) => (
+                      <RankingSelectBoxOption
+                        type={'button'}
+                        key={option.value}
+                        onClick={() => {
+                          handleSelectChange(option.value)
+                          onSelectBoxOptionHandler()
+                          setTop1Date(option.label)
+                        }}
+                      >
+                        <p>{option.label}</p>
+                      </RankingSelectBoxOption>
+                    ))}
+                  </RankingSelectBoxOptionWrap>
+                )}
+              </RankingSelectBoxWrap>
+            </RankingCalendarContainer>
 
-      <RankingBodyHeader>
-        <p>{'#'}</p>
-        <Summoner leng={currentLang}>{t('소환사')}</Summoner>
-        <ReportsNumber leng={currentLang}>{t('신고 횟수')}</ReportsNumber>
-        <LatestTime leng={currentLang}>{t('최근 접속 시간')}</LatestTime>
-        <WinningRate leng={currentLang}>{t('승률')}</WinningRate>
-        <MajorDesire leng={currentLang}>{t('주요 욕')}</MajorDesire>
-      </RankingBodyHeader>
+            <RankingBodyHeader $lang={currentLang}>
+              <p>{'#'}</p>
+              <p>{t('소환사')}</p>
+              <p>{t('신고 횟수')}</p>
+              <p>{t('최근 접속 시간')}</p>
+              <p>{t('승률')}</p>
+              <p>{t('주요 욕')}</p>
+            </RankingBodyHeader>
 
-      {rankingList &&
-        rankingList.map((item, idx) => {
-          return (
-            <RankinBodyItem>
-              <RankingBodyNumber>{item.rank}</RankingBodyNumber>
-              <RankinBodySummonerWrap>
-                <Image width={35} height={35} src={item.summonerPhoto} />
+            {!rankingList.length && (
+              <NoRankingDataWrap>
+                <p>{`${top1Date} 신고 내역이 없습니다.`}</p>
+              </NoRankingDataWrap>
+            )}
 
-                {/* <img src={item.summonerPhoto} alt={'인게임 아이콘'} /> */}
-                <RankinBodySummoner>{item.summonerName}</RankinBodySummoner>
-              </RankinBodySummonerWrap>
-              <RankingReportsNumber>{`${t('전과')} ${item.count}${t('범')}`}</RankingReportsNumber>
-              <RankingLatestTime>{item.lastAccessTime}</RankingLatestTime>
-              <ProgressContainer>
-                <Progress width={item.winRate} />
-                <p>{`${item.winRate}%`}</p>
-              </ProgressContainer>
-              <RankingMajorDesire>
-                <MajorCurseCategory>{t(item.mostFrequentWord)}</MajorCurseCategory>
-              </RankingMajorDesire>
-            </RankinBodyItem>
-          )
-        })}
+            {rankingList &&
+              rankingList.map((item) => {
+                return (
+                  <RankingBodyItem key={item.rank}>
+                    <RankingBodyNumber>{item.rank}</RankingBodyNumber>
+                    <RankinBodySummonerWrap>
+                      <Image width={35} height={35} src={item.summonerPhoto} />
+                      <RankinBodySummoner onClick={() => navigate(`/userInfo/${item.summonerName}`)}>
+                        {item.summonerName}
+                      </RankinBodySummoner>
+                    </RankinBodySummonerWrap>
+                    <RankingReportsNumber>{`${t('전과')} ${item.count}${t('범')}`}</RankingReportsNumber>
+                    <RankingLatestTime>{item.lastAccessTime}</RankingLatestTime>
+                    <ProgressContainer>
+                      <WinRateProgress $width={item.winRate}>{`${item.wins} Wins`}</WinRateProgress>
+                      <p>{`${item.winRate}%`}</p>
+                    </ProgressContainer>
+                    <RankingMajorDesire>
+                      <Badge $category={item.mostFrequentWord} />
+                    </RankingMajorDesire>
+                  </RankingBodyItem>
+                )
+              })}
+          </>
+        )
+      )}
     </RankingContainer>
   )
 }
@@ -220,7 +229,6 @@ const RankingTitleTopItemWrap = styled.div`
   p {
     font-weight: 400;
   }
-
   span {
     font-family: Rowdies;
     font-weight: 700;
@@ -233,16 +241,6 @@ const RankingTitleBottomWrap = styled.div`
   align-items: center;
   position: relative;
   color: ${({ theme }) => theme.color.white};
-
-  /* &::before {
-    content: '';
-    position: absolute;
-    left: 556px;
-    width: 2px;
-    height: 68px;
-    background-color: #5e5e5e;
-  } */
-
   h2 {
     font-size: 40px;
     font-weight: 700;
@@ -266,7 +264,6 @@ const ReportAccruedCountWrap = styled.div`
     font-size: 15px;
     font-weight: 500;
   }
-
   p {
     font-size: 20px;
     font-weight: 700;
@@ -278,12 +275,10 @@ const ReportThisMonthCountWrap = styled.div`
   flex-direction: column;
   gap: 6px;
   margin-left: 73px;
-
   h3 {
     font-size: 15px;
     font-weight: 500;
   }
-
   p {
     font-size: 20px;
     font-weight: 700;
@@ -295,23 +290,10 @@ const MajorCurseWrap = styled.div`
   flex-direction: column;
   gap: 6px;
   margin-left: 60px;
-
   h3 {
     font-size: 15px;
     font-weight: 500;
   }
-`
-
-const MajorCurseCategory = styled.p`
-  display: block;
-  width: fit-content;
-  padding: 1.5px 2px;
-  border: 1px solid ${({ theme }) => theme.green.basic};
-  color: ${({ theme }) => theme.green.basic};
-  text-align: center;
-  border-radius: 3px;
-  font-size: 16px;
-  font-weight: 700;
 `
 
 const RankingCalendarContainer = styled.div`
@@ -331,42 +313,42 @@ const RankingH2Wrap = styled.div`
   font-weight: 900;
 `
 
-const RankingBodyHeader = styled.div`
+const RankingBodyHeader = styled.div<{ $lang: string }>`
   width: 1280px;
   height: 43px;
   display: flex;
   align-items: center;
+  position: relative;
   padding-left: 6px;
   padding-right: 31px;
   border-radius: 3px;
   background-color: ${({ theme }) => theme.color.black};
   color: ${({ theme }) => theme.color.white};
   font-weight: 400;
-`
-interface ReportCauseProps {
-  leng: string
-}
-const Summoner = styled.p<ReportCauseProps>`
-  margin-left: ${(props) => (props.leng === 'ko' ? '45px' : '45px')};
+  p {
+    position: absolute;
+  }
+  p:nth-child(1) {
+    left: 10px;
+  }
+  p:nth-child(2) {
+    left: 4.5%;
+  }
+  p:nth-child(3) {
+    left: 40.8%;
+  }
+  p:nth-child(4) {
+    left: 52.8%;
+  }
+  p:nth-child(5) {
+    left: 68.8%;
+  }
+  p:nth-child(6) {
+    left: 89.3%;
+  }
 `
 
-const ReportsNumber = styled.p<ReportCauseProps>`
-  margin-left: ${(props) => (props.leng === 'ko' || props.leng === 'ko-KR' ? '417px' : '375px')};
-`
-
-const LatestTime = styled.p<ReportCauseProps>`
-  margin-left: ${(props) => (props.leng === 'ko' || props.leng === 'ko-KR' ? '93px' : '30px')};
-`
-
-const WinningRate = styled.p<ReportCauseProps>`
-  margin-left: ${(props) => (props.leng === 'ko' || props.leng === 'ko-KR' ? '120px' : '100px')};
-`
-
-const MajorDesire = styled.p<ReportCauseProps>`
-  margin-left: ${(props) => (props.leng === 'ko' || props.leng === 'ko-KR' ? '240px' : '200px')};
-`
-
-const RankinBodyItem = styled.div`
+const RankingBodyItem = styled.div`
   display: flex;
   align-items: center;
   padding: 25px 31px 25px 8px;
@@ -380,26 +362,25 @@ const RankingBodyNumber = styled.h3`
   font-weight: 900;
   color: ${({ theme }) => theme.green.basic};
 `
+
 const RankinBodySummonerWrap = styled.div`
   display: flex;
-  justify-content: flex-start;
-  position: relative;
+  align-items: center;
+  margin-left: 46px;
+  width: 440px;
   img {
     width: 35px;
     height: 35px;
-    position: absolute;
-    top: -5px;
-    left: 40px;
     border-radius: 3px;
   }
 `
 
-const RankinBodySummoner = styled.p`
-  margin-left: 46px;
-  padding-left: 40px;
+const RankinBodySummoner = styled.button`
+  margin-left: 15px;
   font-size: 20px;
   font-weight: 700;
-  width: 440px;
+  background: transparent;
+  color: ${({ theme }) => theme.color.white};
 `
 
 const RankingReportsNumber = styled.p`
@@ -422,41 +403,30 @@ const ProgressContainer = styled.div`
   background: ${({ theme }) => theme.gray.SF};
   border-radius: 3px;
   position: relative;
-  &::before {
-    content: '15W';
-    position: absolute;
-    left: 6px;
-    top: 3px;
-    font-size: 12px;
-    font-weight: 700;
-    color: ${({ theme }) => theme.color.black};
-  }
-
-  &::after {
-    content: '15L';
-    position: absolute;
-    right: 6px;
-    top: 3px;
-    font-size: 12px;
-    font-weight: 700;
-    color: ${({ theme }) => theme.color.white};
-  }
   p {
     position: absolute;
-    top: -3px;
+    top: -4px;
     right: -55px;
     font-size: 20px;
+    font-weight: 500;
+    color: ${({ theme }) => theme.color.white};
   }
 `
 
-const Progress = styled.div<{ width: number }>`
-  width: 50%;
+const WinRateProgress = styled.div<{ $width: number }>`
+  display: flex;
+  align-items: center;
+  width: ${({ $width }) => $width}%;
   height: 100%;
+  padding-left: 5px;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
   background: ${({ theme }) => theme.green.basic};
   transition: width 1s ease;
   border: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.color.black};
 `
 
 const RankingMajorDesire = styled.div`
@@ -494,6 +464,7 @@ const RankingSelectBoxOptionWrap = styled.div`
   justify-content: center;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.color.white};
+  z-index: 1;
 `
 
 const RankingSelectBoxOption = styled.button`
@@ -508,6 +479,15 @@ const RankingSelectBoxOption = styled.button`
     transition: all 0.4s;
     background-color: ${({ theme }) => theme.gray.DE};
   }
+`
+
+const NoRankingDataWrap = styled.div`
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: ${({ theme }) => theme.gray.SF};
 `
 
 export default Ranking
