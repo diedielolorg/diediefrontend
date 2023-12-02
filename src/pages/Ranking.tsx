@@ -82,6 +82,11 @@ const Ranking = () => {
     },
   )
 
+  useEffect(() => {
+    console.log('rankingTopList', rankingTopList)
+    console.log('rankingList', rankingList)
+  }, [rankingTopList, rankingList])
+
   return (
     <RankingContainer>
       {isLoading ? (
@@ -103,15 +108,11 @@ const Ranking = () => {
                   <h2>{!rankingTopList[0] ? '-' : rankingTopList[0].summonerName}</h2>
                 </RankingTitleBox>
                 <ReportAccruedCountWrap>
-                  <h3>{t('누적 신고 횟수')}</h3>
+                  <h3>{t('이번 달 신고 횟수')}</h3>
                   <p>
                     {t('전과')} {t('{{reportCount}}범', { reportCount: rankingTopList[0]?.count || 0 })}
                   </p>
                 </ReportAccruedCountWrap>
-                <ReportThisMonthCountWrap>
-                  <h3>{t('이번 달 신고 횟수')}</h3>
-                  <p>{'0'}</p>
-                </ReportThisMonthCountWrap>
                 <MajorCurseWrap>
                   <h3>{t('주요 욕 카테고리')}</h3>
                   <Badge $category={!rankingTopList[0] ? '없음' : rankingTopList[0].mostFrequentWord} />
@@ -184,7 +185,10 @@ const Ranking = () => {
                     <RankingReportsNumber>{`${t('전과')} ${item.count}${t('범')}`}</RankingReportsNumber>
                     <RankingLatestTime>{item.lastAccessTime}</RankingLatestTime>
                     <ProgressContainer>
-                      <WinRateProgress $width={item.winRate}>{`${item.wins} Wins`}</WinRateProgress>
+                      <WinRateProgress $width={item.winRate}>
+                        <span>{`${item.wins}W`}</span>
+                      </WinRateProgress>
+                      <LoseRate>{`${item.losses}L`}</LoseRate>
                       <p>{`${item.winRate}%`}</p>
                     </ProgressContainer>
                     <RankingMajorDesire>
@@ -252,25 +256,10 @@ const RankingTitleBox = styled.div`
 `
 
 const ReportAccruedCountWrap = styled.div`
-  margin-left: 200px;
+  margin-left: 220px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  h3 {
-    font-size: 15px;
-    font-weight: 500;
-  }
-  p {
-    font-size: 20px;
-    font-weight: 700;
-  }
-`
-
-const ReportThisMonthCountWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-left: 73px;
   h3 {
     font-size: 15px;
     font-weight: 500;
@@ -285,7 +274,7 @@ const MajorCurseWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-left: 60px;
+  margin-left: 100px;
   h3 {
     font-size: 15px;
     font-weight: 500;
@@ -399,6 +388,12 @@ const ProgressContainer = styled.div`
   background: ${({ theme }) => theme.gray.SF};
   border-radius: 3px;
   position: relative;
+  span {
+    position: absolute;
+    top: 2px;
+    font-size: 12px;
+    font-weight: 700;
+  }
   p {
     position: absolute;
     top: -4px;
@@ -410,19 +405,21 @@ const ProgressContainer = styled.div`
 `
 
 const WinRateProgress = styled.div<{ $width: number }>`
-  display: flex;
-  align-items: center;
   width: ${({ $width }) => $width}%;
   height: 100%;
-  padding-left: 5px;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
+  border: none;
   background: ${({ theme }) => theme.green.basic};
   transition: width 1s ease;
-  border: none;
-  font-size: 12px;
-  font-weight: 700;
   color: ${({ theme }) => theme.color.black};
+  span {
+    left: 10px;
+  }
+`
+
+const LoseRate = styled.span`
+  right: 10px;
 `
 
 const RankingMajorDesire = styled.div`
