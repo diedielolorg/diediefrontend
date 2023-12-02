@@ -46,9 +46,6 @@ const Main = () => {
       setSearchSummonerList([response])
       setIsSearchResultBox(true)
     },
-    onError: (error) => {
-      console.log(error)
-    },
   })
 
   useEffect(() => {
